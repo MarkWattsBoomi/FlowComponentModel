@@ -196,6 +196,9 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         this.loadAttributes = this.loadAttributes.bind(this);
         this.loadOutcomes = this.loadOutcomes.bind(this);
         this.receiveMessage = this.receiveMessage.bind(this);
+        this.getStateValue = this.getStateValue.bind(this);
+        this.setStateValue = this.setStateValue.bind(this);
+        this.getStateValueType = this.getStateValueType.bind(this);
         window.addEventListener('message', this.receiveMessage, false);
 
         // const model = manywho.model.getComponent(this.ComponentId, this.FlowKey);
@@ -218,14 +221,14 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
 
         switch (flowModel.contentType) {
             case 'ContentObject':
+
             case 'ContentList':
                 let objectData: any;
                 if (flowState.objectData) {
                     objectData = flowState.objectData;
-                } else {
-                    objectData = flowModel.objectData;
+                    objectData = JSON.parse(JSON.stringify(objectData));
                 }
-                objectData = JSON.parse(JSON.stringify(objectData));
+
                 const newState = { objectData };
                 manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
                 break;
@@ -385,16 +388,20 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
     async setStateValue(value: string | boolean | number | Date | FlowObjectData | FlowObjectDataArray) {
         const flowModel = manywho.model.getComponent(this.ComponentId, this.FlowKey);
         const flowState = manywho.state.getComponent(this.componentId, this.flowKey) || {};
-
+        let newState: any;
         switch (flowModel.contentType) {
             case 'ContentObject':
-                const objectData = (value as FlowObjectData).iObjectData;
-                manywho.state.setComponent(this.componentId, objectData as IComponentValue, this.flowKey, true);
+                let objectData = (value as FlowObjectData).iFlowObjectDataArray();
+                objectData = JSON.parse(JSON.stringify(objectData));
+                newState = { objectData };
+                manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
                 break;
 
             case 'ContentList':
-                const objectDataArray = (value as FlowObjectDataArray).iFlowObjectDataArray();
-                manywho.state.setComponent(this.componentId, objectDataArray as IComponentValue, this.flowKey, true);
+                let objectDataArray = (value as FlowObjectDataArray).iFlowObjectDataArray();
+                objectDataArray = JSON.parse(JSON.stringify(objectData));
+                newState = { objectDataArray };
+                manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
                 break;
 
             case 'ContentDate':
@@ -474,8 +481,8 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
     }
 
     async receiveMessage(message: any) {
-        if (message.data) {
-            const msg = JSON.parse(message.data);
+        if (message.data.data) {
+            const msg = JSON.parse(message.data.data);
             if (msg.action) {
                 switch (msg.action.toUpperCase()) {
                     case 'OUTCOME':
