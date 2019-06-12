@@ -64,32 +64,56 @@ interface IFlowModel {
 
 if (!(manywho as any).eventManager) {
     (manywho as any).eventManager = {};
-    (manywho as any).eventManager.beforeSendListeners = [];
-    (manywho as any).eventManager.doneListeners = [];
-    (manywho as any).eventManager.failListeners = [];
+    (manywho as any).eventManager.beforeSendListeners = {};
+    (manywho as any).eventManager.doneListeners = {};
+    (manywho as any).eventManager.failListeners = {};
 
     (manywho as any).eventManager.beforeSend = (xhr: XMLHttpRequest, request: any) => {
-        (manywho as any).eventManager.beforeSendListeners.forEach((listener: any) => listener(xhr, request));
+        //(manywho as any).eventManager.beforeSendListeners.forEach((listener: any) => listener(xhr, request));
+        for(const key of (manywho as any).eventManager.beforeSendListeners )
+        {
+            (manywho as any).eventManager.beforeSendListeners[key](xhr, request);
+        }
     };
 
     (manywho as any).eventManager.done = (xhr: XMLHttpRequest, request: any) => {
-        (manywho as any).eventManager.doneListeners.forEach((listener: any) => listener(xhr, request));
+        //(manywho as any).eventManager.doneListeners.forEach((listener: any) => listener(xhr, request));
+        for(const key of (manywho as any).eventManager.doneListeners )
+        {
+            (manywho as any).eventManager.doneListeners[key](xhr, request);
+        }
     };
 
     (manywho as any).eventManager.fail = (xhr: XMLHttpRequest, request: any) => {
-        (manywho as any).eventManager.failListeners.forEach((listener: any) => listener(xhr, request));
+        //(manywho as any).eventManager.failListeners.forEach((listener: any) => listener(xhr, request));
+        for(const key of (manywho as any).eventManager.failListeners )
+        {
+            (manywho as any).eventManager.failListeners[key](xhr, request);
+        }
     };
 
     (manywho as any).eventManager.addBeforeSendListener = (handler: (xhr: XMLHttpRequest, request: any) => void) => {
         (manywho as any).eventManager.beforeSendListeners.push(handler);
     };
 
-    (manywho as any).eventManager.addDoneListener = (handler: (xhr: XMLHttpRequest, request: any) => void) => {
-        (manywho as any).eventManager.doneListeners.push(handler);
+    (manywho as any).eventManager.removeBeforeSendListener = (componentId: string) => {
+        delete (manywho as any).eventManager.beforeSendListeners[componentId];
+    };
+
+    (manywho as any).eventManager.addDoneListener = (handler: (xhr: XMLHttpRequest, request: any) => void, componentId: string) => {
+        (manywho as any).eventManager.doneListeners[componentId] = handler;
+    };
+
+    (manywho as any).eventManager.removeDoneListener = (componentId: string) => {
+        delete (manywho as any).eventManager.doneListeners[componentId];
     };
 
     (manywho as any).eventManager.addFailListener = (handler: (xhr: XMLHttpRequest, request: any) => void) => {
         (manywho as any).eventManager.failListeners.push(handler);
+    };
+
+    (manywho as any).eventManager.removeFailListener = (componentId: string) => {
+        delete (manywho as any).eventManager.failListeners[componentId];
     };
 
     manywho.settings.initialize(null, {
@@ -239,6 +263,11 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         }
 
         manywho.utils.removeLoadingIndicator('loader');
+        return Promise.resolve();
+    }
+
+    async componentWillUnmount() {
+        return Promise.resolve();
     }
 
     loadOutcomes() {

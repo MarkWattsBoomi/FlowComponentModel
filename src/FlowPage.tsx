@@ -10,13 +10,19 @@ export class FlowPage extends FlowBaseComponent {
     constructor(props: any) {
         super(props);
         this.reloadValues = this.reloadValues.bind(this);
-        (manywho as any).eventManager.addDoneListener(this.reloadValues);
+        
     }
 
     // the FlowPage automatically gets values
     async componentDidMount() {
         await super.componentDidMount();
         await this.loadValues();
+        (manywho as any).eventManager.addDoneListener(this.reloadValues,this.componentId);
+    }
+
+    async componentWillUnmount() {
+        await super.componentWillUnmount();
+        (manywho as any).eventManager.removeDoneListener(this.componentId);
     }
     //
     async triggerOutcome(outcomeName: string, data?: IFlowObjectData[]) {
