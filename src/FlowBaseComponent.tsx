@@ -129,18 +129,18 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
 
     url: string;
     userurl: string;
-    private User: IFlowUser;
+    private User?: IFlowUser;
     private TenantId: string;
     private StateId: string;
     private FlowKey: string;
     private ComponentId: string;
-    private ParentId: string;
-    private Fields: {[key: string]: FlowField};
+    private ParentId?: string;
+    private Fields: {[key: string]: FlowField} = {};
     private IsLoading: boolean;
     private LoadingState: string;
-    private Attributes: {[key: string]: FlowAttribute};
-    private Outcomes: {[key: string]: FlowOutcome};
-    private Model: IFlowModel;
+    private Attributes: {[key: string]: FlowAttribute} = {};
+    private Outcomes: {[key: string]: FlowOutcome} = {};
+    private Model?: IFlowModel;
 
     get tenantId(): string {
         return this.TenantId;
@@ -158,7 +158,7 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         return this.ComponentId;
     }
 
-    get parentId(): string {
+    get parentId(): string | any {
         return this.ParentId;
     }
 
@@ -170,23 +170,23 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         return this.LoadingState;
     }
 
-    get outcomes(): {[key: string]: FlowOutcome} {
+    get outcomes(): {[key: string]: FlowOutcome} | any {
         return this.Outcomes;
     }
 
-    get attributes(): {[key: string]: FlowAttribute} {
+    get attributes(): {[key: string]: FlowAttribute} | any {
         return this.Attributes;
     }
 
-    get fields(): {[key: string]: FlowField} {
+    get fields(): {[key: string]: FlowField} | any {
         return this.Fields;
     }
 
-    get model(): IFlowModel {
+    get model(): IFlowModel | any {
         return this.Model;
     }
 
-    get user(): IFlowUser {
+    get user(): IFlowUser | any {
         return this.User;
     }
 
@@ -280,7 +280,7 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
             this.Outcomes[outcome.developerName] = new FlowOutcome(outcome);
         }
         // and the ones from the parent page
-        outs = manywho.model.getOutcomes(null, this.props.flowKey);
+        outs = manywho.model.getOutcomes("", this.props.flowKey);
         for (const outcome of outs) {
             this.Outcomes[outcome.developerName] = new FlowOutcome(outcome);
         }
@@ -343,11 +343,15 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         this.LoadingState = this.LoadingState !== 'initial' ? 'refreshing' : 'initial';
         this.Fields = {};
 
-        const values = await manywho.connection.request(this, null, this.url , 'GET', this.TenantId, this.StateId, manywho.state.getAuthenticationToken(this.FlowKey), null);
+        const values = await manywho.connection.request(this, "", this.url , 'GET', this.TenantId, this.StateId, manywho.state.getAuthenticationToken(this.FlowKey), {});
 
-        (values || []).map((value: IFlowStateValue) => {this.Fields[value.developerName] = new FlowField(value); });
+        (values || []).map((value: IFlowStateValue) => {
+            if(value) {
+                this.Fields[value.developerName] = new FlowField(value); 
+            }
+        });
 
-        const userval = await manywho.connection.request(this, null, this.userurl , 'GET', this.TenantId, this.StateId, manywho.state.getAuthenticationToken(this.FlowKey), null);
+        const userval = await manywho.connection.request(this, "", this.userurl , 'GET', this.TenantId, this.StateId, manywho.state.getAuthenticationToken(this.FlowKey), {});
         const u = new FlowField(userval);
         const props = (u.value as FlowObjectData).properties;
 
@@ -371,7 +375,7 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
 
         this.IsLoading = false;
         this.LoadingState = 'loaded';
-        this.forceUpdate();
+        await this.forceUpdate();
     }
 
     async dontLoadValues() {
@@ -385,14 +389,14 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         const flowModel = manywho.model.getComponent(this.ComponentId, this.FlowKey);
         switch (flowModel.contentType) {
             case 'ContentObject':
-                return new FlowObjectData(flowState.objectData[0]);
+                return new FlowObjectData(flowState.objectData && flowState.objectData[0]? flowState.objectData[0] : {});
 
             case 'ContentList':
-                return new FlowObjectDataArray(flowState.objectData);
+                return new FlowObjectDataArray(flowState.objectData? flowState.objectData : []);
                 break;
 
             default:
-                return flowState.contentValue;
+                return flowState.contentValue? flowState.contentValue : "";
                 break;
         }
     }
@@ -402,14 +406,14 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         const flowModel = manywho.model.getComponent(this.ComponentId, this.FlowKey);
         switch (flowModel.contentType) {
             case 'ContentObject':
-                return new FlowObjectData(flowState.objectData[0]);
+                return new FlowObjectData(flowState.objectData && flowState.objectData[0]? flowState.objectData[0] : {});
 
             case 'ContentList':
                 return new FlowObjectDataArray(flowState.objectData);
                 break;
 
             default:
-                return flowState.contentValue;
+                return flowState.contentValue? flowState.contentValue : "" ;
                 break;
         }
     }
@@ -428,7 +432,7 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
 
             case 'ContentList':
                 let objectDataArray = (value as FlowObjectDataArray).iFlowObjectDataArray();
-                objectDataArray = JSON.parse(JSON.stringify(objectData));
+                objectDataArray = JSON.parse(JSON.stringify(objectDataArray));
                 newState = { objectDataArray };
                 manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
                 break;
@@ -445,19 +449,40 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         // manywho.engine.sync(this.flowKey);
     }
 
-    async updateValues(values: FlowField[]) {
+    async updateValues(values: FlowField[] | FlowField) {
         this.IsLoading = true;
         this.LoadingState = this.LoadingState !== 'initial' ? 'refreshing' : 'initial';
-        this.forceUpdate();
+        //this.forceUpdate();
 
         const updateFields: IFlowField[] = [];
 
-        for (const field of values) {
-            updateFields.push(field.iFlowField());
+        if(values.constructor.name === FlowField.name) {
+            updateFields.push((values as FlowField).iFlowField());
         }
+        else
+        {
+            for (const field of (values as Array<FlowField>)) {
+                updateFields.push(field.iFlowField());
+            }
+        }
+        
 
         await manywho.connection.request(this, null, this.url , 'POST', this.TenantId, this.StateId, manywho.state.getAuthenticationToken(this.FlowKey), updateFields);
-        // await manywho.engine.sync(this.flowKey);
+        await manywho.engine.sync(this.flowKey);
+
+        if(manywho.collaboration.isInitialized(this.flowKey)) {
+            //manywho.collaboration.sync(this.flowKey);
+            manywho.collaboration.push(this.ComponentId,{"message": "SYNC"},this.flowKey);
+        }
+    }
+
+    async componentDidUpdate() {
+         const state: any=  manywho.state.getComponent(this.componentId, this.flowKey) as IComponentValue;
+         if(state.message &&  state.message === "SYNC") {
+             await this.loadValues();
+             manywho.state.setComponent(this.componentId,{"message": ""} as any, this.flowKey, false);
+             this.forceUpdate();
+         }
     }
 
     async triggerOutcome(outcomeName: string, data?: IFlowObjectData[]) {
@@ -466,10 +491,10 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         this.forceUpdate();
 
         if (!data) {
-            data = null;
+            data = [];
         }
 
-        let oc: IFlowOutcome;
+        let oc: any;
         if (this.outcomes[outcomeName]) {
             oc = this.outcomes[outcomeName].iFlowOutcome();
         }
@@ -497,7 +522,7 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         data.id = flowId;
         data.developerName = null;
         data.inputs = objectData ? objectData.iFlowObjectDataArray() : null;
-        manywho.connection.request(this, null, url , 'POST', this.TenantId, null, manywho.state.getAuthenticationToken(this.FlowKey), data);
+        manywho.connection.request(this, "", url , 'POST', this.TenantId, "", manywho.state.getAuthenticationToken(this.FlowKey), data);
 
     }
 

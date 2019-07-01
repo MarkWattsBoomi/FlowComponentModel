@@ -14,6 +14,7 @@ export interface IFlowField {
 }
 
 export enum eContentType {
+    unknown,
     ContentString,
     ContentNumber,
     ContentObject,
@@ -26,14 +27,14 @@ export enum eContentType {
 }
 
 export class FlowField {
-    private ContentType: eContentType;
-    private DeveloperName: string;
-    private TypeElementDeveloperName: string;
-    private TypeElementId: string;
-    private TypeElementPropertyDeveloperName: string;
-    private TypeElementPropertyId: string;
-    private ValueElementId: string;
-    private Value: string | number | Date | boolean | FlowObjectData | FlowObjectDataArray;
+    private ContentType: eContentType = eContentType.unknown;
+    private DeveloperName: string = "";
+    private TypeElementDeveloperName: string = "";
+    private TypeElementId: string = "";
+    private TypeElementPropertyDeveloperName: string = "";
+    private TypeElementPropertyId: string = "";
+    private ValueElementId: string = "";
+    private Value: string | number | Date | boolean | FlowObjectData | FlowObjectDataArray | undefined;
 
     get contentType(): eContentType {
         return this.ContentType;
@@ -63,41 +64,43 @@ export class FlowField {
         return this.ValueElementId;
     }
 
-    get value(): string | number | Date | boolean | FlowObjectData | FlowObjectDataArray {
+    get value(): string | number | Date | boolean | FlowObjectData | FlowObjectDataArray | undefined {
         return this.Value;
     }
 
-    set value(value: string | number | Date | boolean | FlowObjectData | FlowObjectDataArray) {
+    set value(value: string | number | Date | boolean | FlowObjectData | FlowObjectDataArray | undefined) {
         this.Value = value;
     }
 
-    constructor(field: IFlowField) {
-        this.ContentType = eContentType[field.contentType as keyof typeof eContentType];
-        this.DeveloperName = field.developerName;
-        this.TypeElementDeveloperName = field.typeElementDeveloperName;
-        this.TypeElementId = field.typeElementId;
-        this.TypeElementPropertyDeveloperName = field.typeElementPropertyDeveloperName;
-        this.TypeElementPropertyId = field.typeElementPropertyId;
-        this.ValueElementId = field.valueElementId;
+    constructor(field?: IFlowField) {
+        if(field)
+        {
+            this.ContentType = eContentType[field.contentType as keyof typeof eContentType];
+            this.DeveloperName = field.developerName;
+            this.TypeElementDeveloperName = field.typeElementDeveloperName;
+            this.TypeElementId = field.typeElementId;
+            this.TypeElementPropertyDeveloperName = field.typeElementPropertyDeveloperName;
+            this.TypeElementPropertyId = field.typeElementPropertyId;
+            this.ValueElementId = field.valueElementId;
 
-        switch (this.ContentType) {
-            case eContentType.ContentObject:
-                this.Value = field.objectData && field.objectData[0] ? new FlowObjectData(field.objectData) : null;
-                break;
+            switch (this.ContentType) {
+                case eContentType.ContentObject:
+                    this.Value = field.objectData ? new FlowObjectData(field.objectData) : undefined;
+                    break;
 
-            case eContentType.ContentList:
-                this.Value = field.objectData && field.objectData[0] ? new FlowObjectDataArray(field.objectData) : new FlowObjectDataArray([]);
-                break;
+                case eContentType.ContentList:
+                    this.Value = field.objectData && field.objectData[0] ? new FlowObjectDataArray(field.objectData) : new FlowObjectDataArray([]);
+                    break;
 
-            default:
-                this.Value = field.contentValue;
-                break;
+                default:
+                    this.Value = field.contentValue;
+                    break;
+            }
         }
-
     }
 
     iFlowField(): IFlowField {
-        let contentValue: string;
+        let contentValue: string = "";
         let objectData: IFlowObjectData[] = [];
 
         switch (this.ContentType) {
@@ -112,7 +115,7 @@ export class FlowField {
                 break;
 
             default:
-                contentValue = this.Value as string;
+                contentValue = this.Value? this.Value as string : "";
                 break;
         }
 

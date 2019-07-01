@@ -61,16 +61,23 @@ export class FlowObjectDataArray {
         } else {
             if (fieldName) {
                 return this.Items.sort((a, b) => {
-                    switch (true) {
-                        case a.properties[fieldName].value < b.properties[fieldName].value:
-                            return 1;
+                    if(a && b && a.properties && b.properties && a.properties[fieldName] && 
+                        b.properties[fieldName] && a.properties[fieldName].value && b.properties[fieldName].value)
+                    {
+                        switch (true) {
+                            case a.properties[fieldName].value < b.properties[fieldName].value:
+                                return 1;
 
-                        case a.properties[fieldName].value > b.properties[fieldName].value:
-                            return -1;
+                            case a.properties[fieldName].value > b.properties[fieldName].value:
+                                return -1;
 
-                        default:
-                            return 0;
-
+                            default:
+                                return 0;
+                        }
+                    }
+                    else
+                    {
+                        return 0;
                     }
 
                 });
@@ -80,7 +87,7 @@ export class FlowObjectDataArray {
         }
     }
 
-    constructor(array: IFlowObjectData[]) {
+    constructor(array?: IFlowObjectData[]) {
         this.Items = [];
         for (const item of array || []) {
             this.Items.push(new FlowObjectData([item]));
@@ -104,7 +111,7 @@ export class FlowObjectDataArray {
         return output;
     }
 
-    getItemWithPropertyName(findProperty: string, withValue: any, returnProperty: string): FlowObjectDataProperty {
+    getItemWithPropertyName(findProperty: string, withValue: any, returnProperty: string): FlowObjectDataProperty | any {
         for (const item of this.Items) {
             if (item.properties[findProperty] && item.properties[findProperty].value) {
 
@@ -139,7 +146,7 @@ export class FlowObjectDataArray {
         return null;
     }
 
-	   getItemWithPropertyValue(findProperty: string, withValue: any): FlowObjectData {
+	   getItemWithPropertyValue(findProperty: string, withValue: any): FlowObjectData | undefined {
         for (const item of this.Items) {
             if (item.properties[findProperty] && item.properties[findProperty].value) {
                     let value = item.properties[findProperty].value;

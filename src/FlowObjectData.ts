@@ -16,9 +16,9 @@ export interface IFlowObjectData {
 }
 
 export class FlowObjectData {
-    private DeveloperName: string;
-    private ExternalId: string = null;
-    private InternalId: string;
+    private DeveloperName: string = "";
+    private ExternalId: string = "";
+    private InternalId: string = "";
     private IsSelected: boolean = false;
     private Order: number = 0;
     private Properties: {[key: string]: FlowObjectDataProperty} = {};
@@ -81,7 +81,7 @@ export class FlowObjectData {
 
         const data: IFlowObjectData = {
             developerName,
-            externalId : null,
+            externalId : "",
             internalId : manywho.utils.guid(),
             isSelected : true,
             order: 0,

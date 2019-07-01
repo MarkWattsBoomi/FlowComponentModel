@@ -16,7 +16,7 @@ export class FlowObjectDataProperty {
 
     static newInstance(developerName: string, contentType: eContentType, value: string | number | boolean | FlowObjectData | FlowObjectDataArray) {
 
-        let cv: string;
+        let cv: string ="";
         let objd: IFlowObjectData[] = [];
 
         switch (contentType) {
@@ -35,43 +35,45 @@ export class FlowObjectDataProperty {
                 break;
         }
         const data: IFlowObjectDataProperty = {
-            contentFormat: null,
+            contentFormat: "",
             contentType: eContentType[contentType],
             contentValue: cv,
             developerName,
             objectData: objd,
-            typeElementId: null,
-            typeElementPropertyId: null,
+            typeElementId: "",
+            typeElementPropertyId: "",
         };
         return new this(data);
     }
 
-    private ContentFormat: string;
-    private ContentType: eContentType;
-    private DeveloperName: string;
-    private TypeElementId: string | null;
-    private TypeElementPropertyId: string;
-    private Value: string | number | boolean | FlowObjectData | FlowObjectDataArray;
+    private ContentFormat: string = "";
+    private ContentType: eContentType = eContentType.unknown;
+    private DeveloperName: string = "";
+    private TypeElementId: string = "";
+    private TypeElementPropertyId: string= "";
+    private Value: string | number | boolean | FlowObjectData | FlowObjectDataArray | undefined;
 
-    constructor(property: IFlowObjectDataProperty) {
-        this.DeveloperName = property.developerName;
-        this.ContentType = eContentType[property.contentType as keyof typeof eContentType];
-        this.ContentFormat = property.contentFormat;
-        this.TypeElementId = property.typeElementId;
-        this.TypeElementPropertyId = property.typeElementPropertyId;
+    constructor(property: IFlowObjectDataProperty | undefined) {
+        if(property) {
+            this.DeveloperName = property.developerName;
+            this.ContentType = eContentType[property.contentType as keyof typeof eContentType];
+            this.ContentFormat = property.contentFormat? property.contentFormat : "";
+            this.TypeElementId = property.typeElementId? property.typeElementId : "";
+            this.TypeElementPropertyId = property.typeElementPropertyId;
 
-        switch (this.ContentType) {
-            case eContentType.ContentObject:
-                this.Value = property.objectData ? new FlowObjectData(property.objectData) : null;
-                break;
+            switch (this.ContentType) {
+                case eContentType.ContentObject:
+                    this.Value = property.objectData ? new FlowObjectData(property.objectData) : undefined;
+                    break;
 
-            case eContentType.ContentList:
-                this.value = property.objectData ? new FlowObjectDataArray(property.objectData) : new FlowObjectDataArray([]);
-                break;
+                case eContentType.ContentList:
+                    this.value = property.objectData ? new FlowObjectDataArray(property.objectData) : new FlowObjectDataArray([]);
+                    break;
 
-            default:
-                this.value = property.contentValue;
-                break;
+                default:
+                    this.value = property.contentValue? property.contentValue : "" ;
+                    break;
+            }
         }
     }
 
@@ -110,7 +112,7 @@ export class FlowObjectDataProperty {
         this.TypeElementPropertyId = typeElementPropertyId;
         }
 
-    get value(): string | number | boolean | FlowObjectData | FlowObjectDataArray {
+    get value(): string | number | boolean | FlowObjectData | FlowObjectDataArray | undefined {
         switch (this.contentType) {
             case eContentType.ContentNumber:
                 return parseFloat(this.Value ? this.Value as string : '0');
@@ -124,13 +126,13 @@ export class FlowObjectDataProperty {
 
     }
 
-    set value(value: string | number | boolean | FlowObjectData | FlowObjectDataArray) {
+    set value(value: string | number | boolean | FlowObjectData | FlowObjectDataArray | undefined) {
         this.Value = value;
         }
 
     iFlowObjectDataProperty(): IFlowObjectDataProperty {
 
-        let contentValue: string;
+        let contentValue: string = "";
         let objectData: IFlowObjectData[] = [];
 
         switch (this.ContentType) {
