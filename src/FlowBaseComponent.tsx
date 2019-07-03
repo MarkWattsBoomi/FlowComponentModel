@@ -7,6 +7,7 @@ import { FlowObjectDataArray } from './FlowObjectDataArray';
 import { FlowOutcome, IFlowOutcome } from './FlowOutcome';
 import { IComponentProps, IManywho, IObjectData } from './interfaces';
 import { IComponentValue } from './interfaces/services/state';
+import { throttle, debounce } from 'lodash';
 
 declare const manywho: IManywho;
 declare const $: JQueryStatic;
@@ -223,6 +224,7 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         this.getStateValue = this.getStateValue.bind(this);
         this.setStateValue = this.setStateValue.bind(this);
         this.getStateValueType = this.getStateValueType.bind(this);
+        this.sendCollaborationMessage = this.sendCollaborationMessage.bind(this);
         window.addEventListener('message', this.receiveMessage, false);
 
         // const model = manywho.model.getComponent(this.ComponentId, this.FlowKey);
@@ -472,18 +474,28 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
 
         if(manywho.collaboration.isInitialized(this.flowKey)) {
             //manywho.collaboration.sync(this.flowKey);
-            manywho.collaboration.push(this.ComponentId,{"message": "SYNC"},this.flowKey);
+            manywho.collaboration.push(this.ComponentId,{"message": {"action":"RELOADVALUES" }},this.flowKey);
         }
     }
 
+    sendCollaborationMessage = throttle(this._sendCollaborationMessage, 250);
+    _sendCollaborationMessage(message: any){
+        if(manywho.collaboration.isInitialized(this.flowKey)) {
+            //manywho.collaboration.sync(this.flowKey);
+            manywho.collaboration.push(this.ComponentId,{"message": message},this.flowKey);
+        }
+    };
+
+    
+
     async componentDidUpdate() {
-         const state: any=  manywho.state.getComponent(this.componentId, this.flowKey) as IComponentValue;
-         if(state.message &&  state.message === "SYNC") {
-             await this.loadValues();
-             manywho.state.setComponent(this.componentId,{"message": ""} as any, this.flowKey, false);
-             this.forceUpdate();
-         }
-    }
+        const state: any=  manywho.state.getComponent(this.componentId, this.flowKey) as IComponentValue;
+        if(state.message && state.message.action && state.message.action === "RELOADVALUES") {
+            await this.loadValues();
+            manywho.state.setComponent(this.componentId,{"message": {}} as any, this.flowKey, false);
+            this.forceUpdate();
+        }
+   }
 
     async triggerOutcome(outcomeName: string, data?: IFlowObjectData[]) {
         this.IsLoading = true;

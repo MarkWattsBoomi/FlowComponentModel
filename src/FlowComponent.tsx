@@ -15,4 +15,8 @@ export class FlowComponent extends FlowBaseComponent {
         await super.componentDidMount();
         await this.dontLoadValues();
     }
+
+    async componentDidUpdate() {
+        await super.componentDidUpdate();
+    }
 }

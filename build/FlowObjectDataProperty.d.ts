@@ -18,12 +18,12 @@ export declare class FlowObjectDataProperty {
     private TypeElementId;
     private TypeElementPropertyId;
     private Value;
-    constructor(property: IFlowObjectDataProperty);
+    constructor(property: IFlowObjectDataProperty | undefined);
     contentFormat: string;
     contentType: eContentType;
     developerName: string;
     typeElementId: string;
     typeElementPropertyId: string;
-    value: string | number | boolean | FlowObjectData | FlowObjectDataArray;
+    value: string | number | boolean | FlowObjectData | FlowObjectDataArray | undefined;
     iFlowObjectDataProperty(): IFlowObjectDataProperty;
 }

@@ -1,3 +1,4 @@
+/// <reference types="lodash" />
 import * as React from 'react';
 import { FlowAttribute } from './FlowAttribute';
 import { FlowDisplayColumn } from './FlowDisplayColumn';
@@ -46,40 +47,41 @@ interface IFlowModel {
 export declare class FlowBaseComponent extends React.Component<IComponentProps, any, any> {
     url: string;
     userurl: string;
-    private User;
+    private User?;
     private TenantId;
     private StateId;
     private FlowKey;
     private ComponentId;
-    private ParentId;
+    private ParentId?;
     private Fields;
     private IsLoading;
     private LoadingState;
     private Attributes;
     private Outcomes;
-    private Model;
+    private Model?;
     readonly tenantId: string;
     readonly stateId: string;
     readonly flowKey: string;
     readonly componentId: string;
-    readonly parentId: string;
+    readonly parentId: string | any;
     readonly isLoading: boolean;
     readonly loadingState: string;
     readonly outcomes: {
         [key: string]: FlowOutcome;
-    };
+    } | any;
     readonly attributes: {
         [key: string]: FlowAttribute;
-    };
+    } | any;
     readonly fields: {
         [key: string]: FlowField;
-    };
-    readonly model: IFlowModel;
-    readonly user: IFlowUser;
+    } | any;
+    readonly model: IFlowModel | any;
+    readonly user: IFlowUser | any;
     readonly joinURI: string;
     getAttribute(attributeName: string, defaultValue?: string): string;
     constructor(props: any);
     componentDidMount(): Promise<void>;
+    componentWillUnmount(): Promise<void>;
     loadOutcomes(): void;
     loadAttributes(): void;
     loadModel(): void;
@@ -88,7 +90,10 @@ export declare class FlowBaseComponent extends React.Component<IComponentProps, 
     getStateValue(): string | boolean | number | Date | FlowObjectData | FlowObjectDataArray;
     getStateValueType(): string | boolean | number | Date | FlowObjectData | FlowObjectDataArray;
     setStateValue(value: string | boolean | number | Date | FlowObjectData | FlowObjectDataArray): Promise<void>;
-    updateValues(values: FlowField[]): Promise<void>;
+    updateValues(values: FlowField[] | FlowField): Promise<void>;
+    sendCollaborationMessage: ((message: any) => void) & import("lodash").Cancelable;
+    _sendCollaborationMessage(message: any): void;
+    componentDidUpdate(): Promise<void>;
     triggerOutcome(outcomeName: string, data?: IFlowObjectData[]): Promise<void>;
     log(message: string): void;
     launchFlowSilent(tenant: string, flowId: string, player: string, objectData?: FlowObjectDataArray): Promise<void>;

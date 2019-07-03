@@ -12,15 +12,16 @@ export interface IFlowField {
     valueElementId: string;
 }
 export declare enum eContentType {
-    ContentString = 0,
-    ContentNumber = 1,
-    ContentObject = 2,
-    ContentBoolean = 3,
-    ContentList = 4,
-    ContentPassword = 5,
-    ContentContent = 6,
-    ContentDateTime = 7,
-    ContentEncrypted = 8
+    unknown = 0,
+    ContentString = 1,
+    ContentNumber = 2,
+    ContentObject = 3,
+    ContentBoolean = 4,
+    ContentList = 5,
+    ContentPassword = 6,
+    ContentContent = 7,
+    ContentDateTime = 8,
+    ContentEncrypted = 9
 }
 export declare class FlowField {
     private ContentType;
@@ -38,7 +39,7 @@ export declare class FlowField {
     readonly typeElementPropertyDeveloperName: string;
     readonly typeElementPropertyId: string;
     readonly valueElementId: string;
-    value: string | number | Date | boolean | FlowObjectData | FlowObjectDataArray;
-    constructor(field: IFlowField);
+    value: string | number | Date | boolean | FlowObjectData | FlowObjectDataArray | undefined;
+    constructor(field?: IFlowField);
     iFlowField(): IFlowField;
 }

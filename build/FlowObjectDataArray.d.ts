@@ -8,10 +8,10 @@ export declare class FlowObjectDataArray {
     private Items;
     readonly items: FlowObjectData[];
     sort(ascending?: eSortOrder, fieldName?: string): FlowObjectData[];
-    constructor(array: IFlowObjectData[]);
+    constructor(array?: IFlowObjectData[]);
     addItem(item: FlowObjectData): void;
     clearItems(): void;
     iFlowObjectDataArray(): IFlowObjectData[];
-    getItemWithPropertyName(findProperty: string, withValue: any, returnProperty: string): FlowObjectDataProperty;
-    getItemWithPropertyValue(findProperty: string, withValue: any): FlowObjectData;
+    getItemWithPropertyName(findProperty: string, withValue: any, returnProperty: string): FlowObjectDataProperty | any;
+    getItemWithPropertyValue(findProperty: string, withValue: any): FlowObjectData | undefined;
 }
