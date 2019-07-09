@@ -478,7 +478,7 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         }
     }
 
-    sendCollaborationMessage = throttle(this._sendCollaborationMessage, 250);
+    sendCollaborationMessage = throttle(this._sendCollaborationMessage, 100);
     _sendCollaborationMessage(message: any){
         if(manywho.collaboration.isInitialized(this.flowKey)) {
             //manywho.collaboration.sync(this.flowKey);
