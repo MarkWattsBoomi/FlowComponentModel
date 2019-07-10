@@ -142,6 +142,7 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
     private Attributes: {[key: string]: FlowAttribute} = {};
     private Outcomes: {[key: string]: FlowOutcome} = {};
     private Model?: IFlowModel;
+    private IsDesignTime: boolean;
 
     get tenantId(): string {
         return this.TenantId;
@@ -193,6 +194,10 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
 
     get joinURI(): string {
         return window.location.href;
+    }
+
+    get isDesignTime(): boolean {
+        return this.IsDesignTime;
     }
 
     getAttribute(attributeName: string, defaultValue?: string): string {
