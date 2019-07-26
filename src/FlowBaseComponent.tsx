@@ -71,7 +71,7 @@ if (!(manywho as any).eventManager) {
 
     (manywho as any).eventManager.beforeSend = (xhr: XMLHttpRequest, request: any) => {
         //(manywho as any).eventManager.beforeSendListeners.forEach((listener: any) => listener(xhr, request));
-        for(const key of (manywho as any).eventManager.beforeSendListeners )
+        for(const key in (manywho as any).eventManager.beforeSendListeners )
         {
             (manywho as any).eventManager.beforeSendListeners[key](xhr, request);
         }
@@ -79,7 +79,7 @@ if (!(manywho as any).eventManager) {
 
     (manywho as any).eventManager.done = (xhr: XMLHttpRequest, request: any) => {
         //(manywho as any).eventManager.doneListeners.forEach((listener: any) => listener(xhr, request));
-        for(const key of (manywho as any).eventManager.doneListeners )
+        for(const key in (manywho as any).eventManager.doneListeners )
         {
             (manywho as any).eventManager.doneListeners[key](xhr, request);
         }
@@ -87,7 +87,7 @@ if (!(manywho as any).eventManager) {
 
     (manywho as any).eventManager.fail = (xhr: XMLHttpRequest, request: any) => {
         //(manywho as any).eventManager.failListeners.forEach((listener: any) => listener(xhr, request));
-        for(const key of (manywho as any).eventManager.failListeners )
+        for(const key in (manywho as any).eventManager.failListeners )
         {
             (manywho as any).eventManager.failListeners[key](xhr, request);
         }

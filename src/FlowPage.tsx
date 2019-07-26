@@ -37,5 +37,6 @@ export class FlowPage extends FlowBaseComponent {
     async reloadValues(xhr: XMLHttpRequest, request: any) {
         await this.loadModel();
         await this.loadValues();
+        //return Promise.resolve(true);
     }
 }
