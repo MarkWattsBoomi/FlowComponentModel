@@ -160,7 +160,7 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         return this.ComponentId;
     }
 
-    get parentId(): string | any {
+    get parentId(): string | undefined {
         return this.ParentId;
     }
 
@@ -172,23 +172,23 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         return this.LoadingState;
     }
 
-    get outcomes(): {[key: string]: FlowOutcome} | any {
+    get outcomes(): {[key: string]: FlowOutcome} | undefined {
         return this.Outcomes;
     }
 
-    get attributes(): {[key: string]: FlowAttribute} | any {
+    get attributes(): {[key: string]: FlowAttribute} | undefined {
         return this.Attributes;
     }
 
-    get fields(): {[key: string]: FlowField} | any {
+    get fields(): {[key: string]: FlowField} | undefined {
         return this.Fields;
     }
 
-    get model(): IFlowModel | any {
+    get model(): IFlowModel | undefined {
         return this.Model;
     }
 
-    get user(): IFlowUser | any {
+    get user(): IFlowUser | undefined {
         return this.User;
     }
 
