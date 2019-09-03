@@ -146,7 +146,7 @@ export class FlowObjectDataArray {
         return null;
     }
 
-	   getItemWithPropertyValue(findProperty: string, withValue: any): FlowObjectData | undefined {
+    getItemWithPropertyValue(findProperty: string, withValue: any): FlowObjectData | undefined {
         for (const item of this.Items) {
             if (item.properties[findProperty] && item.properties[findProperty].value) {
                     let value = item.properties[findProperty].value;
@@ -178,5 +178,88 @@ export class FlowObjectDataArray {
 
             }
         }
+    }
+
+    getIndexOfItemWithPropertyValue(findProperty: string, withValue: any): number {
+        for (let pos: number = 0; pos < this.items.length; pos++) {
+            const item = this.items[pos];
+            if (item.properties[findProperty] && item.properties[findProperty].value) {
+                    let value = item.properties[findProperty].value;
+                    let compareTo = withValue;
+
+                    switch (item.properties[findProperty].contentType) {
+                        case eContentType.ContentString:
+                            value = (value as string).toLowerCase();
+                            compareTo = compareTo.toLowerCase();
+                            break;
+
+                        case eContentType.ContentNumber:
+                            value = value;
+                            compareTo = parseFloat(new String(compareTo).toLowerCase());
+                            break;
+
+                        case eContentType.ContentBoolean:
+                            value = value;
+                            compareTo = new String(compareTo).toLowerCase() === 'true';
+                            break;
+
+                        default:
+                            break;
+                    }
+
+                    if (value === compareTo) {
+                        return pos;
+                    }
+
+            }
+        }
+        return -1;
+    }
+
+    removeItemWithPropertyValue(findProperty: string, withValue: any): number {
+        let modifiedCount: number = 0;
+        for (let pos: number = 0; pos < this.items.length; pos++) {
+            const item = this.items[pos];
+            if (item.properties[findProperty] && item.properties[findProperty].value) {
+                    let value = item.properties[findProperty].value;
+                    let compareTo = withValue;
+
+                    switch (item.properties[findProperty].contentType) {
+                        case eContentType.ContentString:
+                            value = (value as string).toLowerCase();
+                            compareTo = compareTo.toLowerCase();
+                            break;
+
+                        case eContentType.ContentNumber:
+                            value = value;
+                            compareTo = parseFloat(new String(compareTo).toLowerCase());
+                            break;
+
+                        case eContentType.ContentBoolean:
+                            value = value;
+                            compareTo = new String(compareTo).toLowerCase() === 'true';
+                            break;
+
+                        default:
+                            break;
+                    }
+
+                    if (value === compareTo) {
+                        this.items.splice(pos,1);
+                        modifiedCount++;
+                    }
+
+            }
+        }
+        return modifiedCount;
+    }
+
+    removeItemAtIndex(index: number): number {
+        let modifiedCount: number = 0;
+        if(this.items[index]) {
+            this.items.splice(index,1);
+            modifiedCount=index;
+        }
+        return modifiedCount;
     }
 }
