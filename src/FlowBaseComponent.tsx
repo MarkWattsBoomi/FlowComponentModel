@@ -426,12 +426,13 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
     }
 
     loadOutcome(outcomeId: string) : FlowOutcome{
-        const outcome = manywho.model.getOutcome(outcomeId, this.props.flowKey);
-        if(outcome) {
-            this.Outcomes[outcome.developerName] = new FlowOutcome(outcome);
-            return this.Outcomes[outcome.developerName];
+        if(outcomeId) {
+            const outcome = manywho.model.getOutcome(outcomeId, this.props.flowKey);
+            if(outcome) {
+                this.Outcomes[outcome.developerName] = new FlowOutcome(outcome);
+                return this.Outcomes[outcome.developerName];
+            }
         }
-        
     }
 
     loadOutcomes() {
