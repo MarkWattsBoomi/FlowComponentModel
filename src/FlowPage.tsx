@@ -18,7 +18,7 @@ export class FlowPage extends FlowBaseComponent {
         //since we are a page we now load all values
         await this.loadValues();
         this.forceUpdate();
-        (manywho as any).eventManager.addDoneListener(this.reloadValues,this.componentId);
+        (manywho as any).eventManager.addDoneListener(this.reloadValues,this.componentId + "_PG");
     }
 
     async componentDidUpdate(): Promise<void> {
@@ -27,19 +27,16 @@ export class FlowPage extends FlowBaseComponent {
 
     async componentWillUnmount() {
         await super.componentWillUnmount();
-        (manywho as any).eventManager.removeDoneListener(this.componentId);
+        (manywho as any).eventManager.removeDoneListener(this.componentId + "_PG");
     }
     //
     async triggerOutcome(outcomeName: string, data?: IFlowObjectData[]) {
         await super.triggerOutcome(outcomeName, data);
-        //await this.loadModel();
-        //await this.loadValues();
     }
 
     async reloadValues(xhr: XMLHttpRequest, request: any) {
         await this.loadModel();
         await this.loadValues();
         await this.forceUpdate();
-        //return Promise.resolve(true);
     }
 }
