@@ -98,6 +98,15 @@ export class FlowObjectData {
         delete this.Properties[key];
     }
 
+    clone(newTypeName?: string) {
+        const clone: FlowObjectData = FlowObjectData.newInstance(newTypeName || this.DeveloperName);
+        Object.keys(this.properties).forEach((key: string) => {
+            const newProp: FlowObjectDataProperty = this.properties[key].clone();
+            clone.properties[key] = newProp;
+        });
+        return clone;
+    }
+
     iObjectData() {
 
         const props: IFlowObjectDataProperty[] = [];

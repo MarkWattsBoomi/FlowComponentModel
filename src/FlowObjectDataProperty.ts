@@ -130,6 +130,28 @@ export class FlowObjectDataProperty {
         this.Value = value;
         }
 
+    clone() : FlowObjectDataProperty {
+
+        let value: any;
+        switch(this.contentType) {
+            case eContentType.ContentList: 
+                value = new FlowObjectDataArray();
+                (this.value as FlowObjectDataArray).items.forEach((item: FlowObjectData) => {
+                    (value as FlowObjectDataArray).addItem(item.clone(item.developerName));
+                })
+                break;
+
+            case eContentType.ContentObject:
+                value=(this.value as FlowObjectData).clone((this.value as FlowObjectData).developerName);
+                break;
+            
+            default:
+                value = this.value;
+        }
+        const clone: FlowObjectDataProperty = FlowObjectDataProperty.newInstance(this.developerName, this.contentType, value);
+        return clone;
+    }
+
     iFlowObjectDataProperty(): IFlowObjectDataProperty {
 
         let contentValue: string = "";

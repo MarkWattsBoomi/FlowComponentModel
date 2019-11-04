@@ -113,7 +113,7 @@ export class FlowObjectDataArray {
 
     getItemWithPropertyName(findProperty: string, withValue: any, returnProperty: string): FlowObjectDataProperty | any {
         for (const item of this.Items) {
-            if (item.properties[findProperty] && item.properties[findProperty].value) {
+            if (item.properties[findProperty] && item.properties[findProperty].value  != undefined) {
 
                 let value = item.properties[findProperty].value;
                 let compareTo = withValue;
@@ -148,19 +148,19 @@ export class FlowObjectDataArray {
 
     getItemWithPropertyValue(findProperty: string, withValue: any): FlowObjectData | undefined {
         for (const item of this.Items) {
-            if (item.properties[findProperty] && item.properties[findProperty].value) {
+            if (item.properties[findProperty] && item.properties[findProperty].value != undefined) {
                     let value = item.properties[findProperty].value;
                     let compareTo = withValue;
 
                     switch (item.properties[findProperty].contentType) {
                         case eContentType.ContentString:
                             value = (value as string).toLowerCase();
-                            compareTo = compareTo.toLowerCase();
+                            compareTo = new String(compareTo).toLowerCase();
                             break;
 
                         case eContentType.ContentNumber:
                             value = value;
-                            compareTo = parseFloat(compareTo.toLowerCase());
+                            compareTo = parseFloat(new String(compareTo).toLowerCase());
                             break;
 
                         case eContentType.ContentBoolean:
@@ -183,7 +183,7 @@ export class FlowObjectDataArray {
     getIndexOfItemWithPropertyValue(findProperty: string, withValue: any): number {
         for (let pos: number = 0; pos < this.items.length; pos++) {
             const item = this.items[pos];
-            if (item.properties[findProperty] && item.properties[findProperty].value) {
+            if (item.properties[findProperty] && item.properties[findProperty].value  != undefined) {
                     let value = item.properties[findProperty].value;
                     let compareTo = withValue;
 
@@ -220,7 +220,7 @@ export class FlowObjectDataArray {
         let modifiedCount: number = 0;
         for (let pos: number = 0; pos < this.items.length; pos++) {
             const item = this.items[pos];
-            if (item.properties[findProperty] && item.properties[findProperty].value) {
+            if (item.properties[findProperty] && item.properties[findProperty].value != undefined) {
                     let value = item.properties[findProperty].value;
                     let compareTo = withValue;
 

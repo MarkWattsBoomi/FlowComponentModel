@@ -129,6 +129,14 @@ if (!(manywho as any).eventManager) {
     });
 }
 
+export enum eLoadingState {
+    ready,
+    loading,
+    saving,
+    moving,
+    init
+}
+
 export class FlowBaseComponent extends React.Component<IComponentProps, any, any> {
 
     url: string;
@@ -141,8 +149,7 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
     private ComponentId: string;
     private ParentId?: string;
     private Fields: {[key: string]: FlowField} = {};
-    private IsLoading: boolean;
-    private LoadingState: string;
+    private LoadingState: eLoadingState;
     private Attributes: {[key: string]: FlowAttribute} = {};
     private Outcomes: {[key: string]: FlowOutcome} = {};
     private Model?: IFlowModel;
@@ -168,11 +175,16 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         return this.ParentId;
     }
 
-    get isLoading(): boolean {
-        return this.IsLoading;
+    get isReady(): boolean {
+        if(this.LoadingState === eLoadingState.ready) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
-    get loadingState(): string {
+    get loadingState(): eLoadingState {
         return this.LoadingState;
     }
 
@@ -215,9 +227,8 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
     constructor(props: any) {
         super(props);
 
-        this.IsLoading = true;
         this.Fields = {};
-        this.LoadingState = 'initial';
+        this.LoadingState = eLoadingState.init;
         this.loadValues = this.loadValues.bind(this);
         this.dontLoadValues = this.dontLoadValues.bind(this);
         this.updateValues = this.updateValues.bind(this);
@@ -244,17 +255,13 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         this.loadAttributes();
         this.loadOutcomes();
 
-        const baseUrl = manywho.settings.global('platform.uri') || 'https://flow.manywho.com';
+        const baseUrl = manywho.settings.global('platform.uri') || window.location.origin || 'https://flow.manywho.com';
         this.StateId = manywho.utils.extractStateId(this.props.flowKey);
         this.TenantId = manywho.utils.extractTenantId(this.props.flowKey);
 
         this.url = `${baseUrl}/api/run/1/state/${this.StateId}/values`;
         this.userurl = `${baseUrl}/api/run/1/state/${this.StateId}/values/03dc41dd-1c6b-4b33-bf61-cbd1d0778fff`;
         this.valueurl = `${baseUrl}/api/run/1/state/${this.StateId}/values/name`;
-
-        //add outcome manager stuff
-        (manywho as any).eventManager.addDoneListener(this.onDone,this.componentId + "_core");
-        (manywho as any).eventManager.addBeforeSendListener(this.onBeforeSend,this.componentId + "_core");
 
     }
 
@@ -386,19 +393,27 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
                     
                 }
             });
-        }
 
+            
+        }
+        //turn of moving flag
+        this.LoadingState = eLoadingState.ready;
         (manywho as any).eventManager.outcomeBeingTriggered = undefined;
     }
 
-    async componentDidMount() {
+
+    async componentDidMount(): Promise<void> {
+
+        //add outcome manager stuff
+        (manywho as any).eventManager.addDoneListener(this.onDone,this.componentId + "_core");
+        (manywho as any).eventManager.addBeforeSendListener(this.onBeforeSend,this.componentId + "_core");
+
         // preserve state
         const flowModel = manywho.model.getComponent(this.ComponentId, this.FlowKey);
         const flowState = manywho.state.getComponent(this.componentId, this.flowKey) || {};
 
         switch (flowModel.contentType) {
             case 'ContentObject':
-
             case 'ContentList':
                 let objectData: any;
                 if (flowState.objectData) {
@@ -407,11 +422,13 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
                 }
 
                 const newState = { objectData };
-                manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
+                await this.setStateValue(new FlowObjectData(objectData));
+                //manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
                 break;
 
             default:
-                flowState.contentValue = flowModel.contentValue;
+                await this.setStateValue(flowModel.contentValue);
+                //flowState.contentValue = flowModel.contentValue;
                 break;
         }
 
@@ -419,7 +436,7 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         return Promise.resolve();
     }
 
-    async componentWillUnmount() {
+    async componentWillUnmount(): Promise<void> {
         (manywho as any).eventManager.removeBeforeSendListener(this.componentId + "_core");
         (manywho as any).eventManager.removeDoneListener(this.componentId + "_core");
         return Promise.resolve();
@@ -516,65 +533,123 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         }
     }
 
-    async loadValue(valueName: string) {
-        this.IsLoading = true;
-        this.LoadingState = this.LoadingState !== 'initial' ? 'refreshing' : 'initial';
+    async loadValue(valueName: string): Promise<void> {
+        this.LoadingState = eLoadingState.loading;
 
 
-        const value = await manywho.connection.request(this, "", this.valueurl + "/" + valueName , 'GET', this.TenantId, this.StateId, manywho.state.getAuthenticationToken(this.FlowKey), {});
+        const value: any = manywho.connection.request(this, "", this.valueurl + "/" + valueName , 'GET', this.TenantId, this.StateId, manywho.state.getAuthenticationToken(this.FlowKey), {});
         if(value) {
             this.Fields[value.developerName] = new FlowField(value); 
         }
 
-        this.IsLoading = false;
-        this.LoadingState = 'loaded';
-        //await this.forceUpdate();
+        this.LoadingState = eLoadingState.ready;
+
+        return Promise.resolve();
     }
 
-    async loadValues() {
-        this.IsLoading = true;
-        this.LoadingState = this.LoadingState !== 'initial' ? 'refreshing' : 'initial';
-        this.Fields = {};
+    async getResultBodyText(response: any) : Promise<string> {
+        return response.text()
+        .then((text : string) => {
+            if(text.startsWith("\"")) {
+                text = text.substr(1);
+            }
+            if(text.endsWith("\"")) {
+                text = text.substr(0, text.length-1);
+            }
+            return text;
+        })
+    }
 
-        const values = await manywho.connection.request(this, "", this.url , 'GET', this.TenantId, this.StateId, manywho.state.getAuthenticationToken(this.FlowKey), {});
+    
+    async callRequest(url: string, method: string, data: any, authenticationToken: string): Promise<any> {
+        const results: any = [];
+        const request: RequestInit = {};
 
-        (values || []).map((value: IFlowStateValue) => {
+        request.method = method;  
+        request.headers = {
+            "Content-Type": "application/json",
+            "Authorization": authenticationToken,
+            "ManyWhoTenant": this.tenantId
+        };
+        request.credentials= "same-origin";
+
+        if(method === "POST" || method === "PUT") {
+            request.body = data;
+        }
+            
+        await fetch(url, request)
+        .then(async (response: any) => {
+            if(response.status === 200) {
+                const json = await this.getResultBodyText(response);
+                
+                JSON.parse(json).forEach((value : any) => {
+                    results.push(value);
+                });;
+
+                console.log("Loaded Values");
+                return results;
+            }
+            else {
+                //error
+                const errorText = await this.getResultBodyText(response);
+                console.log("Can't load values - " + errorText);
+                return results;
+            }
+        });
+        
+    }
+
+    async callRequestOld( url: string, method: string, data: any): Promise<any> {
+        let output: any;
+        const xhr = await manywho.connection.request(this, null, url , method, this.TenantId, this.StateId, manywho.state.getAuthenticationToken(this.FlowKey), null)
+
+        return xhr;
+    }
+
+    async loadValues(): Promise<void> {
+        this.LoadingState = eLoadingState.loading;
+        this.Fields = {}
+        const values: any = await this.callRequestOld(this.url,'GET',{});
+
+        ((values as Array<IFlowStateValue>) || []).map((value: IFlowStateValue) => {
             if(value) {
                 this.Fields[value.developerName] = new FlowField(value); 
             }
         });
 
-        const userval = await manywho.connection.request(this, "", this.userurl , 'GET', this.TenantId, this.StateId, manywho.state.getAuthenticationToken(this.FlowKey), {});
-        const u = new FlowField(userval);
-        const props = (u.value as FlowObjectData).properties;
+        const userval = await this.callRequestOld(this.userurl,'GET',{});
+        //manywho.connection.request(this, "", this.userurl , 'GET', this.TenantId, this.StateId, manywho.state.getAuthenticationToken(this.FlowKey), {});
+        if(userval) {
+            const u = new FlowField(userval);
+            const props = (u.value as FlowObjectData).properties;
+    
+            this.User = {
+                directoryId: props['Directory Id'].value as string,
+                directoryName: props['Directory Name'].value as string,
+                email: props['Email'].value as string || 'mark',
+                firstName: props['First Name'].value as string,
+                groupId: props['Primary Group Id'].value as string,
+                groupName: props['Primary Group Name'].value as string,
+                id: props['User ID'].value as string,
+                ipAddress: props['IP Address'].value as string,
+                language: props['Language'].value as string,
+                lastName: props['Last Name'].value as string,
+                location: props['Location'].value as string,
+                roleId: props['Role Id'].value as string,
+                roleName: props['Role Name'].value as string,
+                status: props['Status'].value as string,
+                userName: props['Username'].value as string,
+            };
+        }
+        
 
-        this.User = {
-            directoryId: props['Directory Id'].value as string,
-            directoryName: props['Directory Name'].value as string,
-            email: props['Email'].value as string || 'mark',
-            firstName: props['First Name'].value as string,
-            groupId: props['Primary Group Id'].value as string,
-            groupName: props['Primary Group Name'].value as string,
-            id: props['User ID'].value as string,
-            ipAddress: props['IP Address'].value as string,
-            language: props['Language'].value as string,
-            lastName: props['Last Name'].value as string,
-            location: props['Location'].value as string,
-            roleId: props['Role Id'].value as string,
-            roleName: props['Role Name'].value as string,
-            status: props['Status'].value as string,
-            userName: props['Username'].value as string,
-        };
-
-        this.IsLoading = false;
-        this.LoadingState = 'loaded';
-        //await this.forceUpdate();
+        this.LoadingState = eLoadingState.ready;
+        return Promise.resolve();
     }
 
-    async dontLoadValues() {
-        this.IsLoading = false;
-        this.LoadingState = 'loaded';
-        //this.forceUpdate();
+    async dontLoadValues(): Promise<void> {
+        this.LoadingState = eLoadingState.ready;
+        return Promise.resolve();
     }
 
     getStateValue(): string | boolean | number | Date | FlowObjectData | FlowObjectDataArray {
@@ -611,40 +686,70 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         }
     }
 
-    async setStateValue(value: string | boolean | number | Date | FlowObjectData | FlowObjectDataArray) {
-        const flowModel = manywho.model.getComponent(this.ComponentId, this.FlowKey);
-        const flowState = manywho.state.getComponent(this.componentId, this.flowKey) || {};
-        let newState: any;
-        switch (flowModel.contentType) {
-            case 'ContentObject':
-                let objectData = (value as FlowObjectData).iFlowObjectDataArray();
-                objectData = JSON.parse(JSON.stringify(objectData));
-                newState = { objectData };
-                manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
-                break;
+    async setStateValue(value: string | boolean | number | Date | FlowObjectData | FlowObjectDataArray): Promise<void> {
+        if(this.LoadingState === eLoadingState.ready) {
+            this.LoadingState = eLoadingState.saving;
+            const flowModel = manywho.model.getComponent(this.ComponentId, this.FlowKey);
+            const flowState = manywho.state.getComponent(this.componentId, this.flowKey) || {};
+            let newState: any;
 
-            case 'ContentList':
-                let objectDataArray = (value as FlowObjectDataArray).iFlowObjectDataArray();
-                objectDataArray = JSON.parse(JSON.stringify(objectDataArray));
-                newState = { objectDataArray };
-                manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
-                break;
+            
+            switch (flowModel.contentType) {
+                case 'ContentObject':
+                    let objectData: any = null;
+                    if(value) {
+                        objectData = (value as FlowObjectData).iFlowObjectDataArray();
+                        objectData = JSON.parse(JSON.stringify(objectData));
+                    }
+                    newState = { objectData };
+                    manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
+                    break;
 
-            case 'ContentDate':
-                flowState.contentValue = (value as Date).toISOString();
-                break;
+                case 'ContentList':
+                    let objectDataArray: any = null;
+                    if(value) {
+                        objectDataArray = (value as FlowObjectDataArray).iFlowObjectDataArray();
+                        objectDataArray = JSON.parse(JSON.stringify(objectDataArray));
+                    }
+                    
+                    newState = { objectDataArray };
+                    manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
+                    break;
 
-            default:
-                flowState.contentValue = value as string;
-                break;
+                case 'ContentDate':
+                    flowState.contentValue = (value as Date).toISOString();
+                    break;
 
+                default:
+                    flowState.contentValue = value as string;
+                    break;
+
+            }
+
+            this.LoadingState = eLoadingState.ready;
+
+            //manywho.component.handleEvent(this,manywho.model.getComponent(this.ComponentId,this.FlowKey),this.FlowKey,null);
+            //await manywho.engine.sync(this.flowKey);
+
+            if(manywho.collaboration.isInitialized(this.flowKey)) {
+                //manywho.collaboration.sync(this.flowKey);
+                //updateFields.forEach((field: IFlowField) => {
+                //    manywho.collaboration.push(this.ComponentId,{"message": {"action":"REFRESH_FIELD","fieldName": field.developerName }},this.flowKey);
+                //});
+            }
+            return Promise.resolve();
         }
-        // manywho.engine.sync(this.flowKey);
+
+        //manywho.component.handleEvent(this,manywho.model.getComponent(this.componentId, this.flowKey),this.FlowKey, this.eventHandled);
+         //manywho.engine.sync(this.flowKey);
     }
 
-    async updateValues(values: FlowField[] | FlowField) {
-        this.IsLoading = true;
-        this.LoadingState = this.LoadingState !== 'initial' ? 'refreshing' : 'initial';
+    eventHandled(a?: any, b?: any) {
+        console.log("ping");
+    }
+
+    async updateValues(values: FlowField[] | FlowField): Promise<void> {
+        this.LoadingState = eLoadingState.saving;
         //this.forceUpdate();
 
         const updateFields: IFlowField[] = [];
@@ -661,7 +766,8 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         
 
         await manywho.connection.request(this, null, this.url , 'POST', this.TenantId, this.StateId, manywho.state.getAuthenticationToken(this.FlowKey), updateFields);
-        await manywho.engine.sync(this.flowKey);
+        //manywho.component.handleEvent(this,manywho.model.getComponent(this.ComponentId,this.FlowKey),this.FlowKey,null);
+        //await manywho.engine.sync(this.flowKey);
 
         if(manywho.collaboration.isInitialized(this.flowKey)) {
             //manywho.collaboration.sync(this.flowKey);
@@ -669,9 +775,10 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
                 manywho.collaboration.push(this.ComponentId,{"message": {"action":"REFRESH_FIELD","fieldName": field.developerName }},this.flowKey);
             });
         }
+        return Promise.resolve();
     }
 
-    
+    //sends a collaboration message but limited to 1 call every 100ms
     sendCollaborationMessage = throttle(this._sendCollaborationMessage, 100, null);
     _sendCollaborationMessage(message: any){
         if(manywho.collaboration.isInitialized(this.flowKey)) {
@@ -683,10 +790,9 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
     
 
     
-
-    async triggerOutcome(outcomeName: string, data?: IFlowObjectData[]) {
-        this.IsLoading = true;
-        this.LoadingState = this.LoadingState !== 'initial' ? 'refreshing' : 'initial';
+    //triggers the specified outcome, optionally passes a data object 
+    async triggerOutcome(outcomeName: string, data?: IFlowObjectData[]): Promise<void> {
+        this.LoadingState = eLoadingState.moving;
         //this.forceUpdate();
 
         if (!data) {
@@ -703,6 +809,7 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         } else {
             this.log('Could not find outcome ' + outcomeName);
         }
+        return Promise.resolve();
     }
 
     log(message: string) {
@@ -713,7 +820,8 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         console.log(timestamp + message);
     }
 
-    async launchFlowSilent(tenant: string, flowId: string, player: string, objectData?: FlowObjectDataArray) {
+    //helper to silently launch a flow
+    async launchFlowSilent(tenant: string, flowId: string, player: string, objectData?: FlowObjectDataArray): Promise<void> {
         const baseUrl = manywho.settings.global('platform.uri') || 'https://flow.manywho.com';
         const url = `${baseUrl}/api/run/1/state`;
 
@@ -722,22 +830,27 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         data.developerName = null;
         data.inputs = objectData ? objectData.iFlowObjectDataArray() : null;
         manywho.connection.request(this, "", url , 'POST', this.TenantId, "", manywho.state.getAuthenticationToken(this.FlowKey), data);
-
+        return Promise.resolve();
     }
 
-    async launchFlowTab(tenant: string, flowId: string, player: string, objectData?: FlowObjectDataArray) {
+    //helper to open a specific flow in a new tab
+    async launchFlowTab(tenant: string, flowId: string, player: string, objectData?: FlowObjectDataArray): Promise<void> {
         const baseUrl = manywho.settings.global('platform.uri') || 'https://flow.boomi.com';
         const url = baseUrl + '/' + tenant + '/play/' + player + '?flow-id=' + flowId;
 
         window.open(url, '_new');
-
+        return Promise.resolve();
     }
 
     //this will get triggered by the collaboration engine
     async componentDidUpdate(): Promise<void> {
         const state: any = manywho.state.getComponent(this.componentId, this.flowKey) as IComponentValue;
         const message = state.message;
-        manywho.state.setComponent(this.componentId,{"message": {}} as any, this.flowKey, false);
+        this.loadModel();
+
+        if(message) {
+            manywho.state.setComponent(this.componentId,{"message": {}} as any, this.flowKey, false);
+        }
         //&& state.message.action === "RELOADVALUES"
         if(message && message.action ) {
             switch (message.action.toUpperCase()) {
@@ -753,11 +866,12 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
                     break; 
             }
         }
+        return Promise.resolve();
    }
 
    //this is used by other components who might want to send in a generic window message
    //nothing to do with collaboration
-    async receiveMessage(message: any) {
+    async receiveMessage(message: any): Promise<void> {
         if (message.data.data) {
             const msg = JSON.parse(message.data.data);
             if (msg.action) {
@@ -780,10 +894,11 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
                 }
             }
         }
+        return Promise.resolve();
     }
 
-    async handleMessage(msg: any) {
-
+    async handleMessage(msg: any): Promise<void> {
+        return Promise.resolve();
     }
 
 }

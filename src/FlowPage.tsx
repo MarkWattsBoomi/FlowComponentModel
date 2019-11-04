@@ -13,30 +13,36 @@ export class FlowPage extends FlowBaseComponent {
     }
 
     // the FlowPage automatically gets values
-    async componentDidMount() {
+    async componentDidMount(): Promise<void> {
         await super.componentDidMount();
+        (manywho as any).eventManager.addDoneListener(this.reloadValues,this.componentId + "_PG");
         //since we are a page we now load all values
         await this.loadValues();
-        this.forceUpdate();
-        (manywho as any).eventManager.addDoneListener(this.reloadValues,this.componentId + "_PG");
+        //this.forceUpdate();
+        return Promise.resolve();
+        
     }
 
     async componentDidUpdate(): Promise<void> {
         await super.componentDidUpdate();
     }
 
-    async componentWillUnmount() {
+    async componentWillUnmount(): Promise<void> {
         await super.componentWillUnmount();
         (manywho as any).eventManager.removeDoneListener(this.componentId + "_PG");
+        return Promise.resolve();
     }
     //
-    async triggerOutcome(outcomeName: string, data?: IFlowObjectData[]) {
+    async triggerOutcome(outcomeName: string, data?: IFlowObjectData[]): Promise<void> {
         await super.triggerOutcome(outcomeName, data);
+        return Promise.resolve();
     }
 
-    async reloadValues(xhr: XMLHttpRequest, request: any) {
+    async reloadValues(xhr: XMLHttpRequest, request: any): Promise<void> {
         await this.loadModel();
         await this.loadValues();
         await this.forceUpdate();
+        return Promise.resolve();
+        
     }
 }
