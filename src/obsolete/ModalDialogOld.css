@@ -1,16 +1,20 @@
 .modal-redaction 
 {
     display: flex;
+    align-items: center;
+    justify-content: center;
     position: fixed;
     top: 0;
     right: 0;
     left: 0;
     bottom: 0;
-    background-color: rgba(0, 0, 0, 0.4);
+    padding: 1rem;
+    background-color: rgba(0, 0, 0, 0.7);
     z-index: 9999;
     opacity: 1;
     overflow-x: hidden;
     overflow-y: auto;
+    animation: show .5s ease;
   }
 
   .modal
@@ -19,27 +23,16 @@
     display: flex!important;
     margin: auto;
     position: relative !important;
-    background-color: antiquewhite !important;
-    border-radius: 3px;
-    border: 2px solid #666;
+    background-color: #fefefe !important;
+    border-radius: 5px;
     overflow: visible  !important;
-
   }
 
   .modal-content
   {
-    position: absolute !important;
-    border-radius: 2px !important;
+    position: relative !important;
+    border-radius: 5px !important;
     border: none !important;
-    opacity: 0;	
-    background-color: transparent !important;
-  }
-
-  .shown
-  {
-    /*transition: all 0.2s;
-    transform: scale(1) rotate(720deg);*/
-	opacity: 1;	
   }
 
   .modal-close-button
@@ -47,7 +40,7 @@
     position: fixed;
     top: 0;
     right: 0;
-    background: antiquewhite;
+    background: #fff;
     width: 2.5rem;
     height: 2.5rem;
     padding: 0;
@@ -85,44 +78,38 @@
 .modal-dialog
 {
   margin: 0px !important;
+  min-width: 600px !important;
   width: auto !important;
-  border: 2px solid #666;
-  border-radius: 2px;
-  background-color: antiquewhite;
 }
 
 .modal-dialog-header
 {
-    background-color: #007DB8;
-    display: flex;
+    background-color: #242b39;
+    display: inline-block;
     width: 100%;
-    border-radius: 2px 2px 0 0;
-    cursor: -webkit-grab;
-    border-bottom: 2px solid #666;
+    border-radius: 5px 5px 0 0;
+    height: 50px;
+    line-height: 50px;
 }
 
 .modal-dialog-header-title
 {
     color: #fefefe;
     font-size: 16pt;
-    margin-left: 10px;
+    margin-left: 20px;
     margin-right: 20px;
+    height: 30px;
+    line-height: 28px;
     text-align: center;
     margin-top: auto;
     margin-bottom: auto;
-    white-space: nowrap;
-    line-height: 1.5;
-}
-
-.dragging {
-    cursor: -webkit-grabbing;
 }
 
 .modal-dialog-header-button
 {
-    color: #fefefe !important;
-    font-size: 12pt;
-    margin-right: 5px !important;
+    color: #fefefe;
+    font-size: 16pt;
+    margin-right: 15px !important;
     top: -1px !important;
     line-height: unset !important;
     cursor: pointer;
@@ -139,7 +126,6 @@
 {
     margin:0px;
     overflow: auto;
-    max-height: 600px;
 }
 
 .modal-dialog-input-row
@@ -161,8 +147,9 @@
 .modal-dialog-input-label
 {
     margin-right: 20px;
+    min-width: 130px;
     display: inline-block;
-    font-size: 12pt;
+    font-size: 16pt;
 }
 
 .modal-dialog-input
@@ -171,13 +158,6 @@
     border-radius: 5px !important;
     padding-left: 5px !important;
     font-size: 16pt !important;
-}
-
-.modal-dialog-button
-{
-    padding-left: 5px !important;
-    font-size: 12pt !important;
-    display: inline-block;
 }
 
 .modal-dialog-select
@@ -209,19 +189,17 @@
 .modal-dialog-button-bar
 {
     border-top: 1px solid #968c8c;
-    margin-top: 0px;
+    margin-top: 10px;
     margin-bottom: 5px;
     display: inline-flex;
     justify-content: center;
     width: 100%;
-    padding-left: 10px;
-    padding-right: 10px;
 }
 
 .modal-dialog-button-bar-button
 {
     color: #fefefe !important;
-    font-size: 12pt !important;
+    font-size: 16pt !important;
     margin-right: 3px !important;
     margin-top: 5px !important;
     line-height: unset !important;

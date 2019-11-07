@@ -775,6 +775,7 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
                 manywho.collaboration.push(this.ComponentId,{"message": {"action":"REFRESH_FIELD","fieldName": field.developerName }},this.flowKey);
             });
         }
+        this.LoadingState = eLoadingState.ready;
         return Promise.resolve();
     }
 
