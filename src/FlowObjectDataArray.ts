@@ -103,6 +103,15 @@ export class FlowObjectDataArray {
         this.Items = [];
     }
 
+    clone() : FlowObjectDataArray {
+        const clone: FlowObjectDataArray = new FlowObjectDataArray();
+
+        this.items.forEach((obj: FlowObjectData) => {
+            clone.addItem(obj.clone());
+        });
+        return clone;
+    }
+
     iFlowObjectDataArray(): IFlowObjectData[] {
         const output: IFlowObjectData[] = [];
         for (const od of this.Items) {
