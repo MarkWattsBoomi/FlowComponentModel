@@ -813,6 +813,29 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         return Promise.resolve();
     }
 
+    //triggers the specified outcome, optionally passes a data object 
+    async moveTo(flowElementId: string, data?: IFlowObjectData[]): Promise<void> {
+        this.LoadingState = eLoadingState.moving;
+        //this.forceUpdate();
+
+        if (!data) {
+            data = [];
+        }
+        /*
+        let oc: any;
+        if (this.outcomes[outcomeName]) {
+            oc = this.outcomes[outcomeName].iFlowOutcome();
+        }
+
+        if (oc) {
+            await manywho.component.onOutcome(oc, data, this.FlowKey);
+        } else {
+            this.log('Could not find outcome ' + outcomeName);
+        }
+        */
+        return Promise.resolve();
+    }
+
     log(message: string) {
         const now = new Date();
         const time = [('0' + now.getHours()).slice(-2), ('0' + now.getMinutes()).slice(-2),
