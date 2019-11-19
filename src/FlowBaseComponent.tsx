@@ -414,20 +414,38 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
 
         switch (flowModel.contentType) {
             case 'ContentObject':
-            case 'ContentList':
                 let objectData: any;
                 if (flowState.objectData) {
                     objectData = flowState.objectData;
-                    objectData = JSON.parse(JSON.stringify(objectData));
+                }
+                else {
+                    objectData = flowModel.objectData;
                 }
 
+                objectData = JSON.parse(JSON.stringify(objectData));
+
                 const newState = { objectData };
-                await this.setStateValue(new FlowObjectData(objectData));
+                await this.setStateValue(new FlowObjectData(objectData),true);
+                //manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
+                break;
+
+            case 'ContentList':
+                let listData: any;
+                if (flowState.objectData && flowState.objectData.length > 0) {
+                    listData = flowState.objectData;
+                }
+                else {
+                    listData = flowModel.objectData
+                }
+
+                listData = JSON.parse(JSON.stringify(listData));
+
+                await this.setStateValue(new FlowObjectDataArray(listData),true);
                 //manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
                 break;
 
             default:
-                await this.setStateValue(flowModel.contentValue);
+                await this.setStateValue(flowModel.contentValue,true);
                 //flowState.contentValue = flowModel.contentValue;
                 break;
         }
@@ -657,10 +675,10 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         const flowModel = manywho.model.getComponent(this.ComponentId, this.FlowKey);
         switch (flowModel.contentType) {
             case 'ContentObject':
-                return new FlowObjectData(flowState.objectData && flowState.objectData[0]? flowState.objectData[0] : {});
+                return new FlowObjectData(flowState.objectData && flowState.objectData[0]? flowState.objectData[0] : flowModel.objectData[0]);
 
             case 'ContentList':
-                return new FlowObjectDataArray(flowState.objectData? flowState.objectData : []);
+                return new FlowObjectDataArray(flowState.objectData? flowState.objectData : flowModel.objectData);
                 break;
 
             default:
@@ -674,10 +692,10 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         const flowModel = manywho.model.getComponent(this.ComponentId, this.FlowKey);
         switch (flowModel.contentType) {
             case 'ContentObject':
-                return new FlowObjectData(flowState.objectData && flowState.objectData[0]? flowState.objectData[0] : {});
+                return new FlowObjectData(flowState.objectData && flowState.objectData[0]? flowState.objectData[0] : flowModel.objectData[0]);
 
             case 'ContentList':
-                return new FlowObjectDataArray(flowState.objectData);
+                return new FlowObjectDataArray(flowState.objectData? flowState.objectData : flowModel.objectData);
                 break;
 
             default:
@@ -686,9 +704,12 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         }
     }
 
-    async setStateValue(value: string | boolean | number | Date | FlowObjectData | FlowObjectDataArray): Promise<void> {
-        if(this.LoadingState === eLoadingState.ready) {
-            this.LoadingState = eLoadingState.saving;
+    async setStateValue(value: string | boolean | number | Date | FlowObjectData | FlowObjectDataArray, ignoreState?: boolean): Promise<void> {
+        if(this.LoadingState === eLoadingState.ready || ignoreState===true) {
+            if(ignoreState !== true) {
+                this.LoadingState = eLoadingState.saving;
+            }
+            
             const flowModel = manywho.model.getComponent(this.ComponentId, this.FlowKey);
             const flowState = manywho.state.getComponent(this.componentId, this.flowKey) || {};
             let newState: any;
@@ -701,7 +722,7 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
                         objectData = (value as FlowObjectData).iFlowObjectDataArray();
                         objectData = JSON.parse(JSON.stringify(objectData));
                     }
-                    newState = { objectData };
+                    newState = { objectData: objectData };
                     manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
                     break;
 
@@ -711,22 +732,28 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
                         objectDataArray = (value as FlowObjectDataArray).iFlowObjectDataArray();
                         objectDataArray = JSON.parse(JSON.stringify(objectDataArray));
                     }
-                    
-                    newState = { objectDataArray };
+                    newState = { objectData: objectDataArray };
                     manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
                     break;
 
                 case 'ContentDate':
-                    flowState.contentValue = (value as Date).toISOString();
+                    newState = { contentValue: (value as Date).toISOString() };
+                    manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
+                    //flowState.contentValue = (value as Date).toISOString();
                     break;
 
                 default:
-                    flowState.contentValue = value as string;
+                    newState = { contentValue: value };
+                    manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
+                    //flowState.contentValue = value as string;
                     break;
 
             }
 
-            this.LoadingState = eLoadingState.ready;
+            if(ignoreState !== true) {
+                this.LoadingState = eLoadingState.ready;
+            }
+            
 
             //manywho.component.handleEvent(this,manywho.model.getComponent(this.ComponentId,this.FlowKey),this.FlowKey,null);
             //await manywho.engine.sync(this.flowKey);
