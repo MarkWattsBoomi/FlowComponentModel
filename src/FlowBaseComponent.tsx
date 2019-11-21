@@ -134,7 +134,10 @@ export enum eLoadingState {
     loading,
     saving,
     moving,
-    init
+    inititializing,
+    inititialized,
+    mounting,
+    mounted
 }
 
 export class FlowBaseComponent extends React.Component<IComponentProps, any, any> {
@@ -228,7 +231,7 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         super(props);
 
         this.Fields = {};
-        this.LoadingState = eLoadingState.init;
+        this.LoadingState = eLoadingState.inititializing;
         this.loadValues = this.loadValues.bind(this);
         this.dontLoadValues = this.dontLoadValues.bind(this);
         this.updateValues = this.updateValues.bind(this);
@@ -263,6 +266,7 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         this.userurl = `${baseUrl}/api/run/1/state/${this.StateId}/values/03dc41dd-1c6b-4b33-bf61-cbd1d0778fff`;
         this.valueurl = `${baseUrl}/api/run/1/state/${this.StateId}/values/name`;
 
+        this.LoadingState = eLoadingState.inititialized;
     }
 
     onBeforeSend(xhr: XMLHttpRequest, request: any) {
@@ -404,6 +408,7 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
 
     async componentDidMount(): Promise<void> {
 
+        this.LoadingState = eLoadingState.mounting;
         //add outcome manager stuff
         (manywho as any).eventManager.addDoneListener(this.onDone,this.componentId + "_core");
         (manywho as any).eventManager.addBeforeSendListener(this.onBeforeSend,this.componentId + "_core");
@@ -415,17 +420,16 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         switch (flowModel.contentType) {
             case 'ContentObject':
                 let objectData: any;
-                if (flowState.objectData) {
+                if (flowState.objectData && flowState.objectData.length > 0) {
                     objectData = flowState.objectData;
+                    objectData = JSON.parse(JSON.stringify(objectData));
+                    await this.setStateValue(new FlowObjectData(objectData),true);
                 }
-                else {
-                    objectData = flowModel.objectData;
-                }
+                //else {
+                //    objectData = flowModel.objectData;
+                //}
 
-                objectData = JSON.parse(JSON.stringify(objectData));
-
-                const newState = { objectData };
-                await this.setStateValue(new FlowObjectData(objectData),true);
+                
                 //manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
                 break;
 
@@ -433,14 +437,16 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
                 let listData: any;
                 if (flowState.objectData && flowState.objectData.length > 0) {
                     listData = flowState.objectData;
-                }
-                else {
-                    listData = flowModel.objectData
-                }
+                    listData = JSON.parse(JSON.stringify(listData));
 
-                listData = JSON.parse(JSON.stringify(listData));
+                    await this.setStateValue(new FlowObjectDataArray(listData),true);
+                
+                }
+                //else {
+                //    listData = flowModel.objectData
+                //}
 
-                await this.setStateValue(new FlowObjectDataArray(listData),true);
+                
                 //manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
                 break;
 
@@ -450,8 +456,10 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
                 break;
         }
 
+        this.LoadingState = eLoadingState.mounted;
         manywho.utils.removeLoadingIndicator('loader');
         return Promise.resolve();
+
     }
 
     async componentWillUnmount(): Promise<void> {
@@ -704,12 +712,13 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
         }
     }
 
+
     async setStateValue(value: string | boolean | number | Date | FlowObjectData | FlowObjectDataArray, ignoreState?: boolean): Promise<void> {
-        if(this.LoadingState === eLoadingState.ready || ignoreState===true) {
-            if(ignoreState !== true) {
-                this.LoadingState = eLoadingState.saving;
-            }
-            
+
+        if(this.LoadingState === eLoadingState.mounting || this.LoadingState === eLoadingState.ready) {
+            let oldState: eLoadingState = this.loadingState;
+            this.LoadingState = eLoadingState.saving;
+
             const flowModel = manywho.model.getComponent(this.ComponentId, this.FlowKey);
             const flowState = manywho.state.getComponent(this.componentId, this.flowKey) || {};
             let newState: any;
@@ -722,7 +731,7 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
                         objectData = (value as FlowObjectData).iFlowObjectDataArray();
                         objectData = JSON.parse(JSON.stringify(objectData));
                     }
-                    newState = { objectData: objectData };
+                    newState = { "objectData": objectData };
                     manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
                     break;
 
@@ -732,27 +741,26 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
                         objectDataArray = (value as FlowObjectDataArray).iFlowObjectDataArray();
                         objectDataArray = JSON.parse(JSON.stringify(objectDataArray));
                     }
-                    newState = { objectData: objectDataArray };
+                    newState = { "objectData": objectDataArray };
                     manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
                     break;
 
                 case 'ContentDate':
-                    newState = { contentValue: (value as Date).toISOString() };
+                    newState = { "contentValue": (value as Date).toISOString() };
                     manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
                     //flowState.contentValue = (value as Date).toISOString();
                     break;
 
                 default:
-                    newState = { contentValue: value };
+                    newState = { "contentValue": value };
                     manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
                     //flowState.contentValue = value as string;
                     break;
 
             }
 
-            if(ignoreState !== true) {
-                this.LoadingState = eLoadingState.ready;
-            }
+            this.LoadingState = oldState;
+            
             
 
             //manywho.component.handleEvent(this,manywho.model.getComponent(this.ComponentId,this.FlowKey),this.FlowKey,null);
@@ -764,11 +772,12 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
                 //    manywho.collaboration.push(this.ComponentId,{"message": {"action":"REFRESH_FIELD","fieldName": field.developerName }},this.flowKey);
                 //});
             }
-            return Promise.resolve();
+            
         }
 
         //manywho.component.handleEvent(this,manywho.model.getComponent(this.componentId, this.flowKey),this.FlowKey, this.eventHandled);
          //manywho.engine.sync(this.flowKey);
+         return Promise.resolve();
     }
 
     eventHandled(a?: any, b?: any) {
