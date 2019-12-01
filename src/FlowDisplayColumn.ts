@@ -1,3 +1,5 @@
+import { eContentType } from "./FlowField";
+
 export interface IFlowDisplayColumn {
 
     componentType: string;
@@ -15,7 +17,7 @@ export interface IFlowDisplayColumn {
 export class FlowDisplayColumn {
     private ComponentType: string;
     private ContentFormat: string;
-    private ContentType: string;
+    private ContentType: eContentType;
     private DeveloperName: string;
     private Visible: boolean;
     private ReadOnly: boolean;
@@ -31,7 +33,7 @@ export class FlowDisplayColumn {
     get contentFormat(): string {
         return this.ContentFormat;
     }
-    get contentType(): string {
+    get contentType(): eContentType {
         return this.ContentType;
     }
     get developerName(): string {
@@ -64,7 +66,7 @@ export class FlowDisplayColumn {
         this.Column = column;
         this.ComponentType = column.componentType;
         this.ContentFormat = column.contentFormat;
-        this.ContentType = column.contentType;
+        this.ContentType = eContentType[column.contentType as keyof typeof eContentType];
         this.DeveloperName = column.developerName;
         this.DisplayOrder = column.order;
         this.Label = column.label;

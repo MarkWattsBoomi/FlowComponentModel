@@ -16,9 +16,9 @@ export class FlowObjectDataArray {
         return this.Items;
     }
 
-    sort(ascending: eSortOrder = eSortOrder.ascending, fieldName?: string): FlowObjectData[] {
+    sort(order: eSortOrder, fieldName?: string): FlowObjectData[] {
 
-        if (ascending === eSortOrder.ascending) {
+        if (order === eSortOrder.ascending) {
             if (fieldName) {
                 return this.Items.sort((a, b) => {
 

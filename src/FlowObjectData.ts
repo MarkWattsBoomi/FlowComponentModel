@@ -13,6 +13,7 @@ export interface IFlowObjectData {
     isSelected: boolean;
     order: number;
     properties: IFlowObjectDataProperty[];
+    typeElementId: string;
 }
 
 export class FlowObjectData {
@@ -21,6 +22,7 @@ export class FlowObjectData {
     private InternalId: string = "";
     private IsSelected: boolean = false;
     private Order: number = 0;
+    private TypeElementId: string = "";
     private Properties: {[key: string]: FlowObjectDataProperty} = {};
 
     get developerName(): string {
@@ -58,6 +60,13 @@ export class FlowObjectData {
         this.Order = order;
     }
 
+    get typeElementId(): string {
+        return this.TypeElementId;
+    }
+    set typeElementId(typeElementId: string) {
+        this.TypeElementId = typeElementId;
+    }
+
     get properties(): {[key: string]: FlowObjectDataProperty} {
         return this.Properties;
     }
@@ -70,6 +79,7 @@ export class FlowObjectData {
             this.ExternalId = objectData.externalId;
             this.Order = objectData.order;
             this.IsSelected = objectData.isSelected;
+            this.TypeElementId = objectData.typeElementId;
 
             for (const property of objectData.properties) {
                 this.Properties[property.developerName] = new FlowObjectDataProperty(property);
@@ -86,6 +96,7 @@ export class FlowObjectData {
             isSelected : true,
             order: 0,
             properties : [],
+            typeElementId : ""
         };
         return new this([data]);
     }
@@ -122,6 +133,7 @@ export class FlowObjectData {
             isSelected : this.isSelected,
             order : this.order,
             properties: props,
+            typeElementId: this.TypeElementId
         };
 
         return objectData;

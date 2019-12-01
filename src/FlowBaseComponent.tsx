@@ -732,6 +732,7 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
                         objectData = JSON.parse(JSON.stringify(objectData));
                     }
                     newState = { "objectData": objectData };
+                    //newState = { objectData };
                     manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
                     break;
 

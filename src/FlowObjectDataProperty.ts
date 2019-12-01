@@ -128,7 +128,7 @@ export class FlowObjectDataProperty {
 
     set value(value: string | number | boolean | FlowObjectData | FlowObjectDataArray | undefined) {
         this.Value = value;
-        }
+    }
 
     clone() : FlowObjectDataProperty {
 
@@ -188,6 +188,46 @@ export class FlowObjectDataProperty {
         };
         return output;
 
+    }
+
+    get displayString(): string {
+        let label: string = '';
+    
+        if (this.Value) {
+            switch (this.ContentType) {
+                case eContentType.ContentString:
+                case eContentType.ContentNumber:
+                    label = this.Value as string;
+                    break;
+    
+                case eContentType.ContentBoolean:
+                    if (this.Value === true) {
+                        label = 'True';
+                    } else {
+                        label = 'False';
+                    }
+                    break;
+    
+                case eContentType.ContentDateTime:
+                    const d: number = Date.parse(this.Value as string);
+                    if (!isNaN(d)) {
+                        const dt: Date = new Date(d);
+                        if (label.length <= 10) {
+                            return dt.toLocaleDateString();
+                        } else {
+                            return dt.toLocaleString();
+                        }
+                    }
+                    break;
+    
+                default:
+                    label = eContentType[this.ContentType];
+                    break;
+            }
+        } else {
+            label = 'Undefined';
+        }
+        return label;
     }
 
 }

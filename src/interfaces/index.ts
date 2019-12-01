@@ -55,6 +55,7 @@ export interface IObjectData {
     isSelected: boolean;
     order: number;
     properties: IObjectDataProperty[];
+    typeElementId: string;
 }
 
 interface IObjectDataType {
