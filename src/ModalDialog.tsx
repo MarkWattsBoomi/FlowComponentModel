@@ -196,10 +196,10 @@ export default class ModalDialog extends React.Component<any, any> {
                 className="modal-dialog-header"
                 onMouseDown={(e) => {this.onMouseDown(e)}}
               >
-                <div style={{float: 'left', display: 'flex', height: '100%', alignSelf: "center"}}>
+                <div style={{display: 'flex', flexDirection: "row", flexGrow: 1}}>
                   <span className="modal-dialog-header-title">{this.props.title}</span>
                 </div>
-                <div style={{float: 'right', marginLeft: 'auto', display: 'flex', height: '100%'}}>
+                <div style={{display: 'flex', flexDirection: "row", marginLeft: 'auto', flexGrow: 0}}>
                   <span
                     className="glyphicon glyphicon-remove modal-dialog-header-button"
                     style={{cursor: 'pointer' , color: '#fefefe', marginRight: '5px', fontSize: '14pt'}}
@@ -211,7 +211,7 @@ export default class ModalDialog extends React.Component<any, any> {
               <div className="modal-dialog-body">
                   <div className="modal-dialog-body-client">
                   {this.props.children}                               
-                  </div>;
+                  </div>
               </div >
                 <div className="modal-dialog-button-bar">
                      {buttons}   

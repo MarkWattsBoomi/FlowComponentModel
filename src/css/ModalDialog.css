@@ -120,14 +120,13 @@
 
 .modal-dialog-header-button
 {
-    color: #fefefe !important;
+    color: #fefefe;
     font-size: 12pt;
-    margin-right: 5px !important;
-    top: -1px !important;
+    top: 0px !important;
     line-height: unset !important;
     cursor: pointer;
-    margin-top: auto;
-    margin-bottom: auto;
+    margin: auto;
+    margin-right: 5px ;
 }
 
 .modal-dialog-body
@@ -178,15 +177,7 @@
     padding-left: 5px !important;
     font-size: 12pt !important;
     display: inline-block;
-}
-
-.modal-dialog-select
-{
-    font-size: 16pt !important;
-    -webkit-appearance: listbox  !important;
-    padding: 5px  !important;
-    border: 1px solid #000  !important;
-    border-radius: 5px  !important;
+    margin-left: 10px !important;
 }
 
 .modal-dialog-select
@@ -260,15 +251,16 @@
 
 .modal-table-checkbox
 {
-    margin-left: 20px !important;
+    margin: auto !important;
+    -webkit-appearance: checkbox !important;
 }
 .modal-table-checkbox:before
 {
-    content: none;
+    display: none !important;
 }
 .modal-table-checkbox:after
 {
-    content: none;
+    display: none !important;
 }
 
 .icon-picker-icon

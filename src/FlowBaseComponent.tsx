@@ -904,7 +904,7 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
     }
 
     //this will get triggered by the collaboration engine
-    async componentDidUpdate(): Promise<void> {
+    async componentDidUpdate(): Promise<any> {
         const state: any = manywho.state.getComponent(this.componentId, this.flowKey) as IComponentValue;
         const message = state.message;
         this.loadModel();
@@ -927,7 +927,7 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
                     break; 
             }
         }
-        return Promise.resolve();
+        return message;
    }
 
    //this is used by other components who might want to send in a generic window message
