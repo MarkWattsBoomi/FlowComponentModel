@@ -132,15 +132,15 @@ if (!(manywho as any).eventManager) {
 }
 */
 
-export const enum eLoadingState {
-    ready,
-    loading,
-    saving,
-    moving,
-    inititializing,
-    inititialized,
-    mounting,
-    mounted
+export enum eLoadingState {
+    ready=0,
+    loading=1,
+    saving=2,
+    moving=3,
+    inititializing=4,
+    inititialized=5,
+    mounting=6,
+    mounted=7
 }
 
 //export type eLoadingState = "ready" | "loading" | "saving" | "moving" | "inititializing" | "inititialized" | "mounting" | "mounted";
