@@ -4,7 +4,7 @@ import {  IManywho } from './interfaces';
 declare const manywho: IManywho;
 declare const $: JQueryStatic;
 
-export class FlowComponent extends FlowBaseComponent {
+export default class FlowComponent extends FlowBaseComponent {
 
     constructor(props: any) {
         super(props);

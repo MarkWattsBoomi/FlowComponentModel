@@ -2,7 +2,7 @@ import * as React from 'react';
 import './css/IconPicker.css';
 
 // Declaration of the component as React Class Component
-class IconPicker extends React.Component<any, any> {
+export default class IconPicker extends React.Component<any, any> {
 
     icons: any = {};
 
@@ -57,5 +57,3 @@ class IconPicker extends React.Component<any, any> {
   }
 }
 
-// Export the component to use it in other components.
-export default IconPicker;

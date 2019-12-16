@@ -3,7 +3,7 @@
         "outDir": "./lib",
         //"sourceMap": true,
         //"noImplicitAny": true,
-        "module": "commomjs",
+        "module": "CommomJS",
         "target": "es5",
         "jsx": "react",
         "lib": ["es2015", "dom"],
