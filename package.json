@@ -1,8 +1,9 @@
 {
   "name": "flow-component-model",
-  "version": "1.1.5",
+  "version": "1.1.6",
   "description": "Flow Component Authoring Object Model",
-  "main": "lib/FlowComponentModel.js",
+  "main": "lib/FlowComponentModel",
+  "typings": "lib/FlowComponentModel",
   "repository": {
     "type": "git",
     "url": "https://github.com/MarkWattsBoomi/FlowComponentModel"
