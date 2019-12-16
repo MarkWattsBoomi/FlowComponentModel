@@ -1,6 +1,6 @@
 {
   "name": "flow-component-model",
-  "version": "1.1.2",
+  "version": "1.1.3",
   "description": "Flow Component Authoring Object Model",
   "main": "index.js",
   "scripts": {

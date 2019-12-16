@@ -1,6 +1,6 @@
 import { FlowBaseComponent } from './FlowBaseComponent';
 import { IFlowObjectData } from './FlowObjectData';
-export declare class FlowPage extends FlowBaseComponent {
+export default class FlowPage extends FlowBaseComponent {
     constructor(props: any);
     componentDidMount(): Promise<void>;
     componentDidUpdate(): Promise<void>;
