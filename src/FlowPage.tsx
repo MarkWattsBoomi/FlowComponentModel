@@ -1,8 +1,8 @@
 import { FlowBaseComponent } from './FlowBaseComponent';
 import { IFlowObjectData } from './FlowObjectData';
-import {  IManywho } from './interfaces';
+//import {  IManywho } from './interfaces';
 
-declare const manywho: IManywho;
+declare const manywho: any;
 declare const $: JQueryStatic;
 
 export class FlowPage extends FlowBaseComponent {

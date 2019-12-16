@@ -6,7 +6,6 @@ import { FlowField } from './FlowField';
 import { FlowObjectData, IFlowObjectData } from './FlowObjectData';
 import { FlowObjectDataArray } from './FlowObjectDataArray';
 import { FlowOutcome } from './FlowOutcome';
-import { IComponentProps } from './interfaces';
 interface IFlowUser {
     directoryId: string;
     directoryName: string;
@@ -54,7 +53,7 @@ export declare enum eLoadingState {
     mounting = 6,
     mounted = 7
 }
-export declare class FlowBaseComponent extends React.Component<IComponentProps, any, any> {
+export declare class FlowBaseComponent extends React.Component<any, any, any> {
     url: string;
     userurl: string;
     valueurl: string;

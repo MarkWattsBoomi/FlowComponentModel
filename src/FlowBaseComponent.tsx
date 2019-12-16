@@ -6,20 +6,20 @@ import { FlowField, IFlowField, eContentType } from './FlowField';
 import { FlowObjectData, IFlowObjectData} from './FlowObjectData';
 import { FlowObjectDataArray } from './FlowObjectDataArray';
 import { FlowOutcome, IFlowOutcome } from './FlowOutcome';
-import { IComponentProps, IManywho, IObjectData } from './interfaces';
-import { IComponentValue } from './interfaces/services/state';
+//import { IComponentProps, IManywho, IObjectData } from './interfaces';
+//import { IComponentValue } from './interfaces/services/state';
 //import {throttle} from 'lodash';
 var throttle = require('lodash.throttle');
 
 
-declare const manywho: IManywho;
+declare const manywho: any;
 declare const $: JQueryStatic;
 
 interface IFlowStateValue {
     contentType: string;
     contentValue: string;
     developerName: string;
-    objectData: IObjectData[];
+    objectData: any[];
     typeElementDeveloperName: string;
     typeElementId: string;
     typeElementPropertyDeveloperName: string;
@@ -143,7 +143,7 @@ export enum eLoadingState {
     mounted
 }
 
-export class FlowBaseComponent extends React.Component<IComponentProps, any, any> {
+export class FlowBaseComponent extends React.Component<any, any, any> {
 
     url: string;
     userurl: string;
@@ -908,7 +908,7 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
 
     //this will get triggered by the collaboration engine
     async componentDidUpdate(): Promise<any> {
-        const state: any = manywho.state.getComponent(this.componentId, this.flowKey) as IComponentValue;
+        const state: any = manywho.state.getComponent(this.componentId, this.flowKey) as any;
         const message = state.message;
         this.loadModel();
 
