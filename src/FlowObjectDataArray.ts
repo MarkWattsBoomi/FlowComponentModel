@@ -64,15 +64,20 @@ export class FlowObjectDataArray {
                     if(a && b && a.properties && b.properties && a.properties[fieldName] && 
                         b.properties[fieldName] && a.properties[fieldName].value && b.properties[fieldName].value)
                     {
-                        switch (true) {
-                            case a.properties[fieldName].value < b.properties[fieldName].value:
-                                return 1;
+                        if(a.properties[fieldName]) {
+                            switch (true) {
+                                case a.properties[fieldName].value < b.properties[fieldName].value:
+                                    return 1;
 
-                            case a.properties[fieldName].value > b.properties[fieldName].value:
-                                return -1;
+                                case a.properties[fieldName].value > b.properties[fieldName].value:
+                                    return -1;
 
-                            default:
-                                return 0;
+                                default:
+                                    return 0;
+                            }
+                        }
+                        else {
+                            return 0;
                         }
                     }
                     else

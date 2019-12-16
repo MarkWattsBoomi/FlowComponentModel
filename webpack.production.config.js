@@ -7,8 +7,8 @@ module.exports = function() {
     const config = {
         entry: "./src/index.tsx",
         output: {
-            filename: "flow-component-model.js",
-            path: path.resolve(__dirname, 'build')
+            filename: "FlowComponentModel.js",
+            path: path.resolve(__dirname, 'lib')
         },
         devtool: 'inline-source-map',
         resolve: {
@@ -44,12 +44,12 @@ module.exports = function() {
         },
         plugins: [
             new WriteFilePlugin(),
-            new MiniCssExtractPlugin({ filename: "flow-component-model.css"})
+            new MiniCssExtractPlugin({ filename: "FlowComponentModel.css"})
         ],
     }
 
-    if (!fs.existsSync('./build'))
-        fs.mkdirSync('./build');
+    if (!fs.existsSync('./lib'))
+        fs.mkdirSync('./lib');
 
     return config;
 };

@@ -1,4 +1,5 @@
 import * as React from 'react';
+import './EventManager';
 import { FlowAttribute } from './FlowAttribute';
 import { FlowDisplayColumn } from './FlowDisplayColumn';
 import { FlowField, IFlowField, eContentType } from './FlowField';
@@ -65,6 +66,7 @@ interface IFlowModel {
     displayColumns: FlowDisplayColumn[];
 }
 
+/*
 if (!(manywho as any).eventManager) {
     (manywho as any).eventManager = {};
     (manywho as any).eventManager.beforeSendListeners = {};
@@ -128,6 +130,7 @@ if (!(manywho as any).eventManager) {
         },
     });
 }
+*/
 
 export enum eLoadingState {
     ready,
@@ -933,8 +936,8 @@ export class FlowBaseComponent extends React.Component<IComponentProps, any, any
    //this is used by other components who might want to send in a generic window message
    //nothing to do with collaboration
     async receiveMessage(message: any): Promise<void> {
-        if (message.data.data) {
-            const msg = JSON.parse(message.data.data);
+        if (message.data) {
+            const msg: any = message.data;
             if (msg.action) {
                 switch (msg.action.toUpperCase()) {
                     case 'OUTCOME':

@@ -25,13 +25,13 @@ export declare const contentTypes: {
  * @param component
  * @param alias Extra names that can also be used to fetch the component later
  */
-export declare const register: (name: string, component: typeof React.Component | typeof React.StatelessComponent, alias?: string[]) => void;
+export declare const register: (name: string, component: typeof React.Component , alias?: string[]) => void;
 /**
  * Register a React component, the name will be prepended with `mw-`. An alias of `mw-items-container` will also be added
  * @param name
  * @param component
  */
-export declare const registerItems: (name: string, component: typeof React.Component | typeof React.StatelessComponent) => void;
+export declare const registerItems: (name: string, component: typeof React.Component ) => void;
 /**
  * Add an alias for a name
  * @param alias
@@ -43,7 +43,7 @@ export declare const registerAlias: (alias: string, name: string) => void;
  * @param name
  * @param component
  */
-export declare const registerContainer: (name: string, component: typeof React.Component | typeof React.StatelessComponent) => void;
+export declare const registerContainer: (name: string, component: typeof React.Component ) => void;
 /**
  * Get the previously registered component based on the models `componentType` or `containerType`
  * @param model
