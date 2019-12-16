@@ -43,7 +43,7 @@ interface IFlowModel {
     width: number;
     displayColumns: FlowDisplayColumn[];
 }
-export declare enum eLoadingState {
+export declare const enum eLoadingState {
     ready = 0,
     loading = 1,
     saving = 2,

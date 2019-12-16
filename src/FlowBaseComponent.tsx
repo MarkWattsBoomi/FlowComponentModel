@@ -132,7 +132,7 @@ if (!(manywho as any).eventManager) {
 }
 */
 
-export enum eLoadingState {
+export const enum eLoadingState {
     ready,
     loading,
     saving,
@@ -142,6 +142,9 @@ export enum eLoadingState {
     mounting,
     mounted
 }
+
+//export type eLoadingState = "ready" | "loading" | "saving" | "moving" | "inititializing" | "inititialized" | "mounting" | "mounted";
+
 
 export class FlowBaseComponent extends React.Component<any, any, any> {
 
