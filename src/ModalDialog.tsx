@@ -73,7 +73,7 @@ export class DragEvent
 }
 
 // Declaration of the component as React Class Component
-export default class ModalDialog extends React.Component<any, any> {
+export class ModalDialog extends React.Component<any, any> {
     dragEvent: DragEvent = new DragEvent();
     modal: any;
     dialog: any;

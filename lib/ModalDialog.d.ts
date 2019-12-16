@@ -25,7 +25,7 @@ export declare class DragEvent {
     drag(mouseX: number, mouseY: number): void;
     end(target: any, mouseX: number, mouseY: number): any;
 }
-export default class ModalDialog extends React.Component<any, any> {
+export declare class ModalDialog extends React.Component<any, any> {
     dragEvent: DragEvent;
     modal: any;
     dialog: any;
