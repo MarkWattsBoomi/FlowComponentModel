@@ -3,7 +3,7 @@ import { IFlowObjectData } from './FlowObjectData';
 //import {  IManywho } from './interfaces';
 
 declare const manywho: any;
-declare const $: JQueryStatic;
+//declare const $: JQueryStatic;
 
 export class FlowPage extends FlowBaseComponent {
 

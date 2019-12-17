@@ -3,13 +3,15 @@
         "outDir": "./lib",
         //"sourceMap": true,
         //"noImplicitAny": true,
-        "module": "CommomJS",
+        "module": "system",
         "target": "es5",
         "jsx": "react",
         "lib": ["es2015", "dom"],
         //"skipLibCheck": true,
         "declaration": true,
-        "strict": false
+        "strict": false,
+        "outFile": "./lib/FlowComponentModel.js",
+        "moduleResolution": "node"
     },
     "include": ["src"],
     "exclude": ["node_modules","src/obsolete","src/index.tsx"]

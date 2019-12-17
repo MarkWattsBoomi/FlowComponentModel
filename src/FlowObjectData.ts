@@ -2,9 +2,9 @@
 // import { objectDataHandler } from '../utils/proxy';
 import {eContentType} from './FlowField';
 import { FlowObjectDataProperty, IFlowObjectDataProperty } from './FlowObjectDataProperty';
-import { IManywho, IObjectData} from './interfaces';
+//import { IManywho, IObjectData} from './interfaces';
 
-declare const manywho: IManywho;
+declare const manywho: any;
 
 export interface IFlowObjectData {
     developerName: string;
@@ -126,7 +126,7 @@ export class FlowObjectData {
             props.push(this.properties[key].iFlowObjectDataProperty());
         }
 
-        const objectData: IObjectData = {
+        const objectData: any = {
             developerName: this.developerName,
             externalId : this.externalId,
             internalId : this.internalId,

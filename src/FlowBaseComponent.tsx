@@ -13,7 +13,7 @@ var throttle = require('lodash.throttle');
 
 
 declare const manywho: any;
-declare const $: JQueryStatic;
+//declare const $: JQueryStatic;
 
 interface IFlowStateValue {
     contentType: string;
