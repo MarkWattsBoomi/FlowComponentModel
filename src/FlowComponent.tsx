@@ -2,7 +2,6 @@ import { FlowBaseComponent } from './FlowBaseComponent';
 //import {  IManywho } from './interfaces';
 
 declare const manywho: any;
-declare const $: JQueryStatic;
 
 export class FlowComponent extends FlowBaseComponent {
 
