@@ -7,7 +7,7 @@ module.exports = function() {
     const config = {
         entry: "./src/index.tsx",
         output: {
-            filename: "FlowComponentModel.js",
+            filename: "FlowComponentModel.min.js",
             path: path.resolve(__dirname, 'lib')
         },
         devtool: 'inline-source-map',

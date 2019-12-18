@@ -1,5 +1,4 @@
 import { FlowBaseComponent } from './FlowBaseComponent';
-//import {  IManywho } from './interfaces';
 
 declare const manywho: any;
 

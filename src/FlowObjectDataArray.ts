@@ -1,4 +1,3 @@
-import { string } from 'prop-types';
 import { eContentType } from './FlowField';
 import { FlowObjectData , IFlowObjectData} from './FlowObjectData';
 import { FlowObjectDataProperty } from './FlowObjectDataProperty';

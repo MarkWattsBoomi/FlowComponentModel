@@ -1,8 +1,4 @@
-// import { any, string } from 'prop-types';
-// import { objectDataHandler } from '../utils/proxy';
-import {eContentType} from './FlowField';
 import { FlowObjectDataProperty, IFlowObjectDataProperty } from './FlowObjectDataProperty';
-//import { IManywho, IObjectData} from './interfaces';
 
 declare const manywho: any;
 

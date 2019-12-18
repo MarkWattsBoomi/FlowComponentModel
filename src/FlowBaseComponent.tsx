@@ -6,14 +6,10 @@ import { FlowField, IFlowField, eContentType } from './FlowField';
 import { FlowObjectData, IFlowObjectData} from './FlowObjectData';
 import { FlowObjectDataArray } from './FlowObjectDataArray';
 import { FlowOutcome, IFlowOutcome } from './FlowOutcome';
-//import { IComponentProps, IManywho, IObjectData } from './interfaces';
-//import { IComponentValue } from './interfaces/services/state';
-//import {throttle} from 'lodash';
 var throttle = require('lodash.throttle');
 
 
 declare const manywho: any;
-//declare const $: JQueryStatic;
 
 interface IFlowStateValue {
     contentType: string;
