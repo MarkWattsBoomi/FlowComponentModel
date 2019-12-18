@@ -72,13 +72,14 @@ Both componets give you access directly to: -
     
 ## Getting started
 
-Grab a copy of the src and add it to your project
+run "npm install -s flow-component-model"
 
 Create a new component tsx file and set your class to extend one of the library's base class: -
 
 ``` 
 import * as React from 'react';
-import FlowComponent from '...wherever the file is located'; //this is the important one
+import { FlowComponent } from 'flow-component-model';
+declare const manywho: any;
 
 export default class MyCustomComponent extends FlowComponent {
 
