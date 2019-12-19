@@ -424,37 +424,29 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
                 let objectData: any;
                 if (flowState.objectData && flowState.objectData.length > 0) {
                     objectData = flowState.objectData;
-                    objectData = JSON.parse(JSON.stringify(objectData));
-                    await this.setStateValue(new FlowObjectData(objectData),true);
                 }
-                //else {
-                //    objectData = flowModel.objectData;
-                //}
-
-                
-                //manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
+                else {
+                    objectData = flowModel.objectData[0];
+                }
+                objectData = JSON.parse(JSON.stringify(objectData));
+                await this.setStateValue(new FlowObjectData([objectData]),true);
                 break;
 
             case 'ContentList':
                 let listData: any;
                 if (flowState.objectData && flowState.objectData.length > 0) {
-                    listData = flowState.objectData;
-                    listData = JSON.parse(JSON.stringify(listData));
-
-                    await this.setStateValue(new FlowObjectDataArray(listData),true);
-                
+                    listData = flowState.objectData;                
                 }
-                //else {
-                //    listData = flowModel.objectData
-                //}
+                else {
+                    listData = flowModel.objectData
+                }
+                listData = JSON.parse(JSON.stringify(listData));
+                await this.setStateValue(new FlowObjectDataArray(listData),true);
 
-                
-                //manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
                 break;
 
             default:
                 await this.setStateValue(flowModel.contentValue,true);
-                //flowState.contentValue = flowModel.contentValue;
                 break;
         }
 
@@ -685,10 +677,10 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
         const flowModel = manywho.model.getComponent(this.ComponentId, this.FlowKey);
         switch (flowModel.contentType) {
             case 'ContentObject':
-                return new FlowObjectData(flowState.objectData && flowState.objectData[0]? flowState.objectData[0] : flowModel.objectData[0]);
+                return flowState.objectData && flowState.objectData[0]? new FlowObjectData([flowState.objectData[0]]) : undefined;
 
             case 'ContentList':
-                return new FlowObjectDataArray(flowState.objectData? flowState.objectData : flowModel.objectData);
+                return new FlowObjectDataArray(flowState.objectData? flowState.objectData : []);
                 break;
 
             default:
@@ -702,7 +694,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
         const flowModel = manywho.model.getComponent(this.ComponentId, this.FlowKey);
         switch (flowModel.contentType) {
             case 'ContentObject':
-                return new FlowObjectData(flowState.objectData && flowState.objectData[0]? flowState.objectData[0] : flowModel.objectData[0]);
+                return new FlowObjectData([flowState.objectData && flowState.objectData[0]? flowState.objectData[0] : flowModel.objectData[0]]);
 
             case 'ContentList':
                 return new FlowObjectDataArray(flowState.objectData? flowState.objectData : flowModel.objectData);
