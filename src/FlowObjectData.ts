@@ -76,9 +76,10 @@ export class FlowObjectData {
             this.Order = objectData.order;
             this.IsSelected = objectData.isSelected;
             this.TypeElementId = objectData.typeElementId;
-
-            for (const property of objectData.properties) {
-                this.Properties[property.developerName] = new FlowObjectDataProperty(property);
+            if(objectData.properties && objectData.properties.length > 0) {
+                for (const property of objectData.properties) {
+                    this.Properties[property.developerName] = new FlowObjectDataProperty(property);
+                }
             }
         }
     }
