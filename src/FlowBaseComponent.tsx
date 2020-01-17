@@ -677,7 +677,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
         const flowModel = manywho.model.getComponent(this.ComponentId, this.FlowKey);
         switch (flowModel.contentType) {
             case 'ContentObject':
-                return flowState.objectData && flowState.objectData[0]? new FlowObjectData([flowState.objectData[0]]) : new FlowObjectData(flowModel.objectData);
+                return flowState.objectData && flowState.objectData[0] && flowState.objectData[0].properties.length > 0? new FlowObjectData([flowState.objectData[0]]) : new FlowObjectData(flowModel.objectData);
 
             case 'ContentList':
                 return new FlowObjectDataArray(flowState.objectData? flowState.objectData : []);
