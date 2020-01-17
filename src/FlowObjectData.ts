@@ -82,6 +82,9 @@ export class FlowObjectData {
                 }
             }
         }
+        else {
+            console.log("null data");
+        }
     }
 
     static newInstance(developerName: string) {

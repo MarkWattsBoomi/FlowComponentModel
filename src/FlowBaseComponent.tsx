@@ -6,6 +6,7 @@ import { FlowField, IFlowField, eContentType } from './FlowField';
 import { FlowObjectData, IFlowObjectData} from './FlowObjectData';
 import { FlowObjectDataArray } from './FlowObjectDataArray';
 import { FlowOutcome, IFlowOutcome } from './FlowOutcome';
+
 var throttle = require('lodash.throttle');
 
 
@@ -422,14 +423,15 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
         switch (flowModel.contentType) {
             case 'ContentObject':
                 let objectData: any;
-                if (flowState.objectData && flowState.objectData.length > 0) {
-                    objectData = flowState.objectData;
+                if (flowState.objectData && flowState.objectData[0] && flowState.objectData[0].properties.length > 0) {
+                    objectData = flowState.objectData[0];
                 }
                 else {
                     objectData = flowModel.objectData[0];
                 }
                 objectData = JSON.parse(JSON.stringify(objectData));
-                await this.setStateValue(new FlowObjectData([objectData]),true);
+                let od: FlowObjectData  = new FlowObjectData([objectData]);
+                await this.setStateValue(od,true);
                 break;
 
             case 'ContentList':
