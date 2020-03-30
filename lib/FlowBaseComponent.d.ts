@@ -55,6 +55,7 @@ export declare enum eLoadingState {
 }
 export declare class FlowBaseComponent extends React.Component<any, any, any> {
     url: string;
+    invokeurl: string;
     userurl: string;
     valueurl: string;
     private User?;
@@ -69,32 +70,34 @@ export declare class FlowBaseComponent extends React.Component<any, any, any> {
     private Outcomes;
     private Model?;
     private IsDesignTime;
-    readonly tenantId: string;
-    readonly stateId: string;
-    readonly flowKey: string;
-    readonly componentId: string;
-    readonly parentId: string | undefined;
-    readonly isReady: boolean;
-    readonly loadingState: eLoadingState;
-    readonly outcomes: {
+    get tenantId(): string;
+    get stateId(): string;
+    get flowKey(): string;
+    get componentId(): string;
+    get parentId(): string | undefined;
+    get isReady(): boolean;
+    get loadingState(): eLoadingState;
+    get outcomes(): {
         [key: string]: FlowOutcome;
     } | undefined;
-    readonly attributes: {
+    get attributes(): {
         [key: string]: FlowAttribute;
     } | undefined;
-    readonly fields: {
+    get fields(): {
         [key: string]: FlowField;
     } | undefined;
-    readonly model: IFlowModel | undefined;
-    readonly user: IFlowUser | undefined;
-    readonly joinURI: string;
-    readonly isDesignTime: boolean;
+    get model(): IFlowModel | undefined;
+    get user(): IFlowUser | undefined;
+    get joinURI(): string;
+    get isDesignTime(): boolean;
+    get authenticationToken(): string;
     getAttribute(attributeName: string, defaultValue?: string): string;
     constructor(props: any);
     onBeforeSend(xhr: XMLHttpRequest, request: any): void;
-    calculateValue(value: string): Promise<string>;
-    onDone(xhr: XMLHttpRequest, request: any): void;
+    calculateValue(value: string): string;
+    onDone(xhr: XMLHttpRequest, request: any): Promise<void>;
     componentDidMount(): Promise<void>;
+    preserveState(): Promise<void>;
     componentWillUnmount(): Promise<void>;
     loadOutcome(outcomeId: string): FlowOutcome;
     loadOutcomes(): void;
@@ -103,10 +106,10 @@ export declare class FlowBaseComponent extends React.Component<any, any, any> {
     loadModel(): void;
     loadValue(valueName: string): Promise<void>;
     getResultBodyText(response: any): Promise<string>;
-    callRequest(url: string, method: string, data: any, authenticationToken: string): Promise<any>;
+    callRequest(url: string, method: string, data: any): Promise<any>;
     callRequestOld(url: string, method: string, data: any): Promise<any>;
-    loadValues(): Promise<void>;
-    dontLoadValues(): Promise<void>;
+    loadAllValues(): Promise<void>;
+    dontLoadAllValues(): Promise<void>;
     getStateValue(): string | boolean | number | Date | FlowObjectData | FlowObjectDataArray;
     getStateValueType(): string | boolean | number | Date | FlowObjectData | FlowObjectDataArray;
     setStateValue(value: string | boolean | number | Date | FlowObjectData | FlowObjectDataArray, ignoreState?: boolean): Promise<void>;

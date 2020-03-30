@@ -19,13 +19,19 @@ export declare class FlowObjectDataProperty {
     private TypeElementPropertyId;
     private Value;
     constructor(property: IFlowObjectDataProperty | undefined);
-    contentFormat: string;
-    contentType: eContentType;
-    developerName: string;
-    typeElementId: string;
-    typeElementPropertyId: string;
-    value: string | number | boolean | FlowObjectData | FlowObjectDataArray | undefined;
+    get contentFormat(): string;
+    set contentFormat(contentFormat: string);
+    get contentType(): eContentType;
+    set contentType(contentType: eContentType);
+    get developerName(): string;
+    set developerName(developerName: string);
+    get typeElementId(): string;
+    set typeElementId(typeElementId: string);
+    get typeElementPropertyId(): string;
+    set typeElementPropertyId(typeElementPropertyId: string);
+    get value(): string | number | boolean | FlowObjectData | FlowObjectDataArray | undefined;
+    set value(value: string | number | boolean | FlowObjectData | FlowObjectDataArray | undefined);
     clone(): FlowObjectDataProperty;
     iFlowObjectDataProperty(): IFlowObjectDataProperty;
-    readonly displayString: string;
+    get displayString(): string;
 }

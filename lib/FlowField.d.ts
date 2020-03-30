@@ -32,14 +32,15 @@ export declare class FlowField {
     private TypeElementPropertyId;
     private ValueElementId;
     private Value;
-    readonly contentType: eContentType;
-    readonly developerName: string;
-    readonly typeElementDeveloperName: string;
-    readonly typeElementId: string;
-    readonly typeElementPropertyDeveloperName: string;
-    readonly typeElementPropertyId: string;
-    readonly valueElementId: string;
-    value: string | number | Date | boolean | FlowObjectData | FlowObjectDataArray | undefined;
+    get contentType(): eContentType;
+    get developerName(): string;
+    get typeElementDeveloperName(): string;
+    get typeElementId(): string;
+    get typeElementPropertyDeveloperName(): string;
+    get typeElementPropertyId(): string;
+    get valueElementId(): string;
+    get value(): string | number | Date | boolean | FlowObjectData | FlowObjectDataArray | undefined;
+    set value(value: string | number | Date | boolean | FlowObjectData | FlowObjectDataArray | undefined);
     constructor(field?: IFlowField);
     iFlowField(): IFlowField;
 }

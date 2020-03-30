@@ -6,6 +6,7 @@ if (!(manywho as any).eventManager) {
     (manywho as any).eventManager.doneListeners = {};
     (manywho as any).eventManager.failListeners = {};
     (manywho as any).eventManager.outcomeBeingTriggered;
+    (manywho as any).eventManager.history = [];
 
     (manywho as any).eventManager.beforeSend = (xhr: XMLHttpRequest, request: any) => {
         //(manywho as any).eventManager.beforeSendListeners.forEach((listener: any) => listener(xhr, request));

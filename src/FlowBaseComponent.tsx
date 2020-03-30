@@ -63,71 +63,6 @@ interface IFlowModel {
     displayColumns: FlowDisplayColumn[];
 }
 
-/*
-if (!(manywho as any).eventManager) {
-    (manywho as any).eventManager = {};
-    (manywho as any).eventManager.beforeSendListeners = {};
-    (manywho as any).eventManager.doneListeners = {};
-    (manywho as any).eventManager.failListeners = {};
-    (manywho as any).eventManager.outcomeBeingTriggered;
-
-    (manywho as any).eventManager.beforeSend = (xhr: XMLHttpRequest, request: any) => {
-        //(manywho as any).eventManager.beforeSendListeners.forEach((listener: any) => listener(xhr, request));
-        for(const key in (manywho as any).eventManager.beforeSendListeners )
-        {
-            (manywho as any).eventManager.beforeSendListeners[key](xhr, request);
-        }
-    };
-
-    (manywho as any).eventManager.done = (xhr: XMLHttpRequest, request: any) => {
-        //(manywho as any).eventManager.doneListeners.forEach((listener: any) => listener(xhr, request));
-        for(const key in (manywho as any).eventManager.doneListeners )
-        {
-            (manywho as any).eventManager.doneListeners[key](xhr, request);
-        }
-    };
-
-    (manywho as any).eventManager.fail = (xhr: XMLHttpRequest, request: any) => {
-        //(manywho as any).eventManager.failListeners.forEach((listener: any) => listener(xhr, request));
-        for(const key in (manywho as any).eventManager.failListeners )
-        {
-            (manywho as any).eventManager.failListeners[key](xhr, request);
-        }
-    };
-
-    (manywho as any).eventManager.addBeforeSendListener = (handler: (xhr: XMLHttpRequest, request: any) => void, componentId: string) => {
-        (manywho as any).eventManager.beforeSendListeners[componentId] = handler;
-    };
-
-    (manywho as any).eventManager.removeBeforeSendListener = (componentId: string) => {
-        delete (manywho as any).eventManager.beforeSendListeners[componentId];
-    };
-
-    (manywho as any).eventManager.addDoneListener = (handler: (xhr: XMLHttpRequest, request: any) => void, componentId: string) => {
-        (manywho as any).eventManager.doneListeners[componentId] = handler;
-    };
-
-    (manywho as any).eventManager.removeDoneListener = (componentId: string) => {
-        delete (manywho as any).eventManager.doneListeners[componentId];
-    };
-
-    (manywho as any).eventManager.addFailListener = (handler: (xhr: XMLHttpRequest, request: any) => void, componentId: string) => {
-        (manywho as any).eventManager.failListeners[componentId] = handler;
-    };
-
-    (manywho as any).eventManager.removeFailListener = (componentId: string) => {
-        delete (manywho as any).eventManager.failListeners[componentId];
-    };
-
-    manywho.settings.initialize(null, {
-        invoke: {
-            beforeSend: (manywho as any).eventManager.beforeSend,
-            done: (manywho as any).eventManager.done,
-            fail: (manywho as any).eventManager.fail,
-        },
-    });
-}
-*/
 
 export enum eLoadingState {
     ready=0,
@@ -146,6 +81,7 @@ export enum eLoadingState {
 export class FlowBaseComponent extends React.Component<any, any, any> {
 
     url: string;
+    invokeurl: string;
     userurl: string;
     valueurl: string;
     private User?: IFlowUser;
@@ -222,6 +158,10 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
         return this.IsDesignTime;
     }
 
+    get authenticationToken() : string {
+        return JSON.parse(sessionStorage.flowUser).authenticationToken;
+    }
+
     getAttribute(attributeName: string, defaultValue?: string): string {
         if (this.attributes[attributeName]) {
             return this.attributes[attributeName].value;
@@ -235,8 +175,8 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
 
         this.Fields = {};
         this.LoadingState = eLoadingState.inititializing;
-        this.loadValues = this.loadValues.bind(this);
-        this.dontLoadValues = this.dontLoadValues.bind(this);
+        this.loadAllValues = this.loadAllValues.bind(this);
+        this.dontLoadAllValues = this.dontLoadAllValues.bind(this);
         this.updateValues = this.updateValues.bind(this);
         this.triggerOutcome = this.triggerOutcome.bind(this);
         this.ComponentId = this.props.id;
@@ -264,7 +204,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
         const baseUrl = manywho.settings.global('platform.uri') || window.location.origin || 'https://flow.manywho.com';
         this.StateId = manywho.utils.extractStateId(this.props.flowKey);
         this.TenantId = manywho.utils.extractTenantId(this.props.flowKey);
-
+        this.invokeurl = `${baseUrl}/api/run/1/state/${this.StateId}`;
         this.url = `${baseUrl}/api/run/1/state/${this.StateId}/values`;
         this.userurl = `${baseUrl}/api/run/1/state/${this.StateId}/values/03dc41dd-1c6b-4b33-bf61-cbd1d0778fff`;
         this.valueurl = `${baseUrl}/api/run/1/state/${this.StateId}/values/name`;
@@ -298,7 +238,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
     // it can go down levels like val.attribute.subval etc
     // NOTE: there's a good chance timing wise that there are no fields yet
     // so we just return value if any errors are encountered like val === null
-    async calculateValue( value: string): Promise<string> {
+    calculateValue( value: string): string {
         // is it replaceable?  starts and ends with {{}}
         if (value.startsWith('{{') && value.endsWith('}}')) {
             // value points to a field, get it's value
@@ -314,9 +254,9 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
             for (let pos = 0 ; pos < strippedBits.length ; pos++) {
                 // pos 0 will set val for any child elements
                 if (pos === 0) {
-                    if(!this.fields[strippedBits[pos]]) {
-                        await this.loadValue(strippedBits[pos]);
-                    }
+                    //if(!this.fields[strippedBits[pos]]) {
+                    //    await this.loadValue(strippedBits[pos]);
+                    //}
                     val = this.fields[strippedBits[pos]];
                     if (!val) {
                         console.log('The Value [' + strippedBits[pos] + '] was not found, have you included it in your flow');
@@ -350,7 +290,16 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
         }
     }
 
-    onDone(xhr: XMLHttpRequest, request: any) {
+    async onDone(xhr: XMLHttpRequest, request: any) {
+        //this handles the new subflow concept.
+        //the flow could have moved to a sub flow and if so we need to reload all data
+        if ((xhr as any).invokeType === 'FORWARD') {
+            manywho.model.parseEngineResponse(xhr, this.flowKey);
+            this.loadModel();
+            this.loadAttributes();
+            this.loadOutcomes();
+            await this.preserveState();
+        }
         if((manywho as any).eventManager.outcomeBeingTriggered && (manywho as any).eventManager.outcomeBeingTriggered.attributes) {
             
             const outcome: FlowOutcome = (manywho as any).eventManager.outcomeBeingTriggered;
@@ -417,6 +366,17 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
         (manywho as any).eventManager.addBeforeSendListener(this.onBeforeSend,this.componentId + "_core");
 
         // preserve state
+        await this.preserveState();
+
+        this.LoadingState = eLoadingState.mounted;
+        manywho.utils.removeLoadingIndicator('loader');
+        return Promise.resolve();
+
+    }
+
+    async preserveState() {
+        this.LoadingState = eLoadingState.mounting;
+
         const flowModel = manywho.model.getComponent(this.ComponentId, this.FlowKey);
         const flowState = manywho.state.getComponent(this.componentId, this.flowKey) || {};
 
@@ -451,11 +411,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
                 await this.setStateValue(flowModel.contentValue,true);
                 break;
         }
-
         this.LoadingState = eLoadingState.mounted;
-        manywho.utils.removeLoadingIndicator('loader');
-        return Promise.resolve();
-
     }
 
     async componentWillUnmount(): Promise<void> {
@@ -558,8 +514,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
     async loadValue(valueName: string): Promise<void> {
         this.LoadingState = eLoadingState.loading;
 
-
-        const value: any = manywho.connection.request(this, "", this.valueurl + "/" + valueName , 'GET', this.TenantId, this.StateId, manywho.state.getAuthenticationToken(this.FlowKey), {});
+        const value: any = await this.callRequestOld(this.valueurl + "/" + valueName,'GET',{});
         if(value) {
             this.Fields[value.developerName] = new FlowField(value); 
         }
@@ -583,14 +538,14 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
     }
 
     
-    async callRequest(url: string, method: string, data: any, authenticationToken: string): Promise<any> {
+    async callRequest(url: string, method: string, data: any): Promise<any> {
         const results: any = [];
         const request: RequestInit = {};
 
         request.method = method;  
         request.headers = {
             "Content-Type": "application/json",
-            "Authorization": authenticationToken,
+            "Authorization": this.authenticationToken,
             "ManyWhoTenant": this.tenantId
         };
         request.credentials= "same-origin";
@@ -623,14 +578,14 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
 
     async callRequestOld( url: string, method: string, data: any): Promise<any> {
         let output: any;
-        const xhr = await manywho.connection.request(this, null, url , method, this.TenantId, this.StateId, manywho.state.getAuthenticationToken(this.FlowKey), null)
+        const xhr = await manywho.connection.request(this, null, url , method, this.TenantId, this.StateId, manywho.state.getAuthenticationToken(this.FlowKey), data)
 
         return xhr;
     }
 
-    async loadValues(): Promise<void> {
+    async loadAllValues(): Promise<void> {
         this.LoadingState = eLoadingState.loading;
-        this.Fields = {}
+        this.Fields = {};
         const values: any = await this.callRequestOld(this.url,'GET',{});
 
         ((values as Array<IFlowStateValue>) || []).map((value: IFlowStateValue) => {
@@ -669,7 +624,32 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
         return Promise.resolve();
     }
 
-    async dontLoadValues(): Promise<void> {
+    async dontLoadAllValues(): Promise<void> {
+        this.LoadingState = eLoadingState.loading;
+        const userval = await this.callRequestOld(this.userurl,'GET',{});
+        //manywho.connection.request(this, "", this.userurl , 'GET', this.TenantId, this.StateId, manywho.state.getAuthenticationToken(this.FlowKey), {});
+        if(userval) {
+            const u = new FlowField(userval);
+            const props = (u.value as FlowObjectData).properties;
+    
+            this.User = {
+                directoryId: props['Directory Id'].value as string,
+                directoryName: props['Directory Name'].value as string,
+                email: props['Email'].value as string || 'mark',
+                firstName: props['First Name'].value as string,
+                groupId: props['Primary Group Id'].value as string,
+                groupName: props['Primary Group Name'].value as string,
+                id: props['User ID'].value as string,
+                ipAddress: props['IP Address'].value as string,
+                language: props['Language'].value as string,
+                lastName: props['Last Name'].value as string,
+                location: props['Location'].value as string,
+                roleId: props['Role Id'].value as string,
+                roleName: props['Role Name'].value as string,
+                status: props['Status'].value as string,
+                userName: props['Username'].value as string,
+            };
+        }
         this.LoadingState = eLoadingState.ready;
         return Promise.resolve();
     }
@@ -797,8 +777,8 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
             }
         }
         
-
-        await manywho.connection.request(this, null, this.url , 'POST', this.TenantId, this.StateId, manywho.state.getAuthenticationToken(this.FlowKey), updateFields);
+        await this.callRequestOld(this.url,'POST',updateFields);
+        //await manywho.connection.request(this, null, this.url , 'POST', this.TenantId, this.StateId, manywho.state.getAuthenticationToken(this.FlowKey), updateFields);
         //manywho.component.handleEvent(this,manywho.model.getComponent(this.ComponentId,this.FlowKey),this.FlowKey,null);
         //await manywho.engine.sync(this.flowKey);
 
@@ -821,9 +801,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
         }
     };
     
-    
-
-    
+        
     //triggers the specified outcome, optionally passes a data object 
     async triggerOutcome(outcomeName: string, data?: IFlowObjectData[]): Promise<void> {
         this.LoadingState = eLoadingState.moving;
@@ -849,24 +827,34 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
     //triggers the specified outcome, optionally passes a data object 
     async moveTo(flowElementId: string, data?: IFlowObjectData[]): Promise<void> {
         this.LoadingState = eLoadingState.moving;
-        //this.forceUpdate();
+        
+        const baseUrl = manywho.settings.global('platform.uri') || window.location.origin || 'https://flow.manywho.com';
+        const invokeurl = `${baseUrl}/api/run/1/state/${this.stateId}`;
 
-        if (!data) {
-            data = [];
-        }
-        /*
-        let oc: any;
-        if (this.outcomes[outcomeName]) {
-            oc = this.outcomes[outcomeName].iFlowOutcome();
-        }
+        const info = manywho.state.getState(this.flowKey);
+         ///  api/run/1/state/{stateId}
+        const request: any = {};
+        request.currentMapElementId = info.currentMapElementId;
+        request.invokeType = 'NAVIGATE';
+        request.mapElementInvokeRequest = {};
+        request.mapElementInvokeRequest.selectedOutcomeId = null;
+        request.pageRequest = {
+            pageComponentInputResponses: [
+              { pageComponentId: this.componentId, contentValue: null, objectData: null},
+            ],
+        };
+        request.selectedMapElementId = flowElementId;
+        request.stateId = this.stateId;
+        request.stateToken = info.token;
 
-        if (oc) {
-            await manywho.component.onOutcome(oc, data, this.FlowKey);
-        } else {
-            this.log('Could not find outcome ' + outcomeName);
-        }
-        */
+        const resp: any = await manywho.connection.request(this, null, invokeurl , 'POST', this.tenantId, this.stateId, manywho.state.getAuthenticationToken(this.flowKey), request);
+
+        manywho.model.parseEngineResponse(resp, this.flowKey);
+
+        await manywho.engine.render(this.flowKey);
+
         return Promise.resolve();
+
     }
 
     log(message: string) {
@@ -912,7 +900,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
         if(message && message.action ) {
             switch (message.action.toUpperCase()) {
                 case 'REFRESH_FIELDS':
-                    await this.loadValues();
+                    await this.loadAllValues();
                     break;
                 
                 case 'REFRESH_FIELD':
@@ -938,7 +926,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
                         break;
                     
                     case 'REFRESH_FIELDS':
-                            await this.loadValues();
+                            await this.loadAllValues();
                             break;
                     
                     case 'REFRESH_FIELD':

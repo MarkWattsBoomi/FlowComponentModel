@@ -5,5 +5,7 @@ export default class IconPicker extends React.Component<any, any> {
     selectedItem: string;
     onchange(e: any): void;
     constructor(props: any);
+    addIcons(): void;
+    addIcon(name: string, label: string): void;
     render(): JSX.Element;
 }
