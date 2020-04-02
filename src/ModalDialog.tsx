@@ -1,6 +1,6 @@
 import * as React from 'react';
 
-import './css/ModalDialog.css';
+import './ModalDialog.css';
 
 export class modalDialogButton {
   label: string;
