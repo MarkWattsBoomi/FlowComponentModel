@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './css/ModalDialog.css';
+import './ModalDialog.css';
 export declare class modalDialogButton {
     label: string;
     handler: any;

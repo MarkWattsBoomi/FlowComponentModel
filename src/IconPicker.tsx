@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './css/IconPicker.css';
+import './IconPicker.css';
 
 // Declaration of the component as React Class Component
 export default class IconPicker extends React.Component<any, any> {
