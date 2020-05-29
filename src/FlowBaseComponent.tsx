@@ -511,7 +511,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
         }
     }
 
-    async loadValue(valueName: string): Promise<void> {
+    async loadValue(valueName: string): Promise<FlowField> {
         this.LoadingState = eLoadingState.loading;
 
         const value: any = await this.callRequestOld(this.valueurl + "/" + valueName,'GET',{});
@@ -521,7 +521,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
 
         this.LoadingState = eLoadingState.ready;
 
-        return Promise.resolve();
+        return this.Fields[value.developerName];
     }
 
     async getResultBodyText(response: any) : Promise<string> {

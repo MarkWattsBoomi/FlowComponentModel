@@ -104,7 +104,7 @@ export declare class FlowBaseComponent extends React.Component<any, any, any> {
     getOutcomeById(outcomeId: string): FlowOutcome | undefined;
     loadAttributes(): void;
     loadModel(): void;
-    loadValue(valueName: string): Promise<void>;
+    loadValue(valueName: string): Promise<FlowField>;
     getResultBodyText(response: any): Promise<string>;
     callRequest(url: string, method: string, data: any): Promise<any>;
     callRequestOld(url: string, method: string, data: any): Promise<any>;
