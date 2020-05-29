@@ -461,11 +461,13 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
 
     loadAttributes() {
         const model = manywho.model.getComponent(this.ComponentId, this.FlowKey);
-        // add the attributes
-        const attrs = model.attributes;
-        if (attrs) {
-            for (const key of Object.keys(attrs)) {
-                this.Attributes[key] = new FlowAttribute(key, attrs[key]);
+        if(model) {
+            // add the attributes
+            const attrs = model.attributes;
+            if (attrs) {
+                for (const key of Object.keys(attrs)) {
+                    this.Attributes[key] = new FlowAttribute(key, attrs[key]);
+                }
             }
         }
     }
