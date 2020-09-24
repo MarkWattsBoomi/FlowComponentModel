@@ -70,27 +70,27 @@ export declare class FlowBaseComponent extends React.Component<any, any, any> {
     private Outcomes;
     private Model?;
     private IsDesignTime;
-    readonly tenantId: string;
-    readonly stateId: string;
-    readonly flowKey: string;
-    readonly componentId: string;
-    readonly parentId: string | undefined;
-    readonly isReady: boolean;
-    readonly loadingState: eLoadingState;
-    readonly outcomes: {
+    get tenantId(): string;
+    get stateId(): string;
+    get flowKey(): string;
+    get componentId(): string;
+    get parentId(): string | undefined;
+    get isReady(): boolean;
+    get loadingState(): eLoadingState;
+    get outcomes(): {
         [key: string]: FlowOutcome;
     } | undefined;
-    readonly attributes: {
+    get attributes(): {
         [key: string]: FlowAttribute;
     } | undefined;
-    readonly fields: {
+    get fields(): {
         [key: string]: FlowField;
     } | undefined;
-    readonly model: IFlowModel | undefined;
-    readonly user: IFlowUser | undefined;
-    readonly joinURI: string;
-    readonly isDesignTime: boolean;
-    readonly authenticationToken: string;
+    get model(): IFlowModel | undefined;
+    get user(): IFlowUser | undefined;
+    get joinURI(): string;
+    get isDesignTime(): boolean;
+    get authenticationToken(): string;
     getAttribute(attributeName: string, defaultValue?: string): string;
     constructor(props: any);
     onBeforeSend(xhr: XMLHttpRequest, request: any): void;

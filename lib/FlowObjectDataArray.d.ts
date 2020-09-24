@@ -6,7 +6,7 @@ export declare enum eSortOrder {
 }
 export declare class FlowObjectDataArray {
     private Items;
-    readonly items: FlowObjectData[];
+    get items(): FlowObjectData[];
     sort(order: eSortOrder, fieldName?: string): FlowObjectData[];
     constructor(array?: IFlowObjectData[]);
     addItem(item: FlowObjectData): void;
