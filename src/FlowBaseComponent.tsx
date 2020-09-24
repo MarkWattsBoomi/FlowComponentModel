@@ -391,7 +391,8 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
                         objectData = flowModel.objectData[0];
                     }
                     else {
-                        objectData = {};
+                        this.LoadingState = eLoadingState.mounted;
+                        return Promise.resolve();
                     }
                 }
                 objectData = JSON.parse(JSON.stringify(objectData));
