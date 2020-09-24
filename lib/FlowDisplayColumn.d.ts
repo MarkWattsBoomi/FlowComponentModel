@@ -23,16 +23,16 @@ export declare class FlowDisplayColumn {
     private TypeElementPropertyId;
     private TypeElememtPropertyToDisplayId;
     private Column;
-    get componentType(): string;
-    get contentFormat(): string;
-    get contentType(): eContentType;
-    get developerName(): string;
-    get visible(): boolean;
-    get readOnly(): boolean;
-    get label(): string;
-    get displayOrder(): number;
-    get typeElementPropertyId(): string;
-    get typeElememtPropertyToDisplayId(): string;
+    readonly componentType: string;
+    readonly contentFormat: string;
+    readonly contentType: eContentType;
+    readonly developerName: string;
+    readonly visible: boolean;
+    readonly readOnly: boolean;
+    readonly label: string;
+    readonly displayOrder: number;
+    readonly typeElementPropertyId: string;
+    readonly typeElememtPropertyToDisplayId: string;
     constructor(column: IFlowDisplayColumn);
     iFlowDisplayColumn(): IFlowDisplayColumn;
 }

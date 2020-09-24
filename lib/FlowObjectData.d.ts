@@ -16,19 +16,13 @@ export declare class FlowObjectData {
     private Order;
     private TypeElementId;
     private Properties;
-    get developerName(): string;
-    set developerName(developerName: string);
-    get externalId(): string;
-    set externalId(externalId: string);
-    get internalId(): string;
-    set internalId(internalId: string);
-    get isSelected(): boolean;
-    set isSelected(isSelected: boolean);
-    get order(): number;
-    set order(order: number);
-    get typeElementId(): string;
-    set typeElementId(typeElementId: string);
-    get properties(): {
+    developerName: string;
+    externalId: string;
+    internalId: string;
+    isSelected: boolean;
+    order: number;
+    typeElementId: string;
+    readonly properties: {
         [key: string]: FlowObjectDataProperty;
     };
     constructor(data?: IFlowObjectData[]);

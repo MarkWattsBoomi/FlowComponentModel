@@ -1,7 +1,7 @@
 export declare class FlowAttribute {
     private Name;
     private Value;
-    get name(): string;
-    get value(): string;
+    readonly name: string;
+    readonly value: string;
     constructor(name: string, value: string);
 }

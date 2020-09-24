@@ -52,16 +52,16 @@ export declare class FlowOutcome {
     private PageActionType;
     private PageObjectBindingId;
     private Outcome;
-    get developerName(): string;
-    get id(): string;
-    get isBulkAction(): boolean;
-    get isOut(): boolean;
-    get label(): string;
-    get order(): number;
-    get pageActionBindingType(): ePageActionBindingType;
-    get pageActionType(): ePageActionType;
-    get pageObjectBindingId(): string;
-    get attributes(): {
+    readonly developerName: string;
+    readonly id: string;
+    readonly isBulkAction: boolean;
+    readonly isOut: boolean;
+    readonly label: string;
+    readonly order: number;
+    readonly pageActionBindingType: ePageActionBindingType;
+    readonly pageActionType: ePageActionType;
+    readonly pageObjectBindingId: string;
+    readonly attributes: {
         [key: string]: FlowAttribute;
     };
     constructor(outcome: IFlowOutcome);

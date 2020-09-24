@@ -387,7 +387,12 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
                     objectData = flowState.objectData[0];
                 }
                 else {
-                    objectData = flowModel.objectData[0];
+                    if(flowModel.objectData && flowModel.objectData[0]) {
+                        objectData = flowModel.objectData[0];
+                    }
+                    else {
+                        objectData = {};
+                    }
                 }
                 objectData = JSON.parse(JSON.stringify(objectData));
                 let od: FlowObjectData  = new FlowObjectData([objectData]);
@@ -830,7 +835,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
     async moveTo(flowElementId: string, data?: IFlowObjectData[]): Promise<void> {
         this.LoadingState = eLoadingState.moving;
         
-        const baseUrl = manywho.settings.global('platform.uri') || window.location.origin || 'https://flow.manywho.com';
+        const baseUrl = "";  //manywho.settings.global('platform.uri') || window.location.origin || 'https://flow.manywho.com';
         const invokeurl = `${baseUrl}/api/run/1/state/${this.stateId}`;
 
         const info = manywho.state.getState(this.flowKey);
