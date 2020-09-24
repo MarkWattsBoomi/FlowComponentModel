@@ -201,7 +201,10 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
         this.loadAttributes();
         this.loadOutcomes();
 
-        const baseUrl = manywho.settings.global('platform.uri') || window.location.origin || 'https://flow.manywho.com';
+        let baseUrl: string = "";
+        if((!manywho.settings.global('platform.uri')) && (manywho.settings.global('platform.uri').length <= 0)) {
+            baseUrl = window.location.origin || 'https://flow.manywho.com';
+        } 
         this.StateId = manywho.utils.extractStateId(this.props.flowKey);
         this.TenantId = manywho.utils.extractTenantId(this.props.flowKey);
         this.invokeurl = `${baseUrl}/api/run/1/state/${this.StateId}`;
