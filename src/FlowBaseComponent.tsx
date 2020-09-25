@@ -382,43 +382,44 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
 
         const flowModel = manywho.model.getComponent(this.ComponentId, this.FlowKey);
         const flowState = manywho.state.getComponent(this.componentId, this.flowKey) || {};
-
-        switch (flowModel.contentType) {
-            case 'ContentObject':
-                let objectData: any;
-                if (flowState.objectData && flowState.objectData[0] && flowState.objectData[0].properties.length > 0) {
-                    objectData = flowState.objectData[0];
-                }
-                else {
-                    if(flowModel.objectData && flowModel.objectData[0]) {
-                        objectData = flowModel.objectData[0];
+        if(flowModel){
+            switch (flowModel.contentType) {
+                case 'ContentObject':
+                    let objectData: any;
+                    if (flowState.objectData && flowState.objectData[0] && flowState.objectData[0].properties.length > 0) {
+                        objectData = flowState.objectData[0];
                     }
                     else {
-                        this.LoadingState = eLoadingState.mounted;
-                        return Promise.resolve();
+                        if(flowModel.objectData && flowModel.objectData[0]) {
+                            objectData = flowModel.objectData[0];
+                        }
+                        else {
+                            this.LoadingState = eLoadingState.mounted;
+                            return Promise.resolve();
+                        }
                     }
-                }
-                objectData = JSON.parse(JSON.stringify(objectData));
-                let od: FlowObjectData  = new FlowObjectData([objectData]);
-                await this.setStateValue(od,true);
-                break;
+                    objectData = JSON.parse(JSON.stringify(objectData));
+                    let od: FlowObjectData  = new FlowObjectData([objectData]);
+                    await this.setStateValue(od,true);
+                    break;
 
-            case 'ContentList':
-                let listData: any;
-                if (flowState.objectData && flowState.objectData.length > 0) {
-                    listData = flowState.objectData;                
-                }
-                else {
-                    listData = flowModel.objectData
-                }
-                listData = JSON.parse(JSON.stringify(listData));
-                await this.setStateValue(new FlowObjectDataArray(listData),true);
+                case 'ContentList':
+                    let listData: any;
+                    if (flowState.objectData && flowState.objectData.length > 0) {
+                        listData = flowState.objectData;                
+                    }
+                    else {
+                        listData = flowModel.objectData
+                    }
+                    listData = JSON.parse(JSON.stringify(listData));
+                    await this.setStateValue(new FlowObjectDataArray(listData),true);
 
-                break;
+                    break;
 
-            default:
-                await this.setStateValue(flowModel.contentValue,true);
-                break;
+                default:
+                    await this.setStateValue(flowModel.contentValue,true);
+                    break;
+            }
         }
         this.LoadingState = eLoadingState.mounted;
     }
