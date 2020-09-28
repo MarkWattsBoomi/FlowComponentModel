@@ -185,6 +185,7 @@ export class ModalDialog extends React.Component<any, any> {
         onMouseMove={(e) => {this.onMouseMove(e)}}
         onMouseUp={(e) => {this.onMouseUp(e)}}
         onMouseDown={(e) => {this.handleOutsideClick(e)}}
+        onContextMenu={e => {e.preventDefault(); e.stopPropagation();if(this.props.onContextMenu){this.props.onContextMenu()}}}
       >
         <div 
           style={style}
