@@ -669,20 +669,25 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
         return Promise.resolve();
     }
 
-    getStateValue(): string | boolean | number | Date | FlowObjectData | FlowObjectDataArray {
+    getStateValue(): string | boolean | number | Date | FlowObjectData | FlowObjectDataArray | undefined {
         const flowState = manywho.state.getComponent(this.componentId, this.flowKey) || {};
         const flowModel = manywho.model.getComponent(this.ComponentId, this.FlowKey);
-        switch (flowModel.contentType) {
-            case 'ContentObject':
-                return flowState.objectData && flowState.objectData[0] && flowState.objectData[0].properties.length > 0? new FlowObjectData([flowState.objectData[0]]) : new FlowObjectData(flowModel.objectData);
+        if(flowModel) {
+            switch (flowModel.contentType) {
+                case 'ContentObject':
+                    return flowState.objectData && flowState.objectData[0] && flowState.objectData[0].properties.length > 0? new FlowObjectData([flowState.objectData[0]]) : new FlowObjectData(flowModel.objectData);
 
-            case 'ContentList':
-                return new FlowObjectDataArray(flowState.objectData? flowState.objectData : []);
-                break;
+                case 'ContentList':
+                    return new FlowObjectDataArray(flowState.objectData? flowState.objectData : []);
+                    break;
 
-            default:
-                return flowState.contentValue? flowState.contentValue : "";
-                break;
+                default:
+                    return flowState.contentValue? flowState.contentValue : "";
+                    break;
+            }
+        }
+        else {
+            return undefined;
         }
     }
 

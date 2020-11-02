@@ -110,7 +110,7 @@ export declare class FlowBaseComponent extends React.Component<any, any, any> {
     callRequestOld(url: string, method: string, data: any): Promise<any>;
     loadAllValues(): Promise<void>;
     dontLoadAllValues(): Promise<void>;
-    getStateValue(): string | boolean | number | Date | FlowObjectData | FlowObjectDataArray;
+    getStateValue(): string | boolean | number | Date | FlowObjectData | FlowObjectDataArray | undefined;
     getStateValueType(): string | boolean | number | Date | FlowObjectData | FlowObjectDataArray;
     setStateValue(value: string | boolean | number | Date | FlowObjectData | FlowObjectDataArray, ignoreState?: boolean): Promise<void>;
     eventHandled(a?: any, b?: any): void;
