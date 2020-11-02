@@ -388,19 +388,22 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
                     let objectData: any;
                     if (flowState.objectData && flowState.objectData[0] && flowState.objectData[0].properties.length > 0) {
                         objectData = flowState.objectData[0];
+                        objectData = JSON.parse(JSON.stringify(objectData));
+                        let od: FlowObjectData  = new FlowObjectData([objectData]);
+                        await this.setStateValue(od,true);
                     }
                     else {
-                        if(flowModel.objectData && flowModel.objectData[0]) {
-                            objectData = flowModel.objectData[0];
-                        }
-                        else {
+                        //if(flowModel.objectData && flowModel.objectData[0]) {
+                        //    objectData = flowModel.objectData[0];
+                        //}
+                        //else {
                             this.LoadingState = eLoadingState.mounted;
                             return Promise.resolve();
-                        }
+                       // }
                     }
-                    objectData = JSON.parse(JSON.stringify(objectData));
-                    let od: FlowObjectData  = new FlowObjectData([objectData]);
-                    await this.setStateValue(od,true);
+                    //objectData = JSON.parse(JSON.stringify(objectData));
+                    //let od: FlowObjectData  = new FlowObjectData([objectData]);
+                    //await this.setStateValue(od,true);
                     break;
 
                 case 'ContentList':
