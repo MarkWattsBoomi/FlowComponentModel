@@ -75,6 +75,9 @@ export class FlowObjectData {
             this.ExternalId = objectData.externalId;
             this.Order = objectData.order;
             this.IsSelected = objectData.isSelected;
+            if(objectData.isSelected) {
+                console.log(objectData.internalId + "is selected");
+            }
             this.TypeElementId = objectData.typeElementId;
             if(objectData.properties && objectData.properties.length > 0) {
                 for (const property of objectData.properties) {
