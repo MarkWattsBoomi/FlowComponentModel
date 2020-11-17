@@ -36,6 +36,6 @@ export declare class FlowObjectData {
     addProperty(newProperty: FlowObjectDataProperty): void;
     removeProperty(key: string): void;
     clone(newTypeName?: string): FlowObjectData;
-    iObjectData(): any;
-    iFlowObjectDataArray(): IFlowObjectData[];
+    iObjectData(selected?: boolean): any;
+    iFlowObjectDataArray(selected?: boolean): IFlowObjectData[];
 }

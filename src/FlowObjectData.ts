@@ -93,7 +93,7 @@ export class FlowObjectData {
             developerName,
             externalId : "",
             internalId : manywho.utils.guid(),
-            isSelected : true,
+            isSelected : false,
             order: 0,
             properties : [],
             typeElementId : ""
@@ -118,7 +118,7 @@ export class FlowObjectData {
         return clone;
     }
 
-    iObjectData() {
+    iObjectData(selected: boolean = false) {
 
         const props: IFlowObjectDataProperty[] = [];
 
@@ -130,7 +130,7 @@ export class FlowObjectData {
             developerName: this.developerName,
             externalId : this.externalId,
             internalId : this.internalId,
-            isSelected : this.isSelected,
+            isSelected : selected,
             order : this.order,
             properties: props,
             typeElementId: this.TypeElementId
@@ -139,9 +139,9 @@ export class FlowObjectData {
         return objectData;
     }
 
-    iFlowObjectDataArray(): IFlowObjectData[] {
+    iFlowObjectDataArray(selected: boolean = false): IFlowObjectData[] {
         const output: IFlowObjectData[] = [];
-        output.push(this.iObjectData());
+        output.push(this.iObjectData(true));
         return output;
     }
 

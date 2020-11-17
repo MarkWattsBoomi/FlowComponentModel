@@ -116,10 +116,10 @@ export class FlowObjectDataArray {
         return clone;
     }
 
-    iFlowObjectDataArray(): IFlowObjectData[] {
+    iFlowObjectDataArray(selected: boolean = false): IFlowObjectData[] {
         const output: IFlowObjectData[] = [];
         for (const od of this.Items) {
-            output.push(od.iObjectData());
+            output.push(od.iObjectData(true));
         }
         return output;
     }

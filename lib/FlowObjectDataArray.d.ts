@@ -12,8 +12,9 @@ export declare class FlowObjectDataArray {
     addItem(item: FlowObjectData): void;
     clearItems(): void;
     clone(): FlowObjectDataArray;
-    iFlowObjectDataArray(): IFlowObjectData[];
+    iFlowObjectDataArray(selected?: boolean): IFlowObjectData[];
     getItemWithPropertyName(findProperty: string, withValue: any, returnProperty: string): FlowObjectDataProperty | any;
+    getSelectedItems(): FlowObjectDataArray;
     getItemWithPropertyValue(findProperty: string, withValue: any): FlowObjectData | undefined;
     getIndexOfItemWithPropertyValue(findProperty: string, withValue: any): number;
     removeItemWithPropertyValue(findProperty: string, withValue: any): number;

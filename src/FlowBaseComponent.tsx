@@ -745,6 +745,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
                 case 'ContentObject':
                     let objectData: any = null;
                     if(value) {
+                        (value as FlowObjectData).isSelected = true;
                         objectData = (value as FlowObjectData).iFlowObjectDataArray();
                         objectData = JSON.parse(JSON.stringify(objectData));
                     }
