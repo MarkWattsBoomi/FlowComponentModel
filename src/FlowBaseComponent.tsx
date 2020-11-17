@@ -380,6 +380,8 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
     async preserveState() {
         this.LoadingState = eLoadingState.mounting;
 
+        await this.setStateValue(this.getStateValue());
+        /*
         const flowModel = manywho.model.getComponent(this.ComponentId, this.FlowKey);
         const flowState = manywho.state.getComponent(this.componentId, this.flowKey) || {};
         if(flowModel){
@@ -424,6 +426,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
                     break;
             }
         }
+        */
         this.LoadingState = eLoadingState.mounted;
     }
 
