@@ -162,7 +162,7 @@ export class FlowObjectDataArray {
     getSelectedItems(): FlowObjectDataArray{
         const results: FlowObjectDataArray = new FlowObjectDataArray();
         for (const item of this.Items) {
-            if(item.isSelected = true) {
+            if(item.isSelected === true) {
                 results.addItem(item);
             }
         }
