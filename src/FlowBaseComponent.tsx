@@ -301,7 +301,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
             this.loadModel();
             this.loadAttributes();
             this.loadOutcomes();
-            await this.preserveState();
+            //await this.preserveState();
         }
         if((manywho as any).eventManager.outcomeBeingTriggered && (manywho as any).eventManager.outcomeBeingTriggered.attributes) {
             
