@@ -675,11 +675,32 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
         if(flowModel) {
             switch (flowModel.contentType) {
                 case 'ContentObject':
-                    return flowState.objectData && flowState.objectData[0] && flowState.objectData[0].properties.length > 0? new FlowObjectData([flowState.objectData[0]]) : undefined;
+                    if(flowState.objectData && flowState.objectData[0] && flowState.objectData[0].properties.length > 0) {
+                        return new FlowObjectData([flowState.objectData[0]])
+                    }
+                    else {
+                        let selectedModelItems: FlowObjectDataArray = this.model.dataSource.getSelectedItems();
+                        if(selectedModelItems.items.length > 0) {
+                            return selectedModelItems.items[0];
+                        }
+                        else {
+                            return undefined;
+                        }
+                    }
 
                 case 'ContentList':
-                    return new FlowObjectDataArray(flowState.objectData? flowState.objectData : []);
-                    break;
+                    if(flowState.objectData && flowState.objectData.length > 0 ) {
+                        return new FlowObjectDataArray(flowState.objectData)
+                    }
+                    else {
+                        let selectedModelItems: FlowObjectDataArray = this.model.dataSource.getSelectedItems();
+                        if(selectedModelItems.items.length > 0) {
+                            return selectedModelItems;
+                        }
+                        else {
+                            return undefined;
+                        }
+                    }
 
                 default:
                     return flowState.contentValue? flowState.contentValue : "";

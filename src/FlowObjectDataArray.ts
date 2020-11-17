@@ -159,6 +159,16 @@ export class FlowObjectDataArray {
         return null;
     }
 
+    getSelectedItems(): FlowObjectDataArray{
+        const results: FlowObjectDataArray = new FlowObjectDataArray();
+        for (const item of this.Items) {
+            if(item.isSelected = true) {
+                results.addItem(item);
+            }
+        }
+        return results;
+    }
+
     getItemWithPropertyValue(findProperty: string, withValue: any): FlowObjectData | undefined {
         for (const item of this.Items) {
             if (item.properties[findProperty] && item.properties[findProperty].value != undefined) {
