@@ -2,7 +2,7 @@ import * as React from 'react';
 import './EventManager';
 import { FlowAttribute } from './FlowAttribute';
 import { FlowDisplayColumn } from './FlowDisplayColumn';
-import { FlowField } from './FlowField';
+import { FlowField, eContentType } from './FlowField';
 import { FlowObjectData, IFlowObjectData } from './FlowObjectData';
 import { FlowObjectDataArray } from './FlowObjectDataArray';
 import { FlowOutcome } from './FlowOutcome';
@@ -111,7 +111,7 @@ export declare class FlowBaseComponent extends React.Component<any, any, any> {
     loadAllValues(): Promise<void>;
     dontLoadAllValues(): Promise<void>;
     getStateValue(): string | boolean | number | Date | FlowObjectData | FlowObjectDataArray | undefined;
-    getStateValueType(): string | boolean | number | Date | FlowObjectData | FlowObjectDataArray;
+    getStateValueType(): eContentType;
     setStateValue(value: string | boolean | number | Date | FlowObjectData | FlowObjectDataArray, ignoreState?: boolean): Promise<void>;
     eventHandled(a?: any, b?: any): void;
     updateValues(values: FlowField[] | FlowField): Promise<void>;

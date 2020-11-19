@@ -118,7 +118,7 @@ export class FlowObjectData {
         return clone;
     }
 
-    iObjectData(selected: boolean = false) {
+    iObjectData(selected?: boolean) {
 
         const props: IFlowObjectDataProperty[] = [];
 
@@ -130,7 +130,7 @@ export class FlowObjectData {
             developerName: this.developerName,
             externalId : this.externalId,
             internalId : this.internalId,
-            isSelected : selected,
+            isSelected : selected || this.isSelected,
             order : this.order,
             properties: props,
             typeElementId: this.TypeElementId
@@ -139,9 +139,9 @@ export class FlowObjectData {
         return objectData;
     }
 
-    iFlowObjectDataArray(selected: boolean = false): IFlowObjectData[] {
+    iFlowObjectDataArray(selected?: boolean): IFlowObjectData[] {
         const output: IFlowObjectData[] = [];
-        output.push(this.iObjectData(true));
+        output.push(this.iObjectData(selected));
         return output;
     }
 

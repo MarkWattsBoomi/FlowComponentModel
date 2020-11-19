@@ -715,21 +715,10 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
         }
     }
 
-    getStateValueType(): string | boolean | number | Date | FlowObjectData | FlowObjectDataArray {
-        const flowState = manywho.state.getComponent(this.componentId, this.flowKey) || {};
+    getStateValueType(): eContentType {
         const flowModel = manywho.model.getComponent(this.ComponentId, this.FlowKey);
-        switch (flowModel.contentType) {
-            case 'ContentObject':
-                return new FlowObjectData([flowState.objectData && flowState.objectData[0]? flowState.objectData[0] : flowModel.objectData[0]]);
-
-            case 'ContentList':
-                return new FlowObjectDataArray(flowState.objectData? flowState.objectData : flowModel.objectData);
-                break;
-
-            default:
-                return flowState.contentValue? flowState.contentValue : "" ;
-                break;
-        }
+        let ct: string = flowModel.contentType as string;
+        return eContentType[ct as keyof typeof eContentType];
     }
 
 
