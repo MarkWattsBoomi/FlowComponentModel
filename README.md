@@ -72,7 +72,7 @@ Both componets give you access directly to: -
     
 ## Getting started
 
-run "npm install -s flow-component-model"
+run "npm install -s flow-component-model@latest"
 
 Create a new component tsx file and set your class to extend one of the library's base class: -
 
@@ -137,6 +137,39 @@ this.outcomes.MyOutcome or this.outcomes["MyOutcome"] is a FlowOutcome object.
 
 Outcomes can be triggered calling this.triggerOutcome(outcomeName).
 
+
+# Flow Movement Events
+
+When an outcome is triggered and Flow re-delivers the page, if your component wasn't destroyed because the same page is being displayed then your component will not know that its data might have changed.
+
+To work around this an event manager has been implemented to notify your component.
+
+There are 3 events for beforeSend, done & error
+
+You need to attach a handler to get these events and to detach it when your component will unmount.
+
+All 3 are optional.
+
+```
+async componentDidMount() {
+    await super.componentDidMount();
+    (manywho as any).eventManager.addDoneListener(this.flowMoved, this.componentId);
+    (manywho as any).eventManager.addBeforeSendListener(this.flowMoved, this.componentId);
+    (manywho as any).eventManager.addFailListener(this.flowMoved, this.componentId);
+}
+
+async flowMoved(xhr: XMLHttpRequest, request: any) {
+    ... do whatever
+}
+
+async componentWillUnmount() {
+    await super.componentWillUnmount();
+    (manywho as any).eventManager.removeBeforeSendListener(this.componentId);
+    (manywho as any).eventManager.removeDoneListener(this.componentId);
+    (manywho as any).eventManager.removeFailListener(this.componentId);
+}
+
+```
 
 # Classes
 
