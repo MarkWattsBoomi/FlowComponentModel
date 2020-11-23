@@ -44,6 +44,7 @@ interface IFlowUser {
 
 interface IFlowModel {
     contentType: string;
+    content: string;
     dataSource: FlowObjectDataArray;
     developerName: string;
     enabled: boolean;
@@ -493,6 +494,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
         if (model) {
             this.Model = {
                 contentType: model.contentType,
+                content: model.content,
                 dataSource:  new FlowObjectDataArray([]),
                 developerName: model.developerName,
                 displayColumns: [],

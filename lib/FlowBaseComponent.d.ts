@@ -25,6 +25,7 @@ interface IFlowUser {
 }
 interface IFlowModel {
     contentType: string;
+    content: string;
     dataSource: FlowObjectDataArray;
     developerName: string;
     enabled: boolean;
