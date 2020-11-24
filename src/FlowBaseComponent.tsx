@@ -734,42 +734,43 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
             const flowState = manywho.state.getComponent(this.componentId, this.flowKey) || {};
             let newState: any;
 
-            
-            switch (flowModel.contentType) {
-                case 'ContentObject':
-                    let objectData: any = null;
-                    if(value) {
-                        (value as FlowObjectData).isSelected = true;
-                        objectData = (value as FlowObjectData).iFlowObjectDataArray();
-                        objectData = JSON.parse(JSON.stringify(objectData));
-                    }
-                    newState = { "objectData": objectData };
-                    //newState = { objectData };
-                    manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
-                    break;
+            if(flowModel){
+                switch (flowModel.contentType) {
+                    case 'ContentObject':
+                        let objectData: any = null;
+                        if(value) {
+                            (value as FlowObjectData).isSelected = true;
+                            objectData = (value as FlowObjectData).iFlowObjectDataArray();
+                            objectData = JSON.parse(JSON.stringify(objectData));
+                        }
+                        newState = { "objectData": objectData };
+                        //newState = { objectData };
+                        manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
+                        break;
 
-                case 'ContentList':
-                    let objectDataArray: any = null;
-                    if(value) {
-                        objectDataArray = (value as FlowObjectDataArray).iFlowObjectDataArray();
-                        objectDataArray = JSON.parse(JSON.stringify(objectDataArray));
-                    }
-                    newState = { "objectData": objectDataArray };
-                    manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
-                    break;
+                    case 'ContentList':
+                        let objectDataArray: any = null;
+                        if(value) {
+                            objectDataArray = (value as FlowObjectDataArray).iFlowObjectDataArray();
+                            objectDataArray = JSON.parse(JSON.stringify(objectDataArray));
+                        }
+                        newState = { "objectData": objectDataArray };
+                        manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
+                        break;
 
-                case 'ContentDate':
-                    newState = { "contentValue": (value as Date).toISOString() };
-                    manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
-                    //flowState.contentValue = (value as Date).toISOString();
-                    break;
+                    case 'ContentDate':
+                        newState = { "contentValue": (value as Date).toISOString() };
+                        manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
+                        //flowState.contentValue = (value as Date).toISOString();
+                        break;
 
-                default:
-                    newState = { "contentValue": value };
-                    manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
-                    //flowState.contentValue = value as string;
-                    break;
+                    default:
+                        newState = { "contentValue": value };
+                        manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
+                        //flowState.contentValue = value as string;
+                        break;
 
+                }
             }
 
             this.LoadingState = oldState;
