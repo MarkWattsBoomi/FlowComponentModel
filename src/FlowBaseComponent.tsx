@@ -927,28 +927,30 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
     //this will get triggered by the collaboration engine
     async componentDidUpdate(): Promise<any> {
         const state: any = manywho.state.getComponent(this.componentId, this.flowKey) as any;
-        const message = state.message;
-        this.loadModel();
+        if(state) {
+            const message = state.message;
+            this.loadModel();
 
-        if(message) {
-            manywho.state.setComponent(this.componentId,{"message": {}} as any, this.flowKey, false);
-        }
-        //&& state.message.action === "RELOADVALUES"
-        if(message && message.action ) {
-            switch (message.action.toUpperCase()) {
-                case 'REFRESH_FIELDS':
-                    await this.loadAllValues();
-                    break;
-                
-                case 'REFRESH_FIELD':
-                    await this.loadValue(message.fieldName);
-                    break;
-
-                default:
-                    break; 
+            if(message) {
+                manywho.state.setComponent(this.componentId,{"message": {}} as any, this.flowKey, false);
             }
+            //&& state.message.action === "RELOADVALUES"
+            if(message && message.action ) {
+                switch (message.action.toUpperCase()) {
+                    case 'REFRESH_FIELDS':
+                        await this.loadAllValues();
+                        break;
+                    
+                    case 'REFRESH_FIELD':
+                        await this.loadValue(message.fieldName);
+                        break;
+
+                    default:
+                        break; 
+                }
+            }
+            return message;
         }
-        return message;
    }
 
    //this is used by other components who might want to send in a generic window message
