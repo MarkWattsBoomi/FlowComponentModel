@@ -1,6 +1,7 @@
 export * from './FlowComponent';
 export * from './FlowPage';
 export * from './ModalDialog';
+export * from './MessageBox';
 export * from './IconPicker';
 export * from './FlowBaseComponent';
 export * from './FlowAttribute';
