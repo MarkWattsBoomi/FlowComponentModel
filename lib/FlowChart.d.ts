@@ -6,7 +6,7 @@ export declare class columnDefinition {
     type: eContentType;
     constructor(developerName: string, type: eContentType);
 }
-export default class FlowChart extends FlowComponent {
+export declare class FlowChart extends FlowComponent {
     chartData: any;
     chart: any;
     columnNames: any[];
