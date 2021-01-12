@@ -9,7 +9,15 @@ import { FlowObjectData } from "./FlowObjectData";
 declare const manywho: any;
 declare const google: any;
 
-export class columnDefinition {
+export enum eFlowChartType {
+    BarChart,
+    ColumnChart,
+    GeoChart,
+    PieChart,
+    DonutChart
+}
+
+export class FlowChartColumnDefinition {
     developerName: string;
     type: eContentType;
 
@@ -25,9 +33,9 @@ export class FlowChart extends FlowBaseComponent {
     chart: any;
 
     columnNames: any[];
-    propertyNames: columnDefinition[];
+    propertyNames: FlowChartColumnDefinition[];
     options: any;
-    chartType: string;
+    chartType: eFlowChartType;
     apiKey: string = "";
 
     constructor(props: any) {
@@ -99,7 +107,7 @@ export class FlowChart extends FlowBaseComponent {
         {
             this.model.dataSource.items.forEach((item: FlowObjectData) => {
                 let values : any[] = [];
-                this.propertyNames.forEach((property: columnDefinition) => {
+                this.propertyNames.forEach((property: FlowChartColumnDefinition) => {
                     let prop: FlowObjectDataProperty = item.properties[property.developerName];
                     if(property.type === eContentType.ContentNumber) {
                         values.push(parseInt(prop.value as string));
@@ -123,27 +131,27 @@ export class FlowChart extends FlowBaseComponent {
         this.chartData = google.visualization.arrayToDataTable(dataTable);
 
         if(! this.chart) {
-            switch(this.chartType.toUpperCase()) {
-                case "BARCHART":
+            switch(this.chartType) {
+                case eFlowChartType.BarChart:
                     this.chart = new google.visualization.BarChart(
                         document.getElementById(this.componentId)
                     );
                     break;
 
-                case "COLUMNCHART":
+                case eFlowChartType.ColumnChart:
                     this.chart = new google.visualization.ColumnChart(
                         document.getElementById(this.componentId)
                     );
                     break;
 
-                case "GEOCHART":
+                case eFlowChartType.GeoChart:
                     this.chart = new google.visualization.GeoChart(
                         document.getElementById(this.componentId)
                     );
                     break;
                     
-                case "DONUTCHART":
-                case "PIECHART":
+                case eFlowChartType.PieChart:
+                case eFlowChartType.DonutChart:
                     this.chart = new google.visualization.PieChart(
                         document.getElementById(this.componentId)
                     );
