@@ -10,3 +10,4 @@ export * from './FlowObjectData';
 export * from './FlowObjectDataArray';
 export * from './FlowObjectDataProperty';
 export * from './FlowOutcome';
+export * from './FlowChart';
