@@ -1,12 +1,12 @@
 /// <reference types="react" />
-import { FlowComponent } from "./FlowComponent";
+import { FlowBaseComponent } from "./FlowBaseComponent";
 import { eContentType } from "./FlowField";
 export declare class columnDefinition {
     developerName: string;
     type: eContentType;
     constructor(developerName: string, type: eContentType);
 }
-export declare class FlowChart extends FlowComponent {
+export declare class FlowChart extends FlowBaseComponent {
     chartData: any;
     chart: any;
     columnNames: any[];

@@ -1,5 +1,5 @@
 import React = require("react");
-import { eLoadingState } from "./FlowBaseComponent";
+import { eLoadingState, FlowBaseComponent } from "./FlowBaseComponent";
 import { FlowComponent } from "./FlowComponent";
 import { FlowObjectDataProperty } from "./FlowComponentModel";
 import { eContentType } from "./FlowField";
@@ -8,8 +8,6 @@ import { FlowObjectData } from "./FlowObjectData";
 //declare const manywho: IManywho;
 declare const manywho: any;
 declare const google: any;
-
-//REPLACES custom-sector
 
 export class columnDefinition {
     developerName: string;
@@ -21,7 +19,7 @@ export class columnDefinition {
     }
 }
 
-export class FlowChart extends FlowComponent {
+export class FlowChart extends FlowBaseComponent {
 
     chartData: any;
     chart: any;
@@ -43,6 +41,7 @@ export class FlowChart extends FlowComponent {
 
     async componentDidMount() {
         await super.componentDidMount();
+        await this.dontLoadAllValues();
         (manywho as any).eventManager.addDoneListener(this.flowMoved, this.componentId);
         this.beginChartsApi();
     }
