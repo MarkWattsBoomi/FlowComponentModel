@@ -21,7 +21,7 @@ export class columnDefinition {
     }
 }
 
-export default class FlowChart extends FlowComponent {
+export class FlowChart extends FlowComponent {
 
     chartData: any;
     chart: any;
