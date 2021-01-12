@@ -5,7 +5,7 @@ You can implement a component which functions as an entire Flow page or as a com
 
 ## Overview
 
-The package contains two basic classes you can use: -
+The package contains three basic classes you can use: -
 
 ### FlowComponent
 
@@ -17,9 +17,13 @@ The FlowComponent will not automatically call getValues() on load.
 This is an extension of the FlowComponent but adds the ability to interact with every value defined in your tenant which is used by your Flow.
 The FlowPage will automatically call getValues() on load.
 
+### FlowChart
+
+This is an extension of the FlowComponent but adds the features of google charts allowing you to create a chart by simply setting the axis names and specifying which model data columns represent them.  For more complex data you can override the buildData() method.
+
 ## Features
 
-Both componets give you access directly to: -
+All componets give you access directly to: -
 
 ### Model
     contentType: string;
@@ -198,4 +202,87 @@ A wrapper to simplify the display columns in the model
 
 ## ModalDialog
 A draggable modal dialog implementation.
+
+
+# Flow Chart
+
+Basing your class on the FlowChart class simplifies creating custom charts.
+
+This call already implements all the logic to redraw the chart after a move event in flow.
+
+This is a very basic example: -
+
+'''
+
+export default class MyChart extends FlowChart {
+    constructor(props: any) {
+        super(props);
+        
+        this.chartType="BARCHART";
+        
+        this.columnNames=['', 'Immediate', '<1 year', '1-5 years','>5 years','unable to quantify or not answered', { role: 'style' }];
+        
+        this.propertyNames=[new columnDefinition("paybackPeriod",eContentType.ContentString),new columnDefinition("percent",eContentType.ContentNumber)];
+        
+        this.options = {
+            width: 1000,
+            height: 130,
+            colors:['#009688','#74ccbd','#cbf2ec','#f4f7b7','#edede8'],
+            legend: { position: 'bottom', maxLines: 3, },
+            bar: { groupheigh: '100%' },
+            isStacked: 'true'
+        };
+    }
+
+}
+manywho.component.register('MyChart', MyChart);
+
+'''
+
+## chartType
+This controls the type of google chart shown
+
+BARCHART, COLUMNCHART, GEOCHART, PIECHART, DONUTCHART
+
+
+## columnNames
+Specify an array of axis names.
+
+For stacked charts this will be the vertical axis then all the horizontal axis option names.
+
+## propertyNames
+Allows you to specify which property names in the model object data correspond to each column name.
+
+This is the default simple implementation when each model object data represents one item to be drawn on the chart.
+
+If you need to work with more complex data then this can be ommitted and the buildData() method can be overwritten
+
+## options 
+Allows you to specify the chart options as defined in the google charts API.
+
+This object is passed unmodified to the google charts api.
+
+
+## buildData
+
+overriding this function allows you full control to build the chart data.
+
+In this example we have the data spread across the first 3 items from the model, you can see that we drag the value of the "Percent" column from 1tems 0-2
+
+'''
+buildData(dataTable: any[]) {
+        if (this.model.dataSource)
+        {
+             dataTable.push(
+                [
+                    "",
+                    parseInt(this.model.dataSource.items[0].properties["Percent"].value as string), 
+                    parseInt(this.model.dataSource.items[1].properties["Percent"].value as string), 
+                    parseInt(this.model.dataSource.items[2].properties["Percent"].value as string),
+                    ""
+                ]
+            );
+            
+        }
+'''
 
