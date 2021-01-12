@@ -247,6 +247,12 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
         this.onDone = this.onDone.bind(this);
         this.calculateValue = this.calculateValue.bind(this);
 
+        this.showMessageBox = this.showMessageBox.bind(this);
+        this.hideMessageBox = this.hideMessageBox.bind(this);
+        this.showDialog = this.showDialog.bind(this);
+        this.hideDialog = this.hideDialog.bind(this);
+
+
         window.addEventListener('message', this.receiveMessage, false);
 
         this.loadModel();
