@@ -1,5 +1,5 @@
 import * as React from 'react';
-import {DragEvent,  eDragEventType } from './Dialogs/Common';
+import {DragEvent,  eDragEventType } from './Common';
 
 import './MessageBox.css';
 
