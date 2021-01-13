@@ -44,7 +44,7 @@ export class FlowChart extends FlowBaseComponent {
         this.apiLoaded = this.apiLoaded.bind(this);
         this.drawChart = this.drawChart.bind(this);
         this.flowMoved = this.flowMoved.bind(this);
-        this.apiKey = this.getAttribute("APIKey","AIzaSyCOZetch6gnehsohleYienAZVVemXg3q44");
+        this.apiKey = this.getAttribute("APIKey","");
     }
 
     async componentDidMount() {
