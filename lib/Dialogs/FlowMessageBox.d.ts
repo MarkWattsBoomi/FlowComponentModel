@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { DragEvent, modalDialogButton } from './Common';
-import './MessageBox.css';
+import './FlowMessageBox.css';
 export declare class FlowMessageBox extends React.Component<any, any> {
     dragEvent: DragEvent;
     modal: any;
