@@ -172,55 +172,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
         }
     }
 
-    msgboxVisible: boolean = false;
-    msgboxTitle: string = '';
-    msgboxButtons: any = [];
-    msgboxContent: any;
-    msgboxOnClose: any;
-
-    async showMessageBox(title: string, content: any, onClose: any, buttons: modalDialogButton[]) {
-        this.msgboxVisible = true;
-        this.msgboxTitle = title;
-        this.msgboxContent = content;
-        this.msgboxOnClose = onClose;
-        this.msgboxButtons = buttons;
-        return this.forceUpdate();
-    }
-
-    async hideMessageBox() {
-        this.msgboxVisible = false;
-        this.msgboxTitle = '';
-        this.msgboxContent = undefined;
-        this.msgboxOnClose = undefined;
-        this.msgboxButtons = [];
-        return this.forceUpdate();
-    }
-
-    dialogVisible: boolean = false;
-    dialogTitle: string = '';
-    dialogButtons: any = [];
-    dialogContent: any;
-    dialogOnClose: any;
-    dialogForm: any;
-
-    async showDialog(title: string, content: any, onClose: any, buttons: modalDialogButton[]) {
-        this.dialogVisible = true;
-        this.dialogTitle = title;
-        this.dialogContent = content;
-        this.dialogOnClose = onClose;
-        this.dialogButtons = buttons;
-        return this.forceUpdate();
-    }
-
-    async hideDialog() {
-        this.dialogVisible = false;
-        this.dialogTitle = '';
-        this.dialogContent = undefined;
-        this.dialogOnClose = undefined;
-        this.dialogButtons = [];
-        this.dialogForm = undefined;
-        return this.forceUpdate();
-    }
+    
 
     constructor(props: any) {
         super(props);
@@ -246,12 +198,6 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
         this.onBeforeSend = this.onBeforeSend.bind(this);
         this.onDone = this.onDone.bind(this);
         this.calculateValue = this.calculateValue.bind(this);
-
-        this.showMessageBox = this.showMessageBox.bind(this);
-        this.hideMessageBox = this.hideMessageBox.bind(this);
-        this.showDialog = this.showDialog.bind(this);
-        this.hideDialog = this.hideDialog.bind(this);
-
 
         window.addEventListener('message', this.receiveMessage, false);
 

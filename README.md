@@ -286,3 +286,54 @@ buildData(dataTable: any[]) {
         }
 '''
 
+# FlowMessageBox
+
+Provides a centered, draggable message box implementation.
+
+## Use
+
+Define a class level variable to hold reference to the component e.g. 
+'''
+messageBox: FlowMessageBox;
+'''
+
+In your render add the definition of a message box at the first child level, note we are having it's reference 
+saved into the class level messageBox e.g.
+
+'''
+return( 
+    <div
+        className={"xxx"}
+        style={style}
+    >
+        <FlowMessageBox
+            parent={this}
+            ref={(element: FlowMessageBox) => {this.messageBox = element}}
+        />
+    </div>
+);
+'''
+
+to show it then prep the title, content and buttons and trigger it like this : -
+
+'''
+
+let content: any = (
+    <div>
+        Some Body Text
+    <div/>
+);
+
+let buttons: modalDialogButton[] = [];
+buttons.push(new modalDialogButton("Ok",this.messageBox.hideMessageBox));
+buttons.push(new modalDialogButton("MyButton",this.myMessageBoxHandler));
+
+this.messageBox.showMessageBox("Title",content,buttons,optional handler for the top right "X" button)
+
+If you call your own button handler then remember to call hideMessageBox e.g.
+
+myMessageBoxHandler() {
+    this.messageBox.hideMessageBox();
+}
+
+'''

@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { modalDialogButton } from './Dialogs/Common';
 import './EventManager';
 import { FlowAttribute } from './FlowAttribute';
 import { FlowDisplayColumn } from './FlowDisplayColumn';
@@ -94,21 +93,6 @@ export declare class FlowBaseComponent extends React.Component<any, any, any> {
     get isDesignTime(): boolean;
     get authenticationToken(): string;
     getAttribute(attributeName: string, defaultValue?: string): string;
-    msgboxVisible: boolean;
-    msgboxTitle: string;
-    msgboxButtons: any;
-    msgboxContent: any;
-    msgboxOnClose: any;
-    showMessageBox(title: string, content: any, onClose: any, buttons: modalDialogButton[]): Promise<void>;
-    hideMessageBox(): Promise<void>;
-    dialogVisible: boolean;
-    dialogTitle: string;
-    dialogButtons: any;
-    dialogContent: any;
-    dialogOnClose: any;
-    dialogForm: any;
-    showDialog(title: string, content: any, onClose: any, buttons: modalDialogButton[]): Promise<void>;
-    hideDialog(): Promise<void>;
     constructor(props: any);
     onBeforeSend(xhr: XMLHttpRequest, request: any): void;
     calculateValue(value: string): string;

@@ -108,22 +108,19 @@ export class FlowMessageBox extends React.Component<any, any> {
             );
         }
         else {
-            const style: any = {};
-            style.left = this.left;
-            style.top = this.top;
-
+    
             const buttons: Array<JSX.Element> = [];
             for(const button of this.msgboxButtons) {
                 buttons.push(
-                <button 
-                    className="modal-dialog-button-bar-button" 
-                    title="Cancel" 
-                    onMouseDown={(e) => {e.stopPropagation();button.handler()}}
-                >
-                    {button.label}
-                </button>
-                    );
-                }
+                    <button 
+                        className="modal-dialog-button-bar-button" 
+                        title="Cancel" 
+                        onMouseDown={(e) => {e.stopPropagation();button.handler()}}
+                    >
+                        {button.label}
+                    </button>
+                );
+            }
 
 
             content = (
@@ -183,14 +180,12 @@ export class FlowMessageBox extends React.Component<any, any> {
     // include component bounding rect to allow for mouse offset into component
     const clientRect = e.target.getBoundingClientRect();
     const mouseOffsetY: number = e.clientY - clientRect.top;
-    console.log('grab dialog');
     this.dragEvent = DragEvent.start(eDragEventType.dialog, this, e.clientX - clientRect.left, mouseOffsetY);
   }
 
     onMouseMove(e: any) {
     // this.stopEventBubble(e);
     if (this.dragEvent.type === eDragEventType.dialog) {
-      console.log('move dialog');
       this.moveMe(e.clientX - this.dragEvent.mouseOffsetX, e.clientY - this.dragEvent.mouseOffsetY);
     }
   }
@@ -198,7 +193,6 @@ export class FlowMessageBox extends React.Component<any, any> {
     onMouseUp(e: any) {
     // this.stopEventBubble(e);
     if (this.dragEvent.type === eDragEventType.dialog) {
-      console.log('drop dialog');
       this.dragEvent.end(null, e.clientX, e.clientY);
     }
   }
