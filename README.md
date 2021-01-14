@@ -278,7 +278,7 @@ overriding this function allows you full control to build the chart data.
 
 In this example we have the data spread across the first 3 items from the model, you can see that we drag the value of the "Percent" column from 1tems 0-2
 
-'''
+```
 buildData(dataTable: any[]) {
         if (this.model.dataSource)
         {
@@ -293,7 +293,7 @@ buildData(dataTable: any[]) {
             );
             
         }
-'''
+```
 
 # FlowMessageBox & FlowDialogBox
 
@@ -306,15 +306,15 @@ See which works best for your use case.
 ## Use
 
 Define a class level variable to hold reference to the component e.g. 
-'''
+```
 messageBox: FlowMessageBox;
 dialogBox: FlowDialogBox;
-'''
+```
 
 In your render add the definition of a message box at the first child level, note we are having it's reference 
 saved into the class level messageBox e.g.
 
-'''
+```
 return( 
     <div
         className={"xxx"}
@@ -330,11 +330,11 @@ return(
         />
     </div>
 );
-'''
+```
 
 to show either then prep the title, content and buttons and trigger them like this : -
 
-'''
+```
 //prep display content
 let content: any = (
     <div>
@@ -362,13 +362,13 @@ myDialogBoxHandler() {
     this.dialogBox.hideDialogBox();
 }
 
-'''
+```
 
 If you want to use a custom form then define it as a react component with all it's functionality.
 
 When creating the content, create an instance of your content component like this saving the reference to your base class : -
 
-'''
+```
 let content: any = (
     <MyFormClass
         parent={this}
@@ -378,7 +378,7 @@ let content: any = (
         Some Body Text
     </MyFormClass>
 );
-'''
+```
 
 # FlowContextMenu
 
@@ -390,7 +390,7 @@ You are responsible for greating the menu items as you call its show method.
 
 Add a context menu variable to your class, implement the show function, add an element to your render functionality and attach it to your DOM : -
 
-'''
+```
 default export class MyClass extends FlowComponent {
     contextMenu: FlowContextMenu;
 
@@ -436,7 +436,7 @@ default export class MyClass extends FlowComponent {
         );
     }
 }
-'''
+```
 
 
 # Getting Started
