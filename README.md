@@ -352,8 +352,11 @@ this.dialogBox.showDialogBox("Title", content,[
                             new modalDialogButton("MyButton",this.myDialogBoxHandler))
                             ],this.dialogBox.hideDialogBox)
 
+```
+
 If you call your own button handler then remember to call hideMessageBox() or hideDialogBox() e.g.
 
+```
 myMessageBoxHandler() {
     this.messageBox.hideMessageBox();
 }
