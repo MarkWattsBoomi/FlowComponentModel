@@ -71,11 +71,18 @@ FlowPage, FlowComponent & FlowChart give you access directly to: -
     An object with all the fields defined in the Flow keyed on their developer name.
     Reload fields with the LoadValue() or LoadValues() methods and set them with the updateValues() method.
 
+    There's an asynchronous helper to get specific fields directly from Flow.  It retuirns the object and also stores it into the Fields object.
+
+    ```
+    const fld: FlowField = await this.loadValue(fieldName);
+    ```
+    
+
 ### Attributes
     An object with all the component's attributes keyed on their developer name.
 
     There's a helper methof to get an attribute if it exists and return it or the default value if not
-    
+
     ```
     attributeValue: String = this.getAttribute("attributeName",[optional default value]);
     ```
