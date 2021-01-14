@@ -74,6 +74,12 @@ FlowPage, FlowComponent & FlowChart give you access directly to: -
 ### Attributes
     An object with all the component's attributes keyed on their developer name.
 
+    There's a helper methof to get an attribute if it exists and return it or the default value if not
+    
+    ```
+    attributeValue: String = this.getAttribute("attributeName",[optional default value]);
+    ```
+
 ### Basic Values
     Various other basic values are provided: -
     TenantId: string;
