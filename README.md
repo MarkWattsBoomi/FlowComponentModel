@@ -117,13 +117,13 @@ async componentDidMount(): Promise<void>
 
 this means that if you are going to implement the componentDidMount then ensure you await the super implementation: -
 
-'''
+```
 async componentDidMount() {
     await super.componentDidMount();
     ....
 }
 
-'''
+```
 
 # Fields
 
