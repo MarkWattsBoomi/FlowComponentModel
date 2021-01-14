@@ -106,7 +106,7 @@ manywho.component.register('WorkQueues', WorkQueues);
 
 Your component will then inherit the properties and methods above: -
 
-##Note: If you extend the FlowPage class thenyour component will automatically run getValues() when it mounts and will have populated all the available outcomes, attributes and fields.
+##Note: If you extend the FlowPage class then your component will automatically run getValues() when it mounts and will have populated all the available outcomes, attributes and fields.
 
 # Asynchronous
 
@@ -442,7 +442,7 @@ default export class MyClass extends FlowComponent {
 ```
 
 
-# Getting Started
+# Quick Start Template
 
 Create a new folder to hold your project.
 
