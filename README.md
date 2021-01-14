@@ -64,6 +64,12 @@ FlowPage, FlowComponent & FlowChart give you access directly to: -
     Outcomes is an object with the outcomes keyed on the developer name.
     An outcome can be triggered using the triggerOutcome() method;
 
+    ```
+    if(this.outcomes["outcomeName"]) {
+        await this.triggerOutcome("outcomeName");
+    }
+    ```
+
 ### User
     An object containing the details of the current authenticated user if any.
 
