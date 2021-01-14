@@ -437,3 +437,19 @@ default export class MyClass extends FlowComponent {
     }
 }
 '''
+
+
+# Getting Started
+
+Create a new folder to hold your project.
+
+Grab the Template.zip file here and unzip it in your folder. 
+
+Open the folder in VS Code.
+
+In a console run "npm install".
+
+
+Run "npm run start" to execute the component in debug.
+
+Run "npm run build" to compile the component into the build folder.
