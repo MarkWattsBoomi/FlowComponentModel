@@ -286,15 +286,20 @@ buildData(dataTable: any[]) {
         }
 '''
 
-# FlowMessageBox
+# FlowMessageBox & FlowDialogBox
 
-Provides a centered, draggable message box implementation.
+Provides an initially centered, draggable message box and modal dialog implementation.
+
+The difference is the actual page structure where the message bos is intended to simply display a div, the dialog box is intended to show a more complex form.
+
+See which works best for your use case.
 
 ## Use
 
 Define a class level variable to hold reference to the component e.g. 
 '''
 messageBox: FlowMessageBox;
+dialogBox: FlowDialogBox;
 '''
 
 In your render add the definition of a message box at the first child level, note we are having it's reference 
@@ -310,18 +315,22 @@ return(
             parent={this}
             ref={(element: FlowMessageBox) => {this.messageBox = element}}
         />
+        <FlowDialogBox
+            parent={this}
+            ref={(element: FlowDialogBox) => {this.dialogBox = element}}
+        />
     </div>
 );
 '''
 
-to show it then prep the title, content and buttons and trigger it like this : -
+to show either then prep the title, content and buttons and trigger them like this : -
 
 '''
-
+//prep display content
 let content: any = (
     <div>
         Some Body Text
-    <div/>
+    </div>
 );
 
 let buttons: modalDialogButton[] = [];
@@ -329,11 +338,93 @@ buttons.push(new modalDialogButton("Ok",this.messageBox.hideMessageBox));
 buttons.push(new modalDialogButton("MyButton",this.myMessageBoxHandler));
 
 this.messageBox.showMessageBox("Title",content,buttons,optional handler for the top right "X" button)
+this.dialogBox.showDialogBox("Title", content,[
+                            new modalDialogButton("Ok",this.dialogBox.hideDialogBox)),
+                            new modalDialogButton("MyButton",this.myDialogBoxHandler))
+                            ],this.dialogBox.hideDialogBox)
 
-If you call your own button handler then remember to call hideMessageBox e.g.
+If you call your own button handler then remember to call hideMessageBox() or hideDialogBox() e.g.
 
 myMessageBoxHandler() {
     this.messageBox.hideMessageBox();
 }
 
+myDialogBoxHandler() {
+    this.dialogBox.hideDialogBox();
+}
+
+'''
+
+If you want to use a custom form then define it as a react component with all it's functionality.
+
+When creating the content, create an instance of your content component like this saving the reference to your base class : -
+
+'''
+let content: any = (
+    <MyFormClass
+        parent={this}
+        prop1={whatever}
+        ref={(element: MyFormClass) => {this.myCustomForm = element}}
+    >
+        Some Body Text
+    </MyFormClass>
+);
+'''
+
+# FlowContextMenu
+
+This will pop up a right mouse click context menu on any component
+
+You are responsible for greating the menu items as you call its show method.
+
+## Use
+
+Add a context menu variable to your class, implement the show function, add an element to your render functionality and attach it to your DOM : -
+
+'''
+default export class MyClass extends FlowComponent {
+    contextMenu: FlowContextMenu;
+
+    showContextMenu(e: any) {
+        e.preventDefault();
+        e.stopPropagation();
+        let listItems: Map<string , any> = new Map();
+
+        // add items
+        listItems.set(outcome.developerName,(
+            <li 
+                className="cm-item"
+                title={"My Menu Item - Click Me"}
+                onClick={(e: any) => {e.stopPropagation(); this.doSomething("AAA")}}
+            >
+                <span
+                    className={"glyphicon glyphicon-trash cm-item-icon"} />
+                <span
+                    className={"cm-item-label"}
+                >
+                    {"My Menu Item - Click Me"}
+                </span>
+            </li>
+        ));
+    }
+
+    this.doSomething(outcomeName: string) {
+        
+    }
+
+    render() {
+        return( 
+            <div
+                className={"xxx"}
+                style={style}
+                onContextMenu={this.showContextMenu}
+            >
+                <FlowContextMenu
+                    parent={this}
+                    ref={(element: FlowContextMenu) => {this.contextMenu}}
+                />
+            </div>
+        );
+    }
+}
 '''
