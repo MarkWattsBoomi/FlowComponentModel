@@ -21,6 +21,17 @@ The FlowPage will automatically call getValues() on load.
 
 This is an extension of the FlowComponent but adds the features of google charts allowing you to create a chart by simply setting the axis names and specifying which model data columns represent them.  For more complex data you can override the buildData() method.
 
+### FlowMessageBox & FlowDialogBox
+
+Implementations of modal popup windows to show information and present forms.
+
+### FlowContextMenu
+
+A self positioning context menu implementation allowing you to show a configurable list of clickable menu options.
+
+
+
+
 ## Features
 
 All componets give you access directly to: -
@@ -200,8 +211,6 @@ A wrapper for working with values in a flow.
 ## FlowDisplayColumn
 A wrapper to simplify the display columns in the model
 
-## ModalDialog
-A draggable modal dialog implementation.
 
 
 # Flow Chart
@@ -409,7 +418,7 @@ default export class MyClass extends FlowComponent {
     }
 
     this.doSomething(outcomeName: string) {
-        
+
     }
 
     render() {
