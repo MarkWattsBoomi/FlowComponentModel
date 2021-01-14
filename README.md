@@ -5,7 +5,7 @@ You can implement a component which functions as an entire Flow page or as a com
 
 ## Overview
 
-The package contains three basic classes you can use: -
+The package contains three basic classes you can use to create components and 3 helper classes: -
 
 ### FlowComponent
 
@@ -34,7 +34,7 @@ A self positioning context menu implementation allowing you to show a configurab
 
 ## Features
 
-All componets give you access directly to: -
+FlowPage, FlowComponent & FlowChart give you access directly to: -
 
 ### Model
     contentType: string;
