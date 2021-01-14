@@ -64,11 +64,11 @@ FlowPage, FlowComponent & FlowChart give you access directly to: -
     Outcomes is an object with the outcomes keyed on the developer name.
     An outcome can be triggered using the triggerOutcome() method;
 
-    ```
+```
     if(this.outcomes["outcomeName"]) {
         await this.triggerOutcome("outcomeName");
     }
-    ```
+```
 
 ### User
     An object containing the details of the current authenticated user if any.
@@ -79,9 +79,9 @@ FlowPage, FlowComponent & FlowChart give you access directly to: -
 
     There's an asynchronous helper to get specific fields directly from Flow.  It retuirns the object and also stores it into the Fields object.
 
-    ```
+```
     const fld: FlowField = await this.loadValue(fieldName);
-    ```
+```
     
 
 ### Attributes
@@ -89,9 +89,9 @@ FlowPage, FlowComponent & FlowChart give you access directly to: -
 
     There's a helper methof to get an attribute if it exists and return it or the default value if not
 
-    ```
+```
     attributeValue: String = this.getAttribute("attributeName",[optional default value]);
-    ```
+```
 
 ### Basic Values
     Various other basic values are provided: -
