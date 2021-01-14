@@ -221,7 +221,7 @@ This call already implements all the logic to redraw the chart after a move even
 
 This is a very basic example: -
 
-'''
+```
 
 export default class MyChart extends FlowChart {
     constructor(props: any) {
@@ -246,7 +246,7 @@ export default class MyChart extends FlowChart {
 }
 manywho.component.register('MyChart', MyChart);
 
-'''
+```
 
 ## chartType
 This controls the type of google chart shown
