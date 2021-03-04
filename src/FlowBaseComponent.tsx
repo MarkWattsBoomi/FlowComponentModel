@@ -58,6 +58,7 @@ interface IFlowModel {
     multiSelect: boolean;
     readOnly: boolean;
     required: boolean;
+    searchable: boolean;
     size: number;
     validationMessage: string;
     visible: boolean;
@@ -390,52 +391,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
         this.LoadingState = eLoadingState.mounting;
 
         await this.setStateValue(this.getStateValue());
-        /*
-        const flowModel = manywho.model.getComponent(this.ComponentId, this.FlowKey);
-        const flowState = manywho.state.getComponent(this.componentId, this.flowKey) || {};
-        if(flowModel){
-            switch (flowModel.contentType) {
-                case 'ContentObject':
-                    let objectData: any;
-                    if (flowState.objectData && flowState.objectData[0] && flowState.objectData[0].properties.length > 0) {
-                        objectData = flowState.objectData[0];
-                        objectData = JSON.parse(JSON.stringify(objectData));
-                        let od: FlowObjectData  = new FlowObjectData([objectData]);
-                        await this.setStateValue(od,true);
-                    }
-                    else {
-                        //if(flowModel.objectData && flowModel.objectData[0]) {
-                        //    objectData = flowModel.objectData[0];
-                        //}
-                        //else {
-                            this.LoadingState = eLoadingState.mounted;
-                            return Promise.resolve();
-                       // }
-                    }
-                    //objectData = JSON.parse(JSON.stringify(objectData));
-                    //let od: FlowObjectData  = new FlowObjectData([objectData]);
-                    //await this.setStateValue(od,true);
-                    break;
 
-                case 'ContentList':
-                    let listData: any;
-                    if (flowState.objectData && flowState.objectData.length > 0) {
-                        listData = flowState.objectData;                
-                    }
-                    else {
-                        listData = flowModel.objectData
-                    }
-                    listData = JSON.parse(JSON.stringify(listData));
-                    await this.setStateValue(new FlowObjectDataArray(listData),true);
-
-                    break;
-
-                default:
-                    await this.setStateValue(flowModel.contentValue,true);
-                    break;
-            }
-        }
-        */
         this.LoadingState = eLoadingState.mounted;
     }
 
@@ -516,6 +472,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
                 multiSelect:  model.isMultiSelect,
                 readOnly:  !model.isEditable,
                 required:  model.isRequired,
+                searchable: model.isSearchable,
                 size:  model.size,
                 validationMessage:  model.validationMessage,
                 visible:  model.isVisible,

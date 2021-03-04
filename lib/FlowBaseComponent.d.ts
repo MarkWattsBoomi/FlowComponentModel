@@ -38,6 +38,7 @@ interface IFlowModel {
     multiSelect: boolean;
     readOnly: boolean;
     required: boolean;
+    searchable: boolean;
     size: number;
     validationMessage: string;
     visible: boolean;
