@@ -300,12 +300,16 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
     async onDone(xhr: XMLHttpRequest, request: any) {
         //this handles the new subflow concept.
         //the flow could have moved to a sub flow and if so we need to reload all data
+        console.log("fbc onDone start " + new Date().getTime());
         if ((xhr as any).invokeType === 'FORWARD') {
+            console.log("fbc onDone forward " + new Date().getTime());
             manywho.model.parseEngineResponse(xhr, this.flowKey);
             this.loadModel();
             this.loadAttributes();
             this.loadOutcomes();
+            console.log("fbc onDone preserving " + new Date().getTime());
             await this.preserveState();
+            console.log("fbc onDone preserved " + new Date().getTime())
         }
         if((manywho as any).eventManager.outcomeBeingTriggered && (manywho as any).eventManager.outcomeBeingTriggered.attributes) {
             
@@ -360,6 +364,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
             
         }
         //turn of moving flag
+        console.log("fbc onDone end " + new Date().getTime())
         this.LoadingState = eLoadingState.ready;
         (manywho as any).eventManager.outcomeBeingTriggered = undefined;
     }
