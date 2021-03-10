@@ -521,57 +521,44 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
 
         return this.Fields[value.developerName];
     }
-
-    async getResultBodyText(response: any) : Promise<string> {
-        return response.text()
-        .then((text : string) => {
-            if(text.startsWith("\"")) {
-                text = text.substr(1);
-            }
-            if(text.endsWith("\"")) {
-                text = text.substr(0, text.length-1);
-            }
-            return text;
-        })
-    }
-
-    
+   
     async callRequest(url: string, method: string, data: any): Promise<any> {
-        const results: any = [];
+        let results: any;
         const request: RequestInit = {};
+        const token: string = manywho.state.getAuthenticationToken(this.flowKey);
 
         request.method = method;  
         request.headers = {
             "Content-Type": "application/json",
-            "Authorization": manywho.state.getAuthenticationToken(this.FlowKey),
             "ManyWhoTenant": this.tenantId
         };
+        if(token) {
+            request.headers.Authorization = token;
+        }
         request.credentials= "same-origin";
 
         if(method === "POST" || method === "PUT") {
             request.body = data;
         }
             
-        await fetch(url, request)
-        .then(async (response: any) => {
-            if(response.status === 200) {
-                const json = await this.getResultBodyText(response);
-                
-                JSON.parse(json).forEach((value : any) => {
-                    results.push(value);
-                });;
+        let response = await fetch(url, request);
+        //let body: string =  await this.getResultBodyTextxx(response);
+        if(response.status === 200) {
+            //const json = await this.getResultBodyText(response);
+            
+            results = await response.json();
 
-                console.log("Loaded Values");
-                return results;
-            }
-            else {
-                //error
-                const errorText = await this.getResultBodyText(response);
-                console.log("Can't load values - " + errorText);
-                return results;
-            }
-        });
-        
+            console.log("Fetch Complete");
+           
+        }
+        else {
+            //error
+            const errorText = await response.text();
+            console.log("Fetch Failed - " + errorText);
+            
+        }
+
+        return results;
     }
 
     async callRequestOld( url: string, method: string, data: any): Promise<any> {
