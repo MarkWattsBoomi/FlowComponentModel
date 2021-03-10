@@ -538,7 +538,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
         request.credentials= "same-origin";
 
         if(method === "POST" || method === "PUT") {
-            request.body = data;
+            request.body = JSON.stringify(data);
         }
             
         let response = await fetch(url, request);
