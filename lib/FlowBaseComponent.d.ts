@@ -109,7 +109,7 @@ export declare class FlowBaseComponent extends React.Component<any, any, any> {
     loadValue(valueName: string): Promise<FlowField>;
     loadValueNew(valueName: string): Promise<FlowField>;
     callRequest(url: string, method: string, data: any): Promise<any>;
-    callRequestOld(url: string, method: string, data: any): Promise<any>;
+    callRequestOldxx(url: string, method: string, data: any): Promise<any>;
     loadAllValues(): Promise<void>;
     dontLoadAllValues(): Promise<void>;
     getStateValue(): string | boolean | number | Date | FlowObjectData | FlowObjectDataArray | undefined;

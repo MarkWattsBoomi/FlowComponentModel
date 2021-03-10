@@ -499,7 +499,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
     async loadValue(valueName: string): Promise<FlowField> {
         this.LoadingState = eLoadingState.loading;
 
-        const value: any = await this.callRequestOld(this.valueurl + "/" + valueName,'GET',{});
+        const value: any = await this.callRequest(this.valueurl + "/" + valueName,'GET',{});
         if(value) {
             this.Fields[value.developerName] = new FlowField(value); 
         }
@@ -561,7 +561,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
         return results;
     }
 
-    async callRequestOld( url: string, method: string, data: any): Promise<any> {
+    async callRequestOldxx( url: string, method: string, data: any): Promise<any> {
         let output: any;
         const xhr = await manywho.connection.request(this, null, url , method, this.TenantId, this.StateId, manywho.state.getAuthenticationToken(this.FlowKey), data)
 
@@ -571,7 +571,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
     async loadAllValues(): Promise<void> {
         this.LoadingState = eLoadingState.loading;
         this.Fields = {};
-        const values: any = await this.callRequestOld(this.url,'GET',{});
+        const values: any = await this.callRequest(this.url,'GET',{});
 
         ((values as Array<IFlowStateValue>) || []).map((value: IFlowStateValue) => {
             if(value) {
@@ -579,7 +579,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
             }
         });
 
-        const userval = await this.callRequestOld(this.userurl,'GET',{});
+        const userval = await this.callRequest(this.userurl,'GET',{});
         //manywho.connection.request(this, "", this.userurl , 'GET', this.TenantId, this.StateId, manywho.state.getAuthenticationToken(this.FlowKey), {});
         if(userval) {
             const u = new FlowField(userval);
@@ -611,7 +611,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
 
     async dontLoadAllValues(): Promise<void> {
         this.LoadingState = eLoadingState.loading;
-        const userval = await this.callRequestOld(this.userurl,'GET',{});
+        const userval = await this.callRequest(this.userurl,'GET',{});
         //manywho.connection.request(this, "", this.userurl , 'GET', this.TenantId, this.StateId, manywho.state.getAuthenticationToken(this.FlowKey), {});
         if(userval) {
             const u = new FlowField(userval);
@@ -709,7 +709,6 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
                             objectData = JSON.parse(JSON.stringify(objectData));
                         }
                         newState = { "objectData": objectData };
-                        //newState = { objectData };
                         manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
                         break;
 
@@ -726,24 +725,18 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
                     case 'ContentDate':
                         newState = { "contentValue": (value as Date).toISOString() };
                         manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
-                        //flowState.contentValue = (value as Date).toISOString();
                         break;
 
                     default:
                         newState = { "contentValue": value };
                         manywho.state.setComponent(this.componentId, newState, this.flowKey, true);
-                        //flowState.contentValue = value as string;
                         break;
 
                 }
             }
 
             this.LoadingState = oldState;
-            
-            
 
-            //manywho.component.handleEvent(this,manywho.model.getComponent(this.ComponentId,this.FlowKey),this.FlowKey,null);
-            //await manywho.engine.sync(this.flowKey);
 
             if(manywho.collaboration.isInitialized(this.flowKey)) {
                 //manywho.collaboration.sync(this.flowKey);
@@ -754,8 +747,6 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
             
         }
 
-        //manywho.component.handleEvent(this,manywho.model.getComponent(this.componentId, this.flowKey),this.FlowKey, this.eventHandled);
-         //manywho.engine.sync(this.flowKey);
          return Promise.resolve();
     }
 
@@ -765,7 +756,6 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
 
     async updateValues(values: FlowField[] | FlowField): Promise<void> {
         this.LoadingState = eLoadingState.saving;
-        //this.forceUpdate();
 
         const updateFields: IFlowField[] = [];
 
@@ -779,11 +769,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
             }
         }
         
-        await this.callRequestOld(this.url,'POST',updateFields);
-        //await manywho.connection.request(this, null, this.url , 'POST', this.TenantId, this.StateId, manywho.state.getAuthenticationToken(this.FlowKey), updateFields);
-        //manywho.component.handleEvent(this,manywho.model.getComponent(this.ComponentId,this.FlowKey),this.FlowKey,null);
-        //await manywho.engine.sync(this.flowKey);
-
+        await this.callRequest(this.url,'POST',updateFields);
         if(manywho.collaboration.isInitialized(this.flowKey)) {
             //manywho.collaboration.sync(this.flowKey);
             updateFields.forEach((field: IFlowField) => {
