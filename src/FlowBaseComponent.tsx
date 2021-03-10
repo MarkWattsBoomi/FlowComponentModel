@@ -543,7 +543,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
         request.method = method;  
         request.headers = {
             "Content-Type": "application/json",
-            "Authorization": this.authenticationToken,
+            "Authorization": manywho.state.getAuthenticationToken(this.FlowKey),
             "ManyWhoTenant": this.tenantId
         };
         request.credentials= "same-origin";
