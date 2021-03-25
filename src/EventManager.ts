@@ -62,6 +62,16 @@ if (!(manywho as any).eventManager) {
             done: (manywho as any).eventManager.done,
             fail: (manywho as any).eventManager.fail,
         },
+        initialization: {
+            beforeSend: (manywho as any).eventManager.beforeSend,
+            done: (manywho as any).eventManager.done,
+            fail: (manywho as any).eventManager.fail,
+        },
+        join: {
+            beforeSend: (manywho as any).eventManager.beforeSend,
+            done: (manywho as any).eventManager.done,
+            fail: (manywho as any).eventManager.fail,
+        },
     });
 }
 
