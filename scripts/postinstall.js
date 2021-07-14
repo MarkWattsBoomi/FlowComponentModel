@@ -82,7 +82,14 @@ if(!fs.existsSync("./package.json")){
 }
 else {
     try {
-        package = JSON.parse(fs.readFileSync("./package.json"));
+        let buffer = fs.readFileSync("./package.json");
+        if(!buffer) {
+            console.log("no bufer");
+        }
+        else {
+            console.log("buffer=" + buffer.toString());
+        }
+        package = JSON.parse(buffer);
         if(!package.dependencies) {
             package.dependencies = {};
         }
