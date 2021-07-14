@@ -1,41 +1,39 @@
 const fs = require('fs');
-console.log("Checking Project Setup $INIT_CWD" + $INIT_CWD);
+let dir = process.env.INIT_CWD;
+console.log("Checking Project Setup " + dir);
 
 /// tsconfig.json file
 console.log("Validating tsconfig.json");
-if(!fs.existsSync("./tsconfig.json")){
+if(!fs.existsSync(dir +"/tsconfig.json")){
     console.log("Creating tsconfig.json");
     
     let tsconf = {
         compilerOptions: {
-          outDir: "./build",
-          sourceMap: true,
-          noImplicitAny: true,
-          module: "commonjs",
-          target: "es5",
-          jsx: "react",
-          lib: [
+        outDir: "./build",
+        sourceMap: true,
+        noImplicitAny: true,
+        module: "commonjs",
+        target: "es5",
+        jsx: "react",
+        lib: [
             "es2015",
             "dom"
-          ],
-          skipLibCheck: false,
-          esModuleInterop: true
+        ],
+        skipLibCheck: false,
+        esModuleInterop: true
         },
         include: [
-          "./src/**/*"
+        "./src/**/*"
         ]
-      }
-    
-    if(!fs.existsSync("./tsconfig.json")){
-        fs.writeFileSync("./tsconfig.json",JSON.stringify(tsconf,null,2));
     }
+    fs.writeFileSync(dir +"/tsconfig.json",JSON.stringify(tsconf,null,2));
 }
 
 
 /// package.json file;
 let package;
 console.log("Validating package.json");
-if(!fs.existsSync("./package.json")){
+if(!fs.existsSync(dir +"/package.json")){
     console.log("Creating package.json");
     package = {
         name: "cust",
@@ -82,7 +80,7 @@ if(!fs.existsSync("./package.json")){
 }
 else {
     try {
-        let buffer = fs.readFileSync("./package.json");
+        let buffer = fs.readFileSync(dir +"/package.json");
         if(!buffer) {
             console.log("no bufer");
         }
@@ -121,7 +119,7 @@ else {
     }
     catch(e) {package = {}}
 }
-fs.writeFileSync("./package.json",JSON.stringify(package,null,2));
+fs.writeFileSync(dir +"/package.json",JSON.stringify(package,null,2));
 
 
 let webpack="";
@@ -136,8 +134,8 @@ webpack += "                    test:/\.css$/,\n                    use: [\n    
 webpack += "                      ]\n                }\n            ]\n        },\n        externals: {\n            'react': 'React',\n            'react-dom': 'ReactDOM'\n";
 webpack += "        },\n        plugins: [\n            //new WriteFilePlugin(),\n            new MiniCssExtractPlugin({ filename: flow.filenames.css })\n        ],\n";
 webpack += "    }\n    if (!fs.existsSync('./build'))\n        fs.mkdirSync('./build');\n    return config;\n};"
-if(!fs.existsSync("./webpack.config.js")){
-    fs.writeFileSync("./webpack.config.js",webpack);
+if(!fs.existsSync(dir +"/webpack.config.js")){
+    fs.writeFileSync(dir +"/webpack.config.js",webpack);
 }
 
 let webpackProd="";
@@ -156,12 +154,12 @@ if(!fs.existsSync("./webpack.production.config.js")){
     fs.writeFileSync("./webpack.production.config.js",webpackProd);
 }
 
-if(!fs.existsSync("./src")) {
-    fs.mkdirSync("./src");
+if(!fs.existsSync(dir +"/src")) {
+    fs.mkdirSync(dir +"/src");
 }
 
-if(!fs.existsSync("./src/index.tsx")) {
-    fs.writeFileSync("./src/index.tsx","export * from './comp';");
+if(!fs.existsSync(dir +"/src/index.tsx")) {
+    fs.writeFileSync(dir +"/src/index.tsx","export * from './comp';");
 }
 
 let comp = "";
@@ -181,13 +179,13 @@ comp += "         style={style}\n         onContextMenu={this.showContextMenu}\n
 comp += "         ref={(element: FlowContextMenu) => {this.contextMenu = element}}\n      />\n      <FlowMessageBox\n         parent={this}\n";
 comp += "         ref={(element: FlowMessageBox) => {this.messageBox = element}}\n      />\n      <div\n         className='cust-body'\n      >\n         {}\n";
 comp += "      </div>\n   </div>\n   );\n   return this.lastContent;\n}\n}\n\nmanywho.component.register('cust', cust);\n";
-if(!fs.existsSync("./src/comp.tsx")) {
-    fs.writeFileSync("./src/comp.tsx",comp);
+if(!fs.existsSync(dir +"/src/comp.tsx")) {
+    fs.writeFileSync(dir +"/src/comp.tsx",comp);
 }
 
 let css = ".cust {\n\n}\n\n.cust-body{\n\n}\n";
-if(!fs.existsSync("./src/comp.css")) {
-    fs.writeFileSync("./src/comp.css",comp);
+if(!fs.existsSync(dir +"/src/comp.css")) {
+    fs.writeFileSync(dir +"/src/comp.css",comp);
 }
 
 //forces version in json file to min or above
