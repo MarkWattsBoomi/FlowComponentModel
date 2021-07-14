@@ -1,5 +1,5 @@
 const fs = require('fs');
-console.log("Checking Project Setup");
+console.log("Checking Project Setup $INIT_CWD" + $INIT_CWD);
 
 /// tsconfig.json file
 console.log("Validating tsconfig.json");
