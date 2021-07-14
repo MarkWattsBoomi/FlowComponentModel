@@ -116,7 +116,10 @@ else {
         }
 
     }
-    catch(e) {package = {}}
+    catch(e) {
+        console.log("pkg error");
+        package = {error: e}
+    }
 }
 fs.writeFileSync(dir +"/package.json",JSON.stringify(package,null,2));
 
