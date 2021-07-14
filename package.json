@@ -1,6 +1,6 @@
 {
   "name": "flow-component-model",
-  "version": "1.7.10",
+  "version": "1.7.11",
   "description": "Flow Component Authoring Object Model",
   "main": "lib/FlowComponentModel",
   "typings": "lib/FlowComponentModel",
@@ -10,7 +10,7 @@
   },
   "scripts": {
     "build": "tsc",
-    "preinstall" : "node scripts/postinstall.js"
+    "postinstall" : "node scripts/postinstall.js"
   },
   "author": "Dell Boomi",
   "license": "MIT",
