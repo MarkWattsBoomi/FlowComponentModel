@@ -1,7 +1,7 @@
 import * as React from 'react';
 import './FlowContextMenu.css';
 
-export default class FlowContextMenu extends React.Component<any, any> {
+export class FlowContextMenu extends React.Component<any, any> {
     context: any;
     displayStyle: React.CSSProperties = {};
 
