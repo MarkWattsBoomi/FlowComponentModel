@@ -44,7 +44,6 @@ if(!fs.existsSync(dir +"/package.json")){
           start: "webpack-dev-server",
           build: "webpack -p --config webpack.production.config.js",
           debug: "ngrok http --host-header=rewrite 8080",
-          postinstall : "node scripts/postinstall.js"
         },
         author: "Dell Boomi",
         license: "MIT",
