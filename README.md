@@ -106,6 +106,8 @@ FlowPage, FlowComponent & FlowChart give you access directly to: -
     
 ## Getting started
 
+Create a new empty folder
+
 run "npm install -s flow-component-model@latest"
 
 Create a new component tsx file and set your class to extend one of the library's base class: -
