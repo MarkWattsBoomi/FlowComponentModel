@@ -150,8 +150,8 @@ webpackProd += "                    test:/\.css$/,\n                    use: [\n
 webpackProd += "                      ]\n                }\n            ]\n        },\n        externals: {\n            'react': 'React',\n            'react-dom': 'ReactDOM'\n";
 webpackProd += "        },\n        plugins: [\n            //new WriteFilePlugin(),\n            new MiniCssExtractPlugin({ filename: flow.filenames.css })\n        ],\n";
 webpackProd += "    }\n    if (!fs.existsSync('./build'))\n        fs.mkdirSync('./build');\n    return config;\n};"
-if(!fs.existsSync("./webpack.production.config.js")){
-    fs.writeFileSync("./webpack.production.config.js",webpackProd);
+if(!fs.existsSync(dir +"/webpack.production.config.js")){
+    fs.writeFileSync(dir +"/webpack.production.config.js",webpackProd);
 }
 
 if(!fs.existsSync(dir +"/src")) {
@@ -185,7 +185,7 @@ if(!fs.existsSync(dir +"/src/comp.tsx")) {
 
 let css = ".cust {\n\n}\n\n.cust-body{\n\n}\n";
 if(!fs.existsSync(dir +"/src/comp.css")) {
-    fs.writeFileSync(dir +"/src/comp.css",comp);
+    fs.writeFileSync(dir +"/src/comp.css",css);
 }
 
 //forces version in json file to min or above
