@@ -16,7 +16,7 @@ export class FlowObjectDataProperty {
 
     static newInstance(developerName: string, contentType: eContentType, value: string | number | boolean | FlowObjectData | FlowObjectDataArray) {
 
-        let cv: string ="";
+        let cv: any;
         let objd: IFlowObjectData[] = [];
 
         switch (contentType) {
@@ -28,6 +28,14 @@ export class FlowObjectDataProperty {
             case eContentType.ContentList:
                 const oda: FlowObjectDataArray = value as FlowObjectDataArray;
                 objd = oda.iFlowObjectDataArray();
+                break;
+            
+            case eContentType.ContentNumber:
+                cv = value as number;
+                break;
+
+            case eContentType.ContentNumber:
+                cv = value as boolean;
                 break;
 
             default:
