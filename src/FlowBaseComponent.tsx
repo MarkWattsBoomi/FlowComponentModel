@@ -673,7 +673,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
                     }
 
                 default:
-                    return flowState.contentValue? flowState.contentValue : "";
+                    return flowState.contentValue || flowModel.contentValue || null;
                     break;
             }
         }
