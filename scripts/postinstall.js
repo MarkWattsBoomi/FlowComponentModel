@@ -177,7 +177,7 @@ comp += "\nrender() {\n   if(this.loadingState !== eLoadingState.ready) {\n     
 comp += "   let classes: string = 'cust ' + this.getAttribute('classes','');\n   let style: CSSProperties = {};\n   style.width='-webkit-fill-available';\n   style.height='-webkit-fill-available';\n";
 comp += "\n   if(this.model.visible === false) {\n      style.display = 'none';\n   }\n   if(this.model.width) {\n      style.width=this.model.width + 'px'\n   }\n";
 comp += "   if(this.model.height) {\n      style.height=this.model.height + 'px'\n   }\n   this.lastContent = (\n      <div\n         className={classes}\n";
-comp += "         style={style}\n         onContextMenu={this.showContextMenu}\n      >\n      <FlowContextMenu\n         parent={this}\n";
+comp += "         style={style}\n      >\n      <FlowContextMenu\n         parent={this}\n";
 comp += "         ref={(element: FlowContextMenu) => {this.contextMenu = element}}\n      />\n      <FlowMessageBox\n         parent={this}\n";
 comp += "         ref={(element: FlowMessageBox) => {this.messageBox = element}}\n      />\n      <div\n         className='cust-body'\n      >\n         {}\n";
 comp += "      </div>\n   </div>\n   );\n   return this.lastContent;\n}\n}\n\nmanywho.component.register('cust', cust);\n";
