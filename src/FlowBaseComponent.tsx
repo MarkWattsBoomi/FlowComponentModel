@@ -390,7 +390,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
     async preserveState() {
         this.LoadingState = eLoadingState.mounting;
 
-        await this.setStateValue(this.getStateValue());
+        await this.setStateValue(this.getStateValue(true));
 
         this.LoadingState = eLoadingState.mounted;
     }
@@ -639,7 +639,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
         return Promise.resolve();
     }
 
-    getStateValue(): string | boolean | number | Date | FlowObjectData | FlowObjectDataArray | undefined {
+    getStateValue(initializing: boolean = false): string | boolean | number | Date | FlowObjectData | FlowObjectDataArray | undefined {
         const flowState = manywho.state.getComponent(this.componentId, this.flowKey) || {};
         const flowModel = manywho.model.getComponent(this.ComponentId, this.FlowKey);
         if(flowModel) {
@@ -673,7 +673,14 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
                     }
 
                 default:
-                    return flowModel.contentValue || flowState.contentValue || null;
+                    // initializing is the mode for preservation of model to state
+                    if(initializing === true) {
+                        return flowModel.contentValue || flowState.contentValue || null;
+                    }
+                    else {
+                        return flowState.contentValue || flowModel.contentValue || null;
+                    }
+                    
                     break;
             }
         }
