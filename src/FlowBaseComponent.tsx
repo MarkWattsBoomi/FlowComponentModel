@@ -675,10 +675,10 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
                 default:
                     // initializing is the mode for preservation of model to state
                     if(initializing === true) {
-                        return flowModel.contentValue || flowState.contentValue || null;
+                        return flowModel.contentValue || null;
                     }
                     else {
-                        return flowState.contentValue || flowModel.contentValue || null;
+                        return flowState.contentValue || null;
                     }
                     
                     break;
