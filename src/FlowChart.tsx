@@ -122,6 +122,10 @@ export class FlowChart extends FlowBaseComponent {
         }
     }
 
+    manipulateDataTable(google: any, dataTable: any) {
+        // allows of post formatting etc
+    }
+
     drawChart() {
 
         const dataTable: any = [];
@@ -129,6 +133,8 @@ export class FlowChart extends FlowBaseComponent {
         this.buildData(dataTable);  
         
         this.chartData = google.visualization.arrayToDataTable(dataTable);
+
+        this.manipulateDataTable(google,this.chartData);
 
         if(! this.chart) {
             switch(this.chartType) {
