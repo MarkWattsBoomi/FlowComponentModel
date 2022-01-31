@@ -93,7 +93,7 @@ export class FlowChart extends FlowBaseComponent {
 
     apiLoaded() {
         if(!google?.charts || !google?.visualization?.GeoChart) {
-            google.charts.load('current',{packages:['corechart','geochart'],mapsApiKey:this.apiKey});
+            google.charts.load('current',{packages:['corechart','geochart','bar'],mapsApiKey:this.apiKey});
             google.charts.setOnLoadCallback(this.drawChart);
         }
         else {
