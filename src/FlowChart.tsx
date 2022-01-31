@@ -139,7 +139,7 @@ export class FlowChart extends FlowBaseComponent {
         if(! this.chart) {
             switch(this.chartType) {
                 case eFlowChartType.BarChart:
-                    this.chart = new google.visualization.Bar(
+                    this.chart = new google.charts.Bar(
                         document.getElementById(this.componentId)
                     );
                     this.chart.draw(this.chartData, google.charts.Bar.convertOptions(this.options));  
