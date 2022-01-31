@@ -139,21 +139,24 @@ export class FlowChart extends FlowBaseComponent {
         if(! this.chart) {
             switch(this.chartType) {
                 case eFlowChartType.BarChart:
-                    this.chart = new google.visualization.BarChart(
+                    this.chart = new google.visualization.Bar(
                         document.getElementById(this.componentId)
                     );
+                    this.chart.draw(this.chartData, google.charts.Bar.convertOptions(this.options));  
                     break;
 
                 case eFlowChartType.ColumnChart:
                     this.chart = new google.visualization.ColumnChart(
                         document.getElementById(this.componentId)
                     );
+                    this.chart.draw(this.chartData, this.options);  
                     break;
 
                 case eFlowChartType.GeoChart:
                     this.chart = new google.visualization.GeoChart(
                         document.getElementById(this.componentId)
                     );
+                    this.chart.draw(this.chartData, this.options);  
                     break;
                     
                 case eFlowChartType.PieChart:
@@ -161,13 +164,14 @@ export class FlowChart extends FlowBaseComponent {
                     this.chart = new google.visualization.PieChart(
                         document.getElementById(this.componentId)
                     );
+                    this.chart.draw(this.chartData, this.options);  
                     break;
                     
             }
             
         }
 
-        this.chart.draw(this.chartData, this.options);     
+           
     }
 
     render() 
