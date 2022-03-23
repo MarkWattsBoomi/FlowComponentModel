@@ -499,27 +499,43 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
     async loadValue(valueName: string): Promise<FlowField> {
         this.LoadingState = eLoadingState.loading;
 
-        const value: any = await this.callRequest(this.valueurl + "/" + valueName,'GET',{});
-        if(value) {
-            this.Fields[value.developerName] = new FlowField(value); 
+        let value: any;
+        try {
+            value = await this.callRequest(this.valueurl + "/" + valueName,'GET',{});
         }
+        catch(e) {
 
-        this.LoadingState = eLoadingState.ready;
+        }
+        finally {
+            if(value) {
+                this.Fields[value.developerName] = new FlowField(value); 
+            }
 
-        return this.Fields[value.developerName];
+            this.LoadingState = eLoadingState.ready;
+
+            return this.Fields[value.developerName];
+        }
     }
 
     async loadValueNew(valueName: string): Promise<FlowField> {
         this.LoadingState = eLoadingState.loading;
 
-        const value: any = await this.callRequest(this.valueurl + "/" + valueName,'GET',{});
-        if(value) {
-            this.Fields[value.developerName] = new FlowField(value); 
+        let value: any;
+        try {
+            value = await this.callRequest(this.valueurl + "/" + valueName,'GET',{});
         }
+        catch(e) {
 
-        this.LoadingState = eLoadingState.ready;
+        }
+        finally {
+            if(value) {
+                this.Fields[value.developerName] = new FlowField(value); 
+            }
 
-        return this.Fields[value.developerName];
+            this.LoadingState = eLoadingState.ready;
+
+            return this.Fields[value.developerName];
+        }
     }
    
     async callRequest(url: string, method: string, data: any): Promise<any> {
