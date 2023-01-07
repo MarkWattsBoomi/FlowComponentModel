@@ -668,9 +668,9 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
                         return new FlowObjectData([flowState.objectData[0]])
                     }
                     else {
-                        let selectedModelItems: FlowObjectDataArray = this.model.dataSource.getSelectedItems();
-                        if(selectedModelItems.items.length > 0) {
-                            return selectedModelItems.items[0];
+                        let modelItems: FlowObjectData[] = this.model.dataSource.items;
+                        if(modelItems.length > 0) {
+                            return modelItems[0];
                         }
                         else {
                             return undefined;
@@ -963,3 +963,5 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
     }
 
 }
+
+//declare var FlowComponentModel: FlowBaseComponent;
