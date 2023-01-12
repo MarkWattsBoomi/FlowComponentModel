@@ -49,6 +49,7 @@ interface IFlowModel {
     dataSource: FlowObjectDataArray;
     developerName: string;
     enabled: boolean;
+    hasEvents: boolean;
     height: number;
     helpInfo: string;
     hintInfo: string;
@@ -466,6 +467,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
                 developerName: model.developerName,
                 displayColumns: [],
                 enabled:  model.isEnabled,
+                hasEvents: model.hasEvents,
                 height:  model.height,
                 helpInfo:  model.helpInfo,
                 hintInfo:  model.hintValue,

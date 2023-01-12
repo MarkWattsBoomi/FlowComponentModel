@@ -29,6 +29,7 @@ interface IFlowModel {
     dataSource: FlowObjectDataArray;
     developerName: string;
     enabled: boolean;
+    hasEvents: boolean;
     height: number;
     helpInfo: string;
     hintInfo: string;
