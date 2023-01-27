@@ -113,7 +113,7 @@ export class FlowMessageBox extends React.Component<any, any> {
             for(const button of this.msgboxButtons) {
                 buttons.push(
                     <button 
-                        className="modal-dialog-button-bar-button" 
+                        className="fcm-modal-dialog-button-bar-button" 
                         title="Cancel" 
                         onMouseDown={(e) => {e.stopPropagation();button.handler()}}
                     >
@@ -157,7 +157,7 @@ export class FlowMessageBox extends React.Component<any, any> {
                         <div className="message-box-dialog-body">
                             {this.msgboxContent}
                         </div >
-                        <div className="modal-dialog-button-bar">
+                        <div className="fcm-modal-dialog-button-bar">
                             {buttons}   
                         </div>
                         </div >

@@ -126,7 +126,7 @@ export class FlowDialogBox extends React.Component<any, any> {
       for(const button of this.dialogButtons) {
           buttons.push(
               <button 
-                  className="modal-dialog-button-bar-button" 
+                  className="fcm-modal-dialog-button-bar-button" 
                   title="Cancel" 
                   onMouseDown={(e) => {e.stopPropagation();button.handler()}}
               >
@@ -136,39 +136,39 @@ export class FlowDialogBox extends React.Component<any, any> {
       }
       content = (
         <div 
-          className="modal-redaction"
+          className="fcm-modal-redaction"
           onMouseMove={(e) => {this.onMouseMove(e)}}
           onMouseUp={(e) => {this.onMouseUp(e)}}
           onMouseDown={(e) => {this.handleOutsideClick(e)}}
           onContextMenu={e => {e.preventDefault(); e.stopPropagation();if(this.props.onContextMenu){this.props.onContextMenu()}}}
         >
           <div 
-            className="modal-content"
+            className="fcm-modal-content"
             ref={(node) => (this.dialog = node)}
             >
-              <div className="modal-dialog">
+              <div className="fcm-modal-dialog">
                 <div 
-                  className="modal-dialog-header"
+                  className="fcm-modal-dialog-header"
                   onMouseDown={(e) => {this.onMouseDown(e)}}
                 >
                   <div style={{display: 'flex', flexDirection: "row", flexGrow: 1}}>
-                    <span className="modal-dialog-header-title">{this.props.title}</span>
+                    <span className="fcm-modal-dialog-header-title">{this.props.title}</span>
                   </div>
                   <div style={{display: 'flex', flexDirection: "row", marginLeft: 'auto', flexGrow: 0}}>
                     <span
-                      className="glyphicon glyphicon-remove modal-dialog-header-button"
+                      className="glyphicon glyphicon-remove fcm-modal-dialog-header-button"
                       style={{cursor: 'pointer' , color: '#fefefe', marginRight: '5px', fontSize: '14pt'}}
                       title="Close"
                       onMouseDown={(e) => {e.stopPropagation(); this.props.onClose('cancel')}}
                     />
                   </div>
                 </div>
-                <div className="modal-dialog-body">
-                    <div className="modal-dialog-body-client">
+                <div className="fcm-modal-dialog-body">
+                    <div className="fcm-modal-dialog-body-client">
                     {this.props.children}                               
                     </div>
                 </div >
-                  <div className="modal-dialog-button-bar">
+                  <div className="fcm-modal-dialog-button-bar">
                       {buttons}   
                   </div>
               </div >
