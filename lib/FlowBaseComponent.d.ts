@@ -99,7 +99,7 @@ export declare class FlowBaseComponent extends React.Component<any, any, any> {
     onBeforeSend(xhr: XMLHttpRequest, request: any): void;
     calculateValue(value: string): string;
     onDone(xhr: XMLHttpRequest, request: any): Promise<void>;
-    componentDidMount(): Promise<void>;
+    componentDidMount(preserveState?: boolean): Promise<void>;
     preserveState(): Promise<void>;
     componentWillUnmount(): Promise<void>;
     loadOutcome(outcomeId: string): FlowOutcome;

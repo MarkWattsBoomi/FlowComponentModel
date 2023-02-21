@@ -375,7 +375,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
     }
 
 
-    async componentDidMount(): Promise<void> {
+    async componentDidMount(preserveState: boolean = true): Promise<void> {
 
         this.LoadingState = eLoadingState.mounting;
         //add outcome manager stuff
@@ -672,7 +672,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
                     else {
                         let modelItems: FlowObjectData[] = this.model.dataSource.items;
                         if(modelItems.length > 0) {
-                            return modelItems[0];
+                            return modelItems[0].isSelected? modelItems[0] : undefined;
                         }
                         else {
                             return undefined;
