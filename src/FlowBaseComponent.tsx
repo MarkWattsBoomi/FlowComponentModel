@@ -427,7 +427,9 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
         // and the ones from the parent page
         outs = manywho.model.getOutcomes('', this.props.flowKey);
         for (const outcome of outs) {
-            this.Outcomes[outcome.developerName] = new FlowOutcome(outcome);
+            if(outcome.pageObjectBindingId === this.ComponentId){
+                this.Outcomes[outcome.developerName] = new FlowOutcome(outcome);
+            }
         }
     }
 
