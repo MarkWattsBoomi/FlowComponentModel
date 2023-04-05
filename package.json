@@ -1,6 +1,6 @@
 {
   "name": "flow-component-model",
-  "version": "1.7.49",
+  "version": "1.7.50",
   "description": "Flow Component Authoring Object Model",
   "main": "lib/FlowComponentModel",
   "typings": "lib/FlowComponentModel",
@@ -15,6 +15,12 @@
   "author": "Dell Boomi",
   "license": "MIT",
   "dependencies": {
+    
+  },
+  "devDependencies": {
+    "@types/react": "^16.7.3",
+    "@types/react-dom": "^16.0.9",
+    "typescript": "^4.0.3",
     "@types/lodash.throttle": "^4.1.6",
     "@types/node": "^13.5.0",
     "buffer": "^6.0.3",
@@ -28,14 +34,7 @@
     "stream": "0.0.2",
     "timers": "^0.1.1",
     "ts-loader": "^9.3.1",
-    "webpack": "^5.74.0",
     "write-file-webpack-plugin": "^4.5.1"
-  },
-  "devDependencies": {
-    "@types/react": "^16.7.3",
-    "@types/react-dom": "^16.0.9",
-    "typescript": "^4.0.3",
-    "webpack-cli": "^4.10.0"
   },
   "bundledDependencies": [],
   "bundleDependencies": []
