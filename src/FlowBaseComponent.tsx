@@ -584,6 +584,10 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
         return results;
     }
 
+    async sync() {
+        await manywho.engine.sync(this.flowKey);
+    }
+
     async callRequestOldxx( url: string, method: string, data: any): Promise<any> {
         let output: any;
         const xhr = await manywho.connection.request(this, null, url , method, this.TenantId, this.StateId, manywho.state.getAuthenticationToken(this.FlowKey), data)
