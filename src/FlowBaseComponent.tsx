@@ -1,5 +1,4 @@
 import * as React from 'react';
-import { modalDialogButton } from './Dialogs/Common';
 import './EventManager';
 import { FlowAttribute } from './FlowAttribute';
 import { FlowDisplayColumn } from './FlowDisplayColumn';
