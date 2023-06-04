@@ -1,3 +1,4 @@
+import { FlowDisplayColumn } from './FlowDisplayColumn';
 import { eContentType } from './FlowField';
 import { FlowObjectData , IFlowObjectData} from './FlowObjectData';
 import { FlowObjectDataProperty } from './FlowObjectDataProperty';
@@ -96,7 +97,37 @@ export class FlowObjectDataArray {
         for (const item of array || []) {
             this.Items.push(new FlowObjectData([item]));
         }
+    }
 
+    static fromJSONString(json: string, primaryKey: string, columns: FlowDisplayColumn[], flowTypeName: string) : FlowObjectDataArray {
+        let objDataArray: FlowObjectDataArray = new FlowObjectDataArray();
+        let model: any[] = JSON.parse(json);
+        model.forEach((item: any) => {
+            let objData: FlowObjectData = FlowObjectData.newInstance(flowTypeName);
+            columns.forEach((col: FlowDisplayColumn) => {
+                let val: any = item[col.developerName]; 
+                if(col.developerName===primaryKey){
+                    //objData.internalId = val;
+                    objData.externalId = val;
+                }
+                switch(col.contentType){
+                    case eContentType.ContentDateTime:
+                        val = new Date(val);
+                        break;
+                    case eContentType.ContentNumber:
+                        val = parseFloat(val);
+                        break;
+                    case eContentType.ContentBoolean:
+                        val = val === "true";
+                        break;
+                }
+                objData.addProperty(FlowObjectDataProperty.newInstance(col.developerName, col.contentType, val));
+                objData.properties[col.developerName].typeElementPropertyId = col.typeElementPropertyId;
+            });
+            objDataArray.addItem(objData);
+        });
+
+        return objDataArray;
     }
 
     addItem(item: FlowObjectData) {
