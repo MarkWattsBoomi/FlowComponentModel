@@ -107,7 +107,7 @@ export class FlowObjectDataArray {
             columns.forEach((col: FlowDisplayColumn) => {
                 let val: any = item[col.developerName]; 
                 if(col.developerName===primaryKey){
-                    objData.internalId = val;
+                    //objData.internalId = val;
                     objData.externalId = val;
                 }
                 switch(col.contentType){
