@@ -78,6 +78,14 @@ export class FlowObjectDataProperty {
                     this.value = property.objectData ? new FlowObjectDataArray(property.objectData) : new FlowObjectDataArray([]);
                     break;
 
+                case eContentType.ContentNumber:
+                    this.value = property.contentValue ? parseFloat(property.contentValue as string) : null;
+                    break;
+                
+                case eContentType.ContentBoolean:
+                    this.value = (("" + property.contentValue).trim().toLowerCase()) === "true";
+                    break;
+
                 default:
                     this.value = property.contentValue? property.contentValue : "" ;
                     break;
