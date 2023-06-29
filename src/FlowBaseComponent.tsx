@@ -308,12 +308,16 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
         if ((xhr as any).invokeType === 'FORWARD') {
             //console.log("fbc onDone forward " + new Date().getTime());
             manywho.model.parseEngineResponse(xhr, this.flowKey);
-            this.loadModel();
-            this.loadAttributes();
-            this.loadOutcomes();
-            //console.log("fbc onDone preserving " + new Date().getTime());
-            await this.preserveState();
-            //console.log("fbc onDone preserved " + new Date().getTime())
+            let model = manywho.model.getComponent(this.componentId, this.flowKey);
+            if(model) {
+                this.loadModel();
+                this.loadAttributes();
+                this.loadOutcomes();
+                //console.log("fbc onDone preserving " + new Date().getTime());
+                await this.preserveState();
+                //console.log("fbc onDone preserved " + new Date().getTime())
+            }
+            
         }
         if((manywho as any).eventManager.outcomeBeingTriggered && (manywho as any).eventManager.outcomeBeingTriggered.attributes) {
             
