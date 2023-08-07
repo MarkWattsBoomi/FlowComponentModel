@@ -79,15 +79,15 @@ export class FlowObjectDataProperty {
                     break;
 
                 case eContentType.ContentNumber:
-                    this.value = property.contentValue ? parseFloat(property.contentValue as string) : null;
+                    this.value = property.contentValue ? "" + parseFloat(property.contentValue as string) : "";
                     break;
                 
                 case eContentType.ContentBoolean:
-                    this.value = (("" + property.contentValue).trim().toLowerCase()) === "true";
+                    this.value = "" + (("" + property.contentValue).trim().toLowerCase()) === "true";
                     break;
 
                 default:
-                    this.value = property.contentValue? property.contentValue : "" ;
+                    this.value = property.contentValue? "" + property.contentValue : "" ;
                     break;
             }
         }
