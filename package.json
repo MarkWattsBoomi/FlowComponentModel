@@ -1,6 +1,6 @@
 {
   "name": "flow-component-model",
-  "version": "1.9.3",
+  "version": "1.9.4",
   "description": "Flow Component Authoring Object Model",
   "main": "lib/FlowComponentModel",
   "typings": "lib/FlowComponentModel",

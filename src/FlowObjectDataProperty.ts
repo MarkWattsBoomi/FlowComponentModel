@@ -134,7 +134,7 @@ export class FlowObjectDataProperty {
                 return parseFloat(this.Value ? this.Value as string : '0');
 
             case eContentType.ContentBoolean:
-                return new String(this.Value).toLowerCase() === 'true';
+                return "" + (new String(this.Value).toLowerCase() === 'true');
 
             default:
                 return this.Value;
