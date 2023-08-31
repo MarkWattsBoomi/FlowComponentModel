@@ -83,7 +83,7 @@ export class FlowObjectDataProperty {
                     break;
                 
                 case eContentType.ContentBoolean:
-                    this.value = "" + ((("" + property.contentValue).trim().toLowerCase()) === "true");
+                    this.value = (("" + property.contentValue).trim().toLowerCase()) === "true"? "true" : "false";
                     break;
 
                 default:
