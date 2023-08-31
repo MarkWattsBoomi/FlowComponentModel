@@ -29,8 +29,8 @@ export declare class FlowObjectDataProperty {
     set typeElementId(typeElementId: string);
     get typeElementPropertyId(): string;
     set typeElementPropertyId(typeElementPropertyId: string);
-    get value(): string | number | boolean | FlowObjectData | FlowObjectDataArray | undefined;
-    set value(value: string | number | boolean | FlowObjectData | FlowObjectDataArray | undefined);
+    get value(): string | number | boolean | Date | FlowObjectData | FlowObjectDataArray | undefined;
+    set value(value: string | number | boolean | Date | FlowObjectData | FlowObjectDataArray | undefined);
     clone(): FlowObjectDataProperty;
     iFlowObjectDataProperty(): IFlowObjectDataProperty;
     get displayString(): string;

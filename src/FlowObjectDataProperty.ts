@@ -59,7 +59,7 @@ export class FlowObjectDataProperty {
     private DeveloperName: string = "";
     private TypeElementId: string = "";
     private TypeElementPropertyId: string= "";
-    private Value: string | number | boolean | FlowObjectData | FlowObjectDataArray | undefined;
+    private Value: string | number | boolean | Date | FlowObjectData | FlowObjectDataArray | undefined;
 
     constructor(property: IFlowObjectDataProperty | undefined) {
         if(property) {
@@ -75,19 +75,21 @@ export class FlowObjectDataProperty {
                     break;
 
                 case eContentType.ContentList:
-                    this.value = property.objectData ? new FlowObjectDataArray(property.objectData) : new FlowObjectDataArray([]);
+                    this.Value = property.objectData ? new FlowObjectDataArray(property.objectData) : new FlowObjectDataArray([]);
                     break;
 
                 case eContentType.ContentNumber:
-                    this.value = property.contentValue ? "" + parseFloat(property.contentValue as string) : "";
+                    this.Value = property.contentValue ? "" + parseFloat(property.contentValue as string) : "";
                     break;
                 
                 case eContentType.ContentBoolean:
-                    this.value = (("" + property.contentValue).trim().toLowerCase()) === "true"? "true" : "false";
+                    this.Value = (("" + property.contentValue).trim().toLowerCase()) === "true"? "true" : "false";
                     break;
-
+                case eContentType.ContentDateTime:
+                    this.Value = new Date(property.contentValue as string);
+                    break;
                 default:
-                    this.value = property.contentValue? "" + property.contentValue : "" ;
+                    this.Value = property.contentValue? "" + property.contentValue : "" ;
                     break;
             }
         }
@@ -128,7 +130,7 @@ export class FlowObjectDataProperty {
         this.TypeElementPropertyId = typeElementPropertyId;
         }
 
-    get value(): string | number | boolean | FlowObjectData | FlowObjectDataArray | undefined {
+    get value(): string | number | boolean | Date | FlowObjectData | FlowObjectDataArray | undefined {
         switch (this.contentType) {
             case eContentType.ContentNumber:
                 return parseFloat(this.Value ? this.Value as string : '0');
@@ -136,13 +138,16 @@ export class FlowObjectDataProperty {
             case eContentType.ContentBoolean:
                 return "" + (new String(this.Value).toLowerCase() === 'true');
 
+            case eContentType.ContentDateTime:
+                return isNaN((this.Value as Date).getTime()) ? "" : (this.Value as Date).toISOString() ;
+
             default:
                 return this.Value;
         }
 
     }
 
-    set value(value: string | number | boolean | FlowObjectData | FlowObjectDataArray | undefined) {
+    set value(value: string | number | boolean | Date | FlowObjectData | FlowObjectDataArray | undefined) {
         this.Value = value;
     }
 
