@@ -34,7 +34,7 @@ export class FlowObjectDataProperty {
                 cv = value as number;
                 break;
 
-            case eContentType.ContentNumber:
+            case eContentType.ContentBoolean:
                 cv = value as boolean;
                 break;
 
