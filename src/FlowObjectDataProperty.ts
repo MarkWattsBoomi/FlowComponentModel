@@ -79,11 +79,11 @@ export class FlowObjectDataProperty {
                     break;
 
                 case eContentType.ContentNumber:
-                    this.Value = property.contentValue ? "" + parseFloat(property.contentValue as string) : "";
+                    this.Value = property.contentValue ? parseFloat(""+property.contentValue as string) : null;
                     break;
                 
                 case eContentType.ContentBoolean:
-                    this.Value = (("" + property.contentValue).trim().toLowerCase()) === "true"? "true" : "false";
+                    this.Value = (("" + property.contentValue).trim().toLowerCase()) === "true"? true : false;
                     break;
                 case eContentType.ContentDateTime:
                     this.Value = new Date(property.contentValue as string);
