@@ -118,7 +118,7 @@ export class FlowObjectDataArray {
                         val = parseFloat(val);
                         break;
                     case eContentType.ContentBoolean:
-                        val = ""+val === "true";
+                        val = (val === "true");
                         break;
                 }
                 objData.addProperty(FlowObjectDataProperty.newInstance(col.developerName, col.contentType, val));

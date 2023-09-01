@@ -133,13 +133,13 @@ export class FlowObjectDataProperty {
     get value(): string | number | boolean | Date | FlowObjectData | FlowObjectDataArray | undefined {
         switch (this.contentType) {
             case eContentType.ContentNumber:
-                return parseFloat(this.Value ? this.Value as string : '0');
+                return this.Value; //parseFloat(this.Value ? this.Value as string : '0');
 
             case eContentType.ContentBoolean:
-                return "" + (new String(this.Value).toLowerCase() === 'true');
+                return this.Value;// (new String(this.Value).toLowerCase() === 'true');
 
             case eContentType.ContentDateTime:
-                return isNaN((this.Value as Date).getTime()) ? "" : (this.Value as Date).toISOString() ;
+                return this.Value; //isNaN((this.Value as Date).getTime()) ? "" : (this.Value as Date).toISOString() ;
 
             default:
                 return this.Value;
@@ -191,6 +191,17 @@ export class FlowObjectDataProperty {
             case eContentType.ContentList:
                 const oda: FlowObjectDataArray = this.Value as FlowObjectDataArray;
                 objectData = oda.iFlowObjectDataArray();
+                break;
+            case eContentType.ContentNumber:
+                contentValue = "" + parseFloat(this.Value ? this.Value as string : '0');
+                break;
+
+            case eContentType.ContentBoolean:
+                contentValue = "" + (new String(this.Value).toLowerCase() === 'true');
+                break;
+
+            case eContentType.ContentDateTime:
+                contentValue = isNaN((this.Value as Date).getTime()) ? "" : (this.Value as Date).toISOString() ;
                 break;
 
             default:
