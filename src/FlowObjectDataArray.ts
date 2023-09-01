@@ -115,10 +115,10 @@ export class FlowObjectDataArray {
                         val = new Date(val);
                         break;
                     case eContentType.ContentNumber:
-                        val = parseFloat(val);
+                        val = parseFloat(""+val);
                         break;
                     case eContentType.ContentBoolean:
-                        val = (val === "true");
+                        val = (new String(val).toLowerCase() === "true");
                         break;
                 }
                 objData.addProperty(FlowObjectDataProperty.newInstance(col.developerName, col.contentType, val));
