@@ -148,7 +148,19 @@ export class FlowObjectDataProperty {
     }
 
     set value(value: string | number | boolean | Date | FlowObjectData | FlowObjectDataArray | undefined) {
-        this.Value = value;
+        switch (this.contentType) {
+            case eContentType.ContentNumber:
+                this.Value = parseFloat(value ? "" + value : '0');
+                break;
+            case eContentType.ContentBoolean:
+                this.Value = new String(value).toLowerCase() === 'true' ? true : false;
+
+            case eContentType.ContentDateTime:
+                this.Value = new Date(value as string); //isNaN((this.Value as Date).getTime()) ? "" : (this.Value as Date).toISOString() ;
+
+            default:
+                this.Value = value
+        }
     }
 
     clone() : FlowObjectDataProperty {
