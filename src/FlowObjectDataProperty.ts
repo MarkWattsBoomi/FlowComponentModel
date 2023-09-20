@@ -14,7 +14,7 @@ export interface IFlowObjectDataProperty {
 
 export class FlowObjectDataProperty {
 
-    static newInstance(developerName: string, contentType: eContentType, value: string | number | boolean | FlowObjectData | FlowObjectDataArray) {
+    static newInstance(developerName: string, contentType: eContentType, value: string | number | boolean | FlowObjectData | FlowObjectDataArray | Date) {
 
         let cv: any;
         let objd: IFlowObjectData[] = [];
