@@ -218,7 +218,7 @@ export class FlowObjectDataProperty {
                 break;
 
             case eContentType.ContentDateTime:
-                contentValue = isNaN((this.Value as Date).getTime()) ? "" : (this.Value as Date).toISOString() ;
+                contentValue = isNaN((this.Value as Date)?.getTime()) ? "" : (this.Value as Date).toISOString() ;
                 break;
 
             default:
