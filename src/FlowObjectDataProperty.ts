@@ -86,7 +86,12 @@ export class FlowObjectDataProperty {
                     this.Value = (("" + property.contentValue).trim().toLowerCase()) === "true"? true : false;
                     break;
                 case eContentType.ContentDateTime:
-                    this.Value = new Date(property.contentValue as string);
+                    if((property.contentValue as string) && (property.contentValue as string).length > 0){
+                        let dt: Date = new Date(property.contentValue as string);
+                        if(!isNaN(dt.getTime())){
+                            this.Value = dt;
+                        }
+                    }
                     break;
                 default:
                     this.Value = property.contentValue? "" + property.contentValue : "" ;
