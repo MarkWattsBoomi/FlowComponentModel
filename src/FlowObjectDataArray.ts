@@ -122,7 +122,7 @@ export class FlowObjectDataArray {
                         break;
                     case eContentType.ContentNumber:
                         val = parseFloat(""+val);
-                        if(val && !isNaN(val.getTime())){
+                        if(val && !isNaN(val)){
                             val=""+val;
                         }
                         else {
