@@ -1,6 +1,6 @@
 {
   "name": "flow-component-model",
-  "version": "1.9.13",
+  "version": "1.9.14",
   "description": "Flow Component Authoring Object Model",
   "main": "lib/FlowComponentModel",
   "typings": "lib/FlowComponentModel",
@@ -16,7 +16,7 @@
   "license": "MIT",
   "dependencies": {
     "@types/lodash.throttle": "^4.1.6",
-    "fcmlib": "^1.0.0",
+    "fcmlib": "^1.0.23",
     "lodash.throttle": "^4.1.1"
   },
   "devDependencies": {

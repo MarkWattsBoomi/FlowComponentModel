@@ -113,9 +113,21 @@ export class FlowObjectDataArray {
                 switch(col.contentType){
                     case eContentType.ContentDateTime:
                         val = new Date(val);
+                        if(val && !isNaN(val.getTime())){
+                            val=val.toISOString();
+                        }
+                        else {
+                            val="";
+                        }
                         break;
                     case eContentType.ContentNumber:
                         val = parseFloat(""+val);
+                        if(val && !isNaN(val.getTime())){
+                            val=""+val;
+                        }
+                        else {
+                            val="";
+                        }
                         break;
                     case eContentType.ContentBoolean:
                         val = (new String(val).toLowerCase() === "true");
