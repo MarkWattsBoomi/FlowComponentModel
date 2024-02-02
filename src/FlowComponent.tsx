@@ -6,6 +6,10 @@ export class FlowComponent extends FlowBaseComponent {
         super(props);
     }
 
+    redraw() {
+        throw new Error("Method not implemented.");
+    }
+
     // the FlowPage automatically gets values
     async componentDidMount() {
         await super.componentDidMount();

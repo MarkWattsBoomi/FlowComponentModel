@@ -56,7 +56,7 @@ export declare enum eLoadingState {
     mounting = 6,
     mounted = 7
 }
-export declare class FlowBaseComponent extends React.Component<any, any, any> {
+export declare abstract class FlowBaseComponent extends React.Component<any, any, any> {
     url: string;
     invokeurl: string;
     userurl: string;
@@ -73,6 +73,7 @@ export declare class FlowBaseComponent extends React.Component<any, any, any> {
     private Outcomes;
     private Model?;
     private IsDesignTime;
+    abstract redraw(): void;
     get tenantId(): string;
     get stateId(): string;
     get flowKey(): string;

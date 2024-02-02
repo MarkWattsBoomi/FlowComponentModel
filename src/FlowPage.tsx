@@ -2,6 +2,10 @@ import { FlowBaseComponent } from './FlowBaseComponent';
 
 
 export class FlowPage extends FlowBaseComponent {
+    
+    redraw(): void {
+        throw new Error('Method not implemented.');
+    }
 
     constructor(props: any) {
         super(props);

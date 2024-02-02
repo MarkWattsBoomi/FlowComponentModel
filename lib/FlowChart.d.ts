@@ -14,6 +14,7 @@ export declare class FlowChartColumnDefinition {
     constructor(developerName: string, type: eContentType);
 }
 export declare class FlowChart extends FlowBaseComponent {
+    redraw(): void;
     chartData: any;
     chart: any;
     columnNames: any[];

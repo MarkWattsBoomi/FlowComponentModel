@@ -81,7 +81,7 @@ export enum eLoadingState {
 //export type eLoadingState = "ready" | "loading" | "saving" | "moving" | "inititializing" | "inititialized" | "mounting" | "mounted";
 
 
-export class FlowBaseComponent extends React.Component<any, any, any> {
+export abstract class FlowBaseComponent extends React.Component<any, any, any> {
 
     url: string;
     invokeurl: string;
@@ -99,6 +99,8 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
     private Outcomes: {[key: string]: FlowOutcome} = {};
     private Model?: IFlowModel;
     private IsDesignTime: boolean;
+
+    abstract redraw() : void; 
 
     get tenantId(): string {
         return this.TenantId;
@@ -315,6 +317,7 @@ export class FlowBaseComponent extends React.Component<any, any, any> {
                 this.loadOutcomes();
                 //console.log("fbc onDone preserving " + new Date().getTime());
                 await this.preserveState();
+                this.redraw();
                 //console.log("fbc onDone preserved " + new Date().getTime())
             }
             

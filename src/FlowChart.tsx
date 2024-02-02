@@ -28,6 +28,10 @@ export class FlowChartColumnDefinition {
 }
 
 export class FlowChart extends FlowBaseComponent {
+    
+    redraw(): void {
+        throw new Error("Method not implemented.");
+    }
 
     chartData: any;
     chart: any;
