@@ -180,16 +180,10 @@ export abstract class FlowBaseComponent extends React.Component<any, any, any> {
     constructor(props: any) {
         super(props);
 
-        this.Fields = {};
-        this.LoadingState = eLoadingState.inititializing;
         this.loadAllValues = this.loadAllValues.bind(this);
         this.dontLoadAllValues = this.dontLoadAllValues.bind(this);
         this.updateValues = this.updateValues.bind(this);
         this.triggerOutcome = this.triggerOutcome.bind(this);
-        this.ComponentId = this.props.id;
-        this.ParentId = this.props.parentId;
-        this.FlowKey = this.props.flowKey;
-        this.Attributes = {};
         this.loadModel = this.loadModel.bind(this);
         this.loadAttributes = this.loadAttributes.bind(this);
         this.loadOutcomes = this.loadOutcomes.bind(this);
@@ -201,9 +195,24 @@ export abstract class FlowBaseComponent extends React.Component<any, any, any> {
         this.onBeforeSend = this.onBeforeSend.bind(this);
         this.onDone = this.onDone.bind(this);
         this.calculateValue = this.calculateValue.bind(this);
-
+        this.loadProps = this.loadProps.bind(this);
         window.addEventListener('message', this.receiveMessage, false);
 
+        this.loadProps(props);
+    }
+
+    async loadProps(props: any, oldProps: any = undefined) {
+
+        if(oldProps) {
+            (manywho as any).eventManager.removeBeforeSendListener(oldProps.id + "_core");
+            (manywho as any).eventManager.removeDoneListener(oldProps.id + "_core");
+        }
+        this.Fields = {};
+        this.LoadingState = eLoadingState.inititializing;
+        this.ComponentId = this.props.id;
+        this.ParentId = this.props.parentId;
+        this.FlowKey = this.props.flowKey;
+        this.Attributes = {};
         this.loadModel();
         this.loadAttributes();
         this.loadOutcomes();
@@ -223,6 +232,18 @@ export abstract class FlowBaseComponent extends React.Component<any, any, any> {
         this.valueurl = `${baseUrl}/api/run/1/state/${this.StateId}/values/name`;
 
         this.LoadingState = eLoadingState.inititialized;
+
+        (manywho as any).eventManager.addDoneListener(this.onDone,this.componentId + "_core");
+        (manywho as any).eventManager.addBeforeSendListener(this.onBeforeSend,this.componentId + "_core");
+
+        await this.preserveState();
+
+    }
+
+    componentWillReceiveProps(nextProps: Readonly<any>, nextContext: any): void {
+        if(nextProps?.id !== this.componentId){
+            this.loadProps(nextProps, this.props);
+        }
     }
 
     onBeforeSend(xhr: XMLHttpRequest, request: any) {
@@ -385,17 +406,19 @@ export abstract class FlowBaseComponent extends React.Component<any, any, any> {
 
         this.LoadingState = eLoadingState.mounting;
         //add outcome manager stuff
-        (manywho as any).eventManager.addDoneListener(this.onDone,this.componentId + "_core");
-        (manywho as any).eventManager.addBeforeSendListener(this.onBeforeSend,this.componentId + "_core");
+        //(manywho as any).eventManager.addDoneListener(this.onDone,this.componentId + "_core");
+        //(manywho as any).eventManager.addBeforeSendListener(this.onBeforeSend,this.componentId + "_core");
 
         // preserve state
-        await this.preserveState();
+        //await this.preserveState();
 
         this.LoadingState = eLoadingState.mounted;
         manywho.utils.removeLoadingIndicator('loader');
         return Promise.resolve();
 
     }
+
+    
 
     async preserveState() {
         this.LoadingState = eLoadingState.mounting;

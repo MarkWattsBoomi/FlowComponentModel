@@ -97,6 +97,8 @@ export declare abstract class FlowBaseComponent extends React.Component<any, any
     get authenticationToken(): string;
     getAttribute(attributeName: string, defaultValue?: string): string;
     constructor(props: any);
+    loadProps(props: any, oldProps?: any): Promise<void>;
+    componentWillReceiveProps(nextProps: Readonly<any>, nextContext: any): void;
     onBeforeSend(xhr: XMLHttpRequest, request: any): void;
     calculateValue(value: string): string;
     onDone(xhr: XMLHttpRequest, request: any): Promise<void>;
